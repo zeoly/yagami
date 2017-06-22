@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @EnableAutoConfiguration
 public class EntryController {
 
-	@RequestMapping("/")
+	@RequestMapping("/home")
 	@ResponseBody
 	String home() {
 		return "jjj";
