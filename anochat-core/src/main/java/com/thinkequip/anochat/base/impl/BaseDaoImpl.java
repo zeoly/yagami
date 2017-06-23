@@ -1,5 +1,6 @@
 package com.thinkequip.anochat.base.impl;
 
+import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import com.thinkequip.anochat.base.BaseDao;
 
-public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
+public class BaseDaoImpl<T extends Serializable> extends HibernateDaoSupport implements BaseDao<T> {
 
 	@Resource
 	private SessionFactory sessionFactory;

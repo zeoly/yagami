@@ -1,11 +1,12 @@
 package com.thinkequip.anochat.base;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-public interface BaseDao<T> {
+public interface BaseDao<T extends Serializable> {
 
 	public Class<T> getClazz();
 
