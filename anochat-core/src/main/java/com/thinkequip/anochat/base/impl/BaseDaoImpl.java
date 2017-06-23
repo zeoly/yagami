@@ -5,18 +5,16 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.thinkequip.anochat.base.BaseDao;
 
-public class BaseDaoImpl<T extends Serializable> extends HibernateDaoSupport implements BaseDao<T> {
+public class BaseDaoImpl<T extends Serializable> implements BaseDao<T> {
 
-	@Resource
+	@Autowired
 	private SessionFactory sessionFactory;
 
 	private Class<T> clazz;
@@ -118,7 +116,7 @@ public class BaseDaoImpl<T extends Serializable> extends HibernateDaoSupport imp
 
 	@Override
 	public Session getSession() {
-		return getSessionFactory().getCurrentSession();
+		return this.sessionFactory.getCurrentSession();
 	}
 
 	@SuppressWarnings("unchecked")
