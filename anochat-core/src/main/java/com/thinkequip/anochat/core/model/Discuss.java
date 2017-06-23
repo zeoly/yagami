@@ -5,9 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "discuss")
@@ -16,9 +17,10 @@ public class Discuss implements Serializable {
 	private static final long serialVersionUID = -4069347269916199138L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@GeneratedValue(generator = "uuid")
 	@Column(name = "id")
-	long id;
+	String id;
 
 	@Column(name = "title")
 	String title;
@@ -32,11 +34,11 @@ public class Discuss implements Serializable {
 	public Discuss() {
 	}
 
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
