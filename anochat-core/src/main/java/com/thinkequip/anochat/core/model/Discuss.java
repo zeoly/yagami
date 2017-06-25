@@ -31,6 +31,12 @@ public class Discuss implements Serializable {
 	@Column(name = "create_by")
 	String createBy;
 
+	@Column(name = "click_count")
+	int clickCount;
+
+	@Column(name = "reply_count")
+	int replyCount;
+
 	public Discuss() {
 	}
 
@@ -64,6 +70,22 @@ public class Discuss implements Serializable {
 
 	public void setCreateBy(String createBy) {
 		this.createBy = createBy;
+	}
+
+	public int getClickCount() {
+		return clickCount;
+	}
+
+	public void setClickCount(int clickCount) {
+		this.clickCount = clickCount;
+	}
+
+	public int getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(int replyCount) {
+		this.replyCount = replyCount;
 	}
 
 }
