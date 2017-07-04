@@ -3,6 +3,7 @@ package com.thinkequip.anochat.core;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -15,6 +16,7 @@ import com.thinkequip.anochat.base.impl.BaseDaoImpl;
 @ComponentScan(basePackages = "com.thinkequip")
 @EntityScan(basePackages = "com.thinkequip")
 @EnableAutoConfiguration
+@EnableEurekaClient
 @EnableJpaRepositories(repositoryBaseClass = BaseDaoImpl.class)
 public class Application {
 
