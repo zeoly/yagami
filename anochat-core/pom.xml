@@ -5,6 +5,7 @@
 		<groupId>com.thinkequip.anochat</groupId>
 		<artifactId>anochat-all</artifactId>
 		<version>1.0</version>
+		<relativePath>../anochat-all/pom.xml</relativePath>
 	</parent>
 	<artifactId>anochat-core</artifactId>
 	<packaging>jar</packaging>

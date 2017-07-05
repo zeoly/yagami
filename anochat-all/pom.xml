@@ -10,7 +10,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring.cloud.version>Dalston.SR1</spring.cloud.version>
-		<spring.boot.version>1.5.4.RELEASE</spring.boot.version>
 		<org.hibernate.version>5.2.8.Final</org.hibernate.version>
 	</properties>
 
@@ -21,9 +20,9 @@
 	</parent>
 
 	<modules>
-		<module>anchat-core</module>
-		<module>anchat-eureka</module>
-		<module>anchat-ribbon</module>
+		<module>../anochat-core</module>
+		<module>../anochat-eureka</module>
+		<module>../anochat-ribbon</module>
 	</modules>
 
 	<dependencyManagement>
