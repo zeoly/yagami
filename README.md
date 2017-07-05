@@ -3,3 +3,4 @@
 - modules:
 ## core
 ## eureka
+## ribbon
