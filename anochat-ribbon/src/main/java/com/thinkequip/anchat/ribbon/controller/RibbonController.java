@@ -15,7 +15,7 @@ public class RibbonController {
 	@RequestMapping("/hello")
 	@ResponseBody
 	public String hello() {
-		String result = restTemplate.getForEntity("http://anochat-core-service/home", String.class).getBody();
+		String result = restTemplate.getForEntity("http://anochat-consumer-service/home", String.class).getBody();
 		return result;
 	}
 }
