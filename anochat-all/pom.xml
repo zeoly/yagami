@@ -23,6 +23,7 @@
 		<module>../anochat-core</module>
 		<module>../anochat-eureka</module>
 		<module>../anochat-ribbon</module>
+		<module>anochat-consumer</module>
 	</modules>
 
 	<dependencyManagement>
