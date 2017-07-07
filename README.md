@@ -11,3 +11,7 @@
 ## ribbon
 -- anochat-ribbon
 -- localhost:8090
+## consumer
+-- anochat-consumer-service
+-- localhost:8070
+-- localhost:8071
