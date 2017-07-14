@@ -2,8 +2,8 @@ package com.yahacode.yagami.base;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 public interface BaseDao<T extends BaseModel> {
 
@@ -39,9 +39,9 @@ public interface BaseDao<T extends BaseModel> {
 
 	public String getTableName();
 
-	public Query<T> createQuery(String hql);
+	public Query createQuery(String hql);
 
-	public T redisGet(String id);
-
-	public void redisSet(String id, T t);
+//	public T redisGet(String id);
+//
+//	public void redisSet(String id, T t);
 }

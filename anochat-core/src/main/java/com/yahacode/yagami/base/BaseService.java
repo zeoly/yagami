@@ -86,7 +86,7 @@ public interface BaseService<T extends BaseModel> {
 	 *            维护对象
 	 * @return 主键
 	 */
-	public String saveWithCache(T t);
+//	public String saveWithCache(T t);
 
 	/**
 	 * 先查询cache，没有则查db并放入cache
@@ -95,7 +95,7 @@ public interface BaseService<T extends BaseModel> {
 	 *            主键
 	 * @return 维护对象
 	 */
-	public T queryByIdWithCache(String id);
+//	public T queryByIdWithCache(String id);
 
 	/**
 	 * 获取对象对应dao

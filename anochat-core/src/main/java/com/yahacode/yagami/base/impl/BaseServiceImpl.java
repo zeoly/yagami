@@ -53,38 +53,38 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
 		}
 	}
 
-	@Override
-	public String saveWithCache(T t) {
-		String id = save(t);
-		try {
-			getBaseDao().redisSet(id, t);
-		} catch (Exception e) {
-			logger.error("error save[{}][{}] in cache", getBaseDao().getClazz().getName(), id);
-		}
-		return id;
-	}
-
-	@Override
-	public T queryByIdWithCache(String id) {
-		T t = null;
-		try {
-			t = getBaseDao().redisGet(id);
-		} catch (Exception e) {
-			logger.error("error load[{}][{}] in cache", getBaseDao().getClazz().getName(), id);
-		}
-		if (t != null) {
-			logger.info("load[{}][{}] in cache", getBaseDao().getClazz().getName(), id);
-			return t;
-		}
-		logger.info("load[{}][{}] in cache fail", getBaseDao().getClazz().getName(), id);
-		t = queryById(id);
-		if (t != null) {
-			try {
-				getBaseDao().redisSet(id, t);
-			} catch (Exception e) {
-				logger.error("error save[{}][{}] in cache", getBaseDao().getClazz().getName(), id);
-			}
-		}
-		return t;
-	}
+//	@Override
+//	public String saveWithCache(T t) {
+//		String id = save(t);
+//		try {
+//			getBaseDao().redisSet(id, t);
+//		} catch (Exception e) {
+//			logger.error("error save[{}][{}] in cache", getBaseDao().getClazz().getName(), id);
+//		}
+//		return id;
+//	}
+//
+//	@Override
+//	public T queryByIdWithCache(String id) {
+//		T t = null;
+//		try {
+//			t = getBaseDao().redisGet(id);
+//		} catch (Exception e) {
+//			logger.error("error load[{}][{}] in cache", getBaseDao().getClazz().getName(), id);
+//		}
+//		if (t != null) {
+//			logger.info("load[{}][{}] in cache", getBaseDao().getClazz().getName(), id);
+//			return t;
+//		}
+//		logger.info("load[{}][{}] in cache fail", getBaseDao().getClazz().getName(), id);
+//		t = queryById(id);
+//		if (t != null) {
+//			try {
+//				getBaseDao().redisSet(id, t);
+//			} catch (Exception e) {
+//				logger.error("error save[{}][{}] in cache", getBaseDao().getClazz().getName(), id);
+//			}
+//		}
+//		return t;
+//	}
 }

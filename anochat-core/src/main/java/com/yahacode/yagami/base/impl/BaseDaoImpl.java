@@ -4,24 +4,21 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Resource;
-
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BaseModel;
 
-public class BaseDaoImpl<T extends BaseModel> extends HibernateDaoSupport implements BaseDao<T> {
+public class BaseDaoImpl<T extends BaseModel> implements BaseDao<T> {
 
-	@Resource
+	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Resource
-	private RedisTemplate<String, T> redisTemplate;
+	// @Resource
+	// private RedisTemplate<String, T> redisTemplate;
 
 	private Class<T> clazz;
 
@@ -47,7 +44,7 @@ public class BaseDaoImpl<T extends BaseModel> extends HibernateDaoSupport implem
 	@Override
 	public List<T> list() {
 		String hql = "from " + getTableName();
-		Query<T> query = createQuery(hql);
+		Query query = createQuery(hql);
 		List<T> list = query.list();
 		return list;
 	}
@@ -55,7 +52,7 @@ public class BaseDaoImpl<T extends BaseModel> extends HibernateDaoSupport implem
 	@Override
 	public List<T> listAndSortAsc(String sortField) {
 		String hql = "from " + getTableName() + " order by " + sortField;
-		Query<T> query = createQuery(hql);
+		Query query = createQuery(hql);
 		List<T> list = query.list();
 		return list;
 	}
@@ -63,7 +60,7 @@ public class BaseDaoImpl<T extends BaseModel> extends HibernateDaoSupport implem
 	@Override
 	public List<T> listAndSortDesc(String sortField) {
 		String hql = "from " + getTableName() + " order by " + sortField + " desc";
-		Query<T> query = createQuery(hql);
+		Query query = createQuery(hql);
 		List<T> list = query.list();
 		return list;
 	}
@@ -86,7 +83,7 @@ public class BaseDaoImpl<T extends BaseModel> extends HibernateDaoSupport implem
 	@Override
 	public List<T> queryByFieldAndValue(String field, Object value) {
 		String hql = "from " + getTableName() + " as t where t." + field + " = :value";
-		Query<T> query = createQuery(hql);
+		Query query = createQuery(hql);
 		query.setParameter("value", value);
 		List<T> list = query.list();
 		if (list == null) {
@@ -98,18 +95,17 @@ public class BaseDaoImpl<T extends BaseModel> extends HibernateDaoSupport implem
 	@Override
 	public void deleteByFieldAndValue(String field, Object value) {
 		String hql = "delete from " + getTableName() + " as t where t." + field + " = :value";
-		Query<T> query = createQuery(hql);
+		Query query = createQuery(hql);
 		query.setParameter("value", value);
 		query.executeUpdate();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public long getCountByFieldAndValue(String field, Object value) {
 		String hql = "select count(0) from " + getTableName() + " as t where t." + field + " = :value";
-		Query<Long> query = getSession().createQuery(hql);
+		Query query = getSession().createQuery(hql);
 		query.setParameter("value", value);
-		return query.uniqueResult();
+		return (long) query.uniqueResult();
 	}
 
 	public T load(String id) {
@@ -122,12 +118,11 @@ public class BaseDaoImpl<T extends BaseModel> extends HibernateDaoSupport implem
 
 	@Override
 	public Session getSession() {
-		return getSessionFactory().getCurrentSession();
+		return this.sessionFactory.getCurrentSession();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Query<T> createQuery(String hql) {
+	public Query createQuery(String hql) {
 		Session session = getSession();
 		return session.createQuery(hql);
 	}
@@ -137,19 +132,14 @@ public class BaseDaoImpl<T extends BaseModel> extends HibernateDaoSupport implem
 		return getClazz().getSimpleName();
 	}
 
-	@Resource
-	public void setMySessionFactory(SessionFactory sessionFactory) {
-		this.setSessionFactory(sessionFactory);
-	}
-
-	@Override
-	public T redisGet(String id) {
-		return redisTemplate.opsForValue().get(id);
-	}
-
-	@Override
-	public void redisSet(String id, T t) {
-		redisTemplate.opsForValue().set(id, t);
-	}
+	// @Override
+	// public T redisGet(String id) {
+	// return redisTemplate.opsForValue().get(id);
+	// }
+	//
+	// @Override
+	// public void redisSet(String id, T t) {
+	// redisTemplate.opsForValue().set(id, t);
+	// }
 
 }
