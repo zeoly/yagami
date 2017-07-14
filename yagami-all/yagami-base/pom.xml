@@ -6,6 +6,7 @@
 		<artifactId>yagami-all</artifactId>
 		<version>1.0</version>
 	</parent>
+	
 	<artifactId>yagami-base</artifactId>
 	<packaging>jar</packaging>
 

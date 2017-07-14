@@ -6,9 +6,8 @@
 		<groupId>com.yahacode.yagami</groupId>
 		<artifactId>yagami-all</artifactId>
 		<version>1.0</version>
-		<relativePath>../anochat-all/pom.xml</relativePath>
 	</parent>
-	<artifactId>anochat-ribbon</artifactId>
+	<artifactId>yagami-ribbon</artifactId>
 
 	<dependencies>
 		<dependency>
