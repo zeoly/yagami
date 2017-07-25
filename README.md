@@ -1,21 +1,28 @@
-# ano-chat
+# yagami
 - micro-service demo
 - modules:
 
-## core
+## yagami-core
 
-- anochat-core-service
+- yagami-core-service
 - localhost:8081
+- provide people, department, role and so on;
 
-## eureka
+## yagami-document
+
+- yagami-document-service
+- provide document upload/download function;
+
+## yagami-eureka
 
 - eureka-server
 - peer1:8082
 - peer2:8083
+- provide eureka server with HA;
 
-## ribbon
+## yagami-ribbon
 
-- anochat-ribbon
+- yagami-ribbon
 - localhost:8090
 
 ## consumer
