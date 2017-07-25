@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-spring.boot.launch.profile.history=peer2;peer1;
+spring.boot.launch.profile.history=peer1;peer2;
