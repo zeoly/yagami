@@ -2,9 +2,11 @@ package com.yahacode.yagami.pd;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -23,6 +25,16 @@ public class DepartmentServiceTest extends BaseTest {
 
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
+
+	@Before
+	public void beforeTest() throws BizfwServiceException {
+		Department parentDepartment = departmentService.queryByCode("root");
+		Department department = new Department("test");
+		department.setCode("testForDel");
+		department.setName("测试删除机构");
+		department.setParentDepartmentId(parentDepartment.getIdBfDepartment());
+		departmentService.addDepartment(department);
+	}
 
 	@Test
 	public void testAddDepartment() throws BizfwServiceException {
@@ -67,10 +79,10 @@ public class DepartmentServiceTest extends BaseTest {
 
 	@Test
 	public void testDeleteDepartment() throws BizfwServiceException {
-		Department department = departmentService.queryByCode("211");
+		Department department = departmentService.queryByCode("testForDel");
 		departmentService.deleteDepartment(department);
 
-		Department dbDepartment = departmentService.queryByCode("211");
+		Department dbDepartment = departmentService.queryByCode("testForDel");
 		assertNull(dbDepartment);
 	}
 
@@ -85,7 +97,7 @@ public class DepartmentServiceTest extends BaseTest {
 	public void testGetChildDepartmentList() throws BizfwServiceException {
 		Department department = departmentService.queryByCode("root");
 		List<Department> list = departmentService.getChildDepartmentList(department.getIdBfDepartment());
-		assertEquals(list.size(), 3);
+		assertTrue(list.size() >= 1);
 	}
 
 	@Test
