@@ -22,14 +22,14 @@ public class BizfwServiceException extends Exception {
 	public BizfwServiceException(String errorCode) {
 		super(errorCode);
 		this.errorCode = errorCode;
-		this.errorMsg = "(" + errorCode + ")" + PropertiesUtils.getErrorMsg(errorCode);
+		this.errorMsg = PropertiesUtils.getErrorMsg(errorCode);
 	}
 
 	public BizfwServiceException(String errorCode, Object... param) {
 		super(errorCode);
 		this.errorCode = errorCode;
 		String msg = PropertiesUtils.getErrorMsg(errorCode);
-		this.errorMsg = "(" + errorCode + ")" + MessageFormat.format(msg, param);
+		this.errorMsg = MessageFormat.format(msg, param);
 	}
 
 	public String getErrorCode() {
