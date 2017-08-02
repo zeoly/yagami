@@ -1,0 +1,30 @@
+package com.yahacode.yagami.base;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.yahacode.yagami.base.common.PropertiesUtils;
+import com.yahacode.yagami.base.consts.ErrorCode;
+
+@ControllerAdvice
+public class YagamiExceptionHandler {
+
+	@ExceptionHandler(value = Exception.class)
+	@ResponseBody
+	public YagamiResponse jsonErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+		YagamiResponse response = new YagamiResponse();
+		if (e instanceof BizfwServiceException) {
+			BizfwServiceException serviceException = (BizfwServiceException) e;
+			response.setCode(serviceException.getErrorCode());
+			response.setMsg(serviceException.getErrorMsg());
+		} else {
+			response.setCode(ErrorCode.DEFAULT_ERROR);
+			response.setMsg(PropertiesUtils.getErrorMsg(ErrorCode.DEFAULT_ERROR));
+		}
+		return response;
+	}
+
+}
