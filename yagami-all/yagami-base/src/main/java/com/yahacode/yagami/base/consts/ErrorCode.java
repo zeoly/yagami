@@ -15,6 +15,8 @@ public class ErrorCode {
 	/** 参数为空异常--{0}为空，{1}失败 */
 	public static final String NULL_PARAM = "000001";
 
+	public static final String NEED_LOGIN = "000002";
+
 	public static final String TEST = "999999";
 
 	/** 机构人员模块前缀 */
