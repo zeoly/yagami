@@ -42,12 +42,12 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
 	@Transactional
 	@Override
-	public void addRole(Role role) throws BizfwServiceException {
+	public String addRole(Role role) throws BizfwServiceException {
 		List<Role> tmpRole = queryByFieldAndValue(Role.COLUMN_NAME, role.getName());
 		if (ListUtils.isNotEmpty(tmpRole)) {
 			throw new BizfwServiceException(ErrorCode.Auth.Role.ADD_FAIL_EXISTED);
 		}
-		save(role);
+		return save(role);
 	}
 
 	@Transactional

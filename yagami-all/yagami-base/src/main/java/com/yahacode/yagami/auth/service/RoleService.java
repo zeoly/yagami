@@ -31,7 +31,7 @@ public interface RoleService extends BaseService<Role> {
 	 *            角色
 	 * @throws BizfwServiceException
 	 */
-	public void addRole(Role role) throws BizfwServiceException;
+	public String addRole(Role role) throws BizfwServiceException;
 
 	/**
 	 * 修改角色

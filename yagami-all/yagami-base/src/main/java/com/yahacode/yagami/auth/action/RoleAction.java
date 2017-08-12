@@ -33,24 +33,21 @@ public class RoleAction extends BaseAction {
 	public String addRole(HttpServletRequest request, Role role) throws BizfwServiceException {
 		People people = getLoginPeople(request);
 		role.init(people.getCode());
-		roleService.addRole(role);
-		return SUCCESS;
+		return roleService.addRole(role);
 	}
 
 	@ResponseBody
 	@RequestMapping("/modifyRole.do")
-	public String modifyRole(HttpServletRequest request, Role role) throws BizfwServiceException {
+	public void modifyRole(HttpServletRequest request, Role role) throws BizfwServiceException {
 		People people = getLoginPeople(request);
 		role.update(people.getCode());
 		roleService.modify(role);
-		return SUCCESS;
 	}
 
 	@ResponseBody
 	@RequestMapping("/deleteRole.do")
-	public String deleteRole(String roleId) throws BizfwServiceException {
+	public void deleteRole(String roleId) throws BizfwServiceException {
 		roleService.deleteRole(roleId);
-		return SUCCESS;
 	}
 
 	@ResponseBody
