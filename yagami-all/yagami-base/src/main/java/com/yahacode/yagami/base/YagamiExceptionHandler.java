@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 
-@Order(1)
 @ControllerAdvice
 public class YagamiExceptionHandler {
 
