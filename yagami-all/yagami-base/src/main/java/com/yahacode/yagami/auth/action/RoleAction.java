@@ -6,7 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yahacode.yagami.auth.model.Role;
@@ -16,24 +18,24 @@ import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.pd.model.People;
 
 @Controller
-@RequestMapping("/roleAction")
+@RequestMapping("/role")
 public class RoleAction extends BaseAction {
 
 	@Autowired
 	private RoleService roleService;
 
 	@ResponseBody
-	@RequestMapping("/getRoleList.do")
+	@RequestMapping(method = RequestMethod.GET)
 	public List<Role> getRoleList() throws BizfwServiceException {
 		return roleService.getAllRoleList();
 	}
 
 	@ResponseBody
 	@RequestMapping("/addRole.do")
-	public String addRole(HttpServletRequest request, Role role) throws BizfwServiceException {
+	public void addRole(HttpServletRequest request, Role role) throws BizfwServiceException {
 		People people = getLoginPeople(request);
 		role.init(people.getCode());
-		return roleService.addRole(role);
+		roleService.addRole(role);
 	}
 
 	@ResponseBody
@@ -45,8 +47,8 @@ public class RoleAction extends BaseAction {
 	}
 
 	@ResponseBody
-	@RequestMapping("/deleteRole.do")
-	public void deleteRole(String roleId) throws BizfwServiceException {
+	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
+	public void deleteRole(@PathVariable("id") String roleId) throws BizfwServiceException {
 		roleService.deleteRole(roleId);
 	}
 
