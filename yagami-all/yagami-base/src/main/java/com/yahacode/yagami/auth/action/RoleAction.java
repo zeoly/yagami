@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,8 +32,8 @@ public class RoleAction extends BaseAction {
 	}
 
 	@ResponseBody
-	@RequestMapping("/addRole.do")
-	public void addRole(HttpServletRequest request, Role role) throws BizfwServiceException {
+	@RequestMapping(method = RequestMethod.POST)
+	public void addRole(HttpServletRequest request, @RequestBody Role role) throws BizfwServiceException {
 		People people = getLoginPeople(request);
 		role.init(people.getCode());
 		roleService.addRole(role);
