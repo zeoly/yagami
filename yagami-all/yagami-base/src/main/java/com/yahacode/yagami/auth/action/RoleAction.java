@@ -54,8 +54,9 @@ public class RoleAction extends BaseAction {
 	}
 
 	@ResponseBody
-	@RequestMapping("/getRoleOfPeople.do")
-	public List<Role> getRoleOfPeople(HttpServletRequest request, String peopleId) throws BizfwServiceException {
+	@RequestMapping(method = RequestMethod.GET, value = "/people/{id}/role")
+	public List<Role> getRoleOfPeople(HttpServletRequest request, @PathVariable("id") String peopleId)
+			throws BizfwServiceException {
 		List<Role> roleList = roleService.getRoleListByPeople(peopleId);
 		return roleList;
 	}
