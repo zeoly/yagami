@@ -18,6 +18,9 @@ import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.pd.model.People;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+
 @Controller
 @RequestMapping("/role")
 public class RoleAction extends BaseAction {
@@ -25,12 +28,15 @@ public class RoleAction extends BaseAction {
 	@Autowired
 	private RoleService roleService;
 
+	@ApiOperation(value = "获取所有角色列表")
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Role> getRoleList() throws BizfwServiceException {
 		return roleService.getAllRoleList();
 	}
 
+	@ApiOperation(value = "新增角色")
+	@ApiImplicitParam(name = "role", value = "角色模型", required = true, dataType = "Role")
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
 	public void addRole(HttpServletRequest request, @RequestBody Role role) throws BizfwServiceException {
@@ -39,25 +45,22 @@ public class RoleAction extends BaseAction {
 		roleService.addRole(role);
 	}
 
+	@ApiOperation(value = "更新角色信息")
+	@ApiImplicitParam(name = "role", value = "角色模型", required = true, dataType = "Role")
 	@ResponseBody
-	@RequestMapping("/modifyRole.do")
+	@RequestMapping(method = RequestMethod.PATCH)
 	public void modifyRole(HttpServletRequest request, Role role) throws BizfwServiceException {
 		People people = getLoginPeople(request);
 		role.update(people.getCode());
 		roleService.modify(role);
 	}
 
+	@ApiOperation(value = "删除角色")
+	@ApiImplicitParam(name = "id", value = "角色id", required = true, dataType = "String")
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
 	public void deleteRole(@PathVariable("id") String roleId) throws BizfwServiceException {
 		roleService.deleteRole(roleId);
 	}
 
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value = "/people/{id}/role")
-	public List<Role> getRoleOfPeople(HttpServletRequest request, @PathVariable("id") String peopleId)
-			throws BizfwServiceException {
-		List<Role> roleList = roleService.getRoleListByPeople(peopleId);
-		return roleList;
-	}
 }
