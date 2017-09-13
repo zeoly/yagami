@@ -19,6 +19,8 @@ import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.pd.model.People;
 import com.yahacode.yagami.pd.service.PeopleService;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 /**
  * 登录action
  * 
@@ -26,6 +28,7 @@ import com.yahacode.yagami.pd.service.PeopleService;
  * @author zengyongli
  * @date 2017年3月18日
  */
+@ApiIgnore
 @Controller
 @RequestMapping("/loginAction")
 public class LoginAction extends BaseAction {

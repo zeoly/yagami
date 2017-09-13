@@ -21,6 +21,7 @@ import com.yahacode.yagami.pd.model.PeopleForm;
 import com.yahacode.yagami.pd.service.PeopleService;
 
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
@@ -39,10 +40,11 @@ public class PeopleAction extends BaseAction {
 	@Autowired
 	private RoleService roleService;
 
+	@ApiOperation(value = "新增人员信息")
+	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataType = "PeopleForm")
 	@ResponseBody
-	@RequestMapping("/addPeople.do")
-	public void addPeople(HttpServletRequest request, @RequestBody PeopleForm peopleForm)
-			throws BizfwServiceException {
+	@RequestMapping(method = RequestMethod.POST)
+	public void addPeople(HttpServletRequest request, @RequestBody PeopleForm peopleForm) throws BizfwServiceException {
 		People loginPeople = getLoginPeople(request);
 		People people = peopleForm.getPeople();
 		people.init(loginPeople.getCode());
@@ -50,8 +52,10 @@ public class PeopleAction extends BaseAction {
 		roleService.setRoleOfPeople(people, peopleForm.getRoleIdList());
 	}
 
+	@ApiOperation(value = "修改人员信息")
+	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataType = "PeopleForm")
 	@ResponseBody
-	@RequestMapping("/modifyPeople.do")
+	@RequestMapping(method = RequestMethod.PATCH)
 	public void modifyPeople(HttpServletRequest request, @RequestBody PeopleForm peopleForm)
 			throws BizfwServiceException {
 		People loginPeople = getLoginPeople(request);
@@ -61,35 +65,37 @@ public class PeopleAction extends BaseAction {
 		roleService.setRoleOfPeople(people, peopleForm.getRoleIdList());
 	}
 
+	@ApiOperation(value = "删除人员")
+	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataType = "String")
 	@ResponseBody
-	@RequestMapping("/deletePeople.do")
-	public void deletePeople(HttpServletRequest request, String peopleId) throws BizfwServiceException {
+	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
+	public void deletePeople(HttpServletRequest request, @PathVariable("id") String peopleId)
+			throws BizfwServiceException {
 		People loginPeople = getLoginPeople(request);
 		People people = peopleService.queryById(peopleId);
 		people.update(loginPeople.getCode());
 		peopleService.deletePeople(people);
 	}
 
+	@ApiOperation(value = "解锁人员")
+	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataType = "String")
 	@ResponseBody
-	@RequestMapping("/unlockPeople.do")
-	public void unlockPeople(HttpServletRequest request, String peopleId) throws BizfwServiceException {
+	@RequestMapping(method = RequestMethod.PATCH, value = "{id}/unlock")
+	public void unlockPeople(HttpServletRequest request, @PathVariable("id") String peopleId)
+			throws BizfwServiceException {
 		People loginPeople = getLoginPeople(request);
 		People people = peopleService.queryById(peopleId);
 		people.update(loginPeople.getCode());
 		peopleService.unlock(people);
 	}
 
+	@ApiOperation(value = "修改登录用户密码")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "old", value = "原密码", required = true, dataType = "String"),
+			@ApiImplicitParam(name = "new", value = "新密码", required = true, dataType = "String") })
 	@ResponseBody
-	@RequestMapping("/getPeopleListByDepartment.do")
-	public List<People> getPeopleListByDepartment(String departmentId) throws BizfwServiceException {
-		List<People> list = peopleService.getPeopleListByDepartment(departmentId);
-		return list;
-	}
-
-	@ResponseBody
-	@RequestMapping("/modifyPassword.do")
-	public void modifyPassword(HttpServletRequest request, String oldPassword, String newPassword)
-			throws BizfwServiceException {
+	@RequestMapping(method = RequestMethod.PATCH, value = "/password/{old}/{new}")
+	public void modifyPassword(HttpServletRequest request, @PathVariable("old") String oldPassword,
+			@PathVariable("new") String newPassword) throws BizfwServiceException {
 		People loginPeople = getLoginPeople(request);
 		loginPeople.update();
 		peopleService.modifyPassword(loginPeople, oldPassword, newPassword);

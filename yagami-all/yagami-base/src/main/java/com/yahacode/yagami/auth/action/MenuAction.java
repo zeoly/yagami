@@ -18,6 +18,9 @@ import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.pd.model.People;
 
+import springfox.documentation.annotations.ApiIgnore;
+
+@ApiIgnore
 @Controller
 @RequestMapping("/menuAction")
 public class MenuAction extends BaseAction {
