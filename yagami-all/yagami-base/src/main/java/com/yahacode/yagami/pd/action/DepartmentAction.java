@@ -32,7 +32,7 @@ public class DepartmentAction extends BaseAction {
 	private PeopleService peopleService;
 
 	@ApiOperation(value = "新增机构")
-	@ApiImplicitParam(name = "department", value = "机构模型", required = true, dataType = "Department")
+	@ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
 	public String addDepartment(HttpServletRequest request, Department department) throws BizfwServiceException {
@@ -43,7 +43,7 @@ public class DepartmentAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "修改机构信息")
-	@ApiImplicitParam(name = "department", value = "机构模型", required = true, dataType = "Department")
+	@ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.PATCH)
 	public String modifyDepartment(HttpServletRequest request, Department department) throws BizfwServiceException {
@@ -54,7 +54,7 @@ public class DepartmentAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "删除机构")
-	@ApiImplicitParam(name = "id", value = "机构id", required = true, dataType = "String")
+	@ApiImplicitParam(name = "id", value = "机构id", required = true, dataTypeClass = String.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
 	public String deleteDepartment(HttpServletRequest request, @PathVariable("id") String departmentId)
@@ -77,7 +77,7 @@ public class DepartmentAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "获取机构下属所有人员")
-	@ApiImplicitParam(name = "id", value = "机构id", required = true, dataType = "String")
+	@ApiImplicitParam(name = "id", value = "机构id", required = true, dataTypeClass = String.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "{id}/people")
 	public List<People> getPeopleListByDepartment(@PathVariable("id") String departmentId)

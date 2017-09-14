@@ -41,7 +41,7 @@ public class PeopleAction extends BaseAction {
 	private RoleService roleService;
 
 	@ApiOperation(value = "新增人员信息")
-	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataType = "PeopleForm")
+	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = PeopleForm.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
 	public void addPeople(HttpServletRequest request, @RequestBody PeopleForm peopleForm) throws BizfwServiceException {
@@ -53,7 +53,7 @@ public class PeopleAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "修改人员信息")
-	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataType = "PeopleForm")
+	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = PeopleForm.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.PATCH)
 	public void modifyPeople(HttpServletRequest request, @RequestBody PeopleForm peopleForm)
@@ -66,7 +66,7 @@ public class PeopleAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "删除人员")
-	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataType = "String")
+	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
 	public void deletePeople(HttpServletRequest request, @PathVariable("id") String peopleId)
@@ -78,7 +78,7 @@ public class PeopleAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "解锁人员")
-	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataType = "String")
+	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.PATCH, value = "{id}/unlock")
 	public void unlockPeople(HttpServletRequest request, @PathVariable("id") String peopleId)
@@ -90,8 +90,8 @@ public class PeopleAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "修改登录用户密码")
-	@ApiImplicitParams({ @ApiImplicitParam(name = "old", value = "原密码", required = true, dataType = "String"),
-			@ApiImplicitParam(name = "new", value = "新密码", required = true, dataType = "String") })
+	@ApiImplicitParams({ @ApiImplicitParam(name = "old", value = "原密码", required = true, dataTypeClass = String.class),
+			@ApiImplicitParam(name = "new", value = "新密码", required = true, dataTypeClass = String.class) })
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.PATCH, value = "/password/{old}/{new}")
 	public void modifyPassword(HttpServletRequest request, @PathVariable("old") String oldPassword,
@@ -102,7 +102,7 @@ public class PeopleAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "获取人员所有角色")
-	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataType = "String")
+	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}/role")
 	public List<Role> getRoleOfPeople(HttpServletRequest request, @PathVariable("id") String peopleId)

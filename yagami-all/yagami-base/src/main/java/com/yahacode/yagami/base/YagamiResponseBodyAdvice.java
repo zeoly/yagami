@@ -24,6 +24,9 @@ public class YagamiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
 			Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
 			ServerHttpResponse response) {
+		if (!BaseAction.class.isAssignableFrom(returnType.getMethod().getDeclaringClass())){
+			return body;
+		}
 		try {
 			if (body instanceof YagamiResponse) {
 				return (YagamiResponse) body;

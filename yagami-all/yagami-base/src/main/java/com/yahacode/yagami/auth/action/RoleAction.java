@@ -36,7 +36,7 @@ public class RoleAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "新增角色")
-	@ApiImplicitParam(name = "role", value = "角色模型", required = true, dataType = "Role")
+	@ApiImplicitParam(name = "role", value = "角色模型", required = true, dataTypeClass = Role.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
 	public void addRole(HttpServletRequest request, @RequestBody Role role) throws BizfwServiceException {
@@ -46,7 +46,7 @@ public class RoleAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "更新角色信息")
-	@ApiImplicitParam(name = "role", value = "角色模型", required = true, dataType = "Role")
+	@ApiImplicitParam(name = "role", value = "角色模型", required = true, dataTypeClass = Role.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.PATCH)
 	public void modifyRole(HttpServletRequest request, Role role) throws BizfwServiceException {
@@ -56,7 +56,7 @@ public class RoleAction extends BaseAction {
 	}
 
 	@ApiOperation(value = "删除角色")
-	@ApiImplicitParam(name = "id", value = "角色id", required = true, dataType = "String")
+	@ApiImplicitParam(name = "id", value = "角色id", required = true, dataTypeClass = String.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
 	public void deleteRole(@PathVariable("id") String roleId) throws BizfwServiceException {
