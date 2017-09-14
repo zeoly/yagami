@@ -17,14 +17,12 @@ public class SwaggerConfig {
 	@Bean
 	public Docket createRestApi() {
 		return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
-				.apis(RequestHandlerSelectors.basePackage("com.yahacode.yagami")).paths(PathSelectors.any())
-				.build();
+				.apis(RequestHandlerSelectors.basePackage("com.yahacode.yagami")).paths(PathSelectors.any()).build();
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder().title("Spring Boot中使用Swagger2构建RESTful APIs")
-				.description("更多Spring Boot相关文章请关注：http://www.yahacode.com/")
-				.termsOfServiceUrl("http://localhost:8081")
-				.contact(new Contact("zeoly", "http://www.yahacode.com/", "email@email.com")).version("1.0").build();
+		return new ApiInfoBuilder().title("Yagami微服务框架RESTful APIs")
+				.description("更多Java, JavaScript, TypeScript, Angular, Spring Boot, 微服务等相关文章请关注：http://www.yahacode.com/")
+				.contact(new Contact("zeoly", "http://www.yahacode.com/", "zeoly100@163.com")).version("1.0").build();
 	}
 }
