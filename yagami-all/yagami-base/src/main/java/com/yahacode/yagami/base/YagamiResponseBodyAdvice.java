@@ -24,32 +24,32 @@ public class YagamiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
 			Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request,
 			ServerHttpResponse response) {
-		if (!BaseAction.class.isAssignableFrom(returnType.getMethod().getDeclaringClass())){
-			return body;
-		}
 		try {
-			if (body instanceof YagamiResponse) {
-				return (YagamiResponse) body;
-			}
-			if (body instanceof String) {
+			boolean isYagamiHandler = BaseAction.class.isAssignableFrom(returnType.getMethod().getDeclaringClass());
+			boolean isYagamiResponse = body instanceof YagamiResponse;
+			if (isYagamiHandler && isYagamiResponse) {
+				if (body instanceof String) {
+					YagamiResponse yagamiResponse = new YagamiResponse();
+					yagamiResponse.setCode(SUCCESS_CODE);
+					yagamiResponse.setMsg(SUCCESS_MSG);
+					yagamiResponse.setData(body);
+					ObjectMapper mapper = new ObjectMapper();
+					return mapper.writeValueAsString(yagamiResponse);
+				}
 				YagamiResponse yagamiResponse = new YagamiResponse();
 				yagamiResponse.setCode(SUCCESS_CODE);
 				yagamiResponse.setMsg(SUCCESS_MSG);
 				yagamiResponse.setData(body);
-				ObjectMapper mapper = new ObjectMapper();
-				return mapper.writeValueAsString(yagamiResponse);
+				return yagamiResponse;
 			}
-			YagamiResponse yagamiResponse = new YagamiResponse();
-			yagamiResponse.setCode(SUCCESS_CODE);
-			yagamiResponse.setMsg(SUCCESS_MSG);
-			yagamiResponse.setData(body);
-			return yagamiResponse;
 		} catch (JsonProcessingException e) {
 			YagamiResponse yagamiResponse = new YagamiResponse();
 			yagamiResponse.setCode(ErrorCode.DEFAULT_ERROR);
 			yagamiResponse.setMsg(PropertiesUtils.getErrorMsg(ErrorCode.DEFAULT_ERROR));
 			return yagamiResponse;
 		}
+		return body;
+
 	}
 
 	@Override
