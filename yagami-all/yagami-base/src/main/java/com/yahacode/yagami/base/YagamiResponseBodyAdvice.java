@@ -27,7 +27,7 @@ public class YagamiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 		try {
 			boolean isYagamiHandler = BaseAction.class.isAssignableFrom(returnType.getMethod().getDeclaringClass());
 			boolean isYagamiResponse = body instanceof YagamiResponse;
-			if (isYagamiHandler && isYagamiResponse) {
+			if (isYagamiHandler && !isYagamiResponse) {
 				if (body instanceof String) {
 					YagamiResponse yagamiResponse = new YagamiResponse();
 					yagamiResponse.setCode(SUCCESS_CODE);
@@ -49,7 +49,6 @@ public class YagamiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 			return yagamiResponse;
 		}
 		return body;
-
 	}
 
 	@Override
