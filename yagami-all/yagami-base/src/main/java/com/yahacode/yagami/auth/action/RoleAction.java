@@ -49,7 +49,7 @@ public class RoleAction extends BaseAction {
 	@ApiImplicitParam(name = "role", value = "角色模型", required = true, dataTypeClass = Role.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.PATCH)
-	public void modifyRole(HttpServletRequest request, Role role) throws BizfwServiceException {
+	public void modifyRole(HttpServletRequest request, @RequestBody Role role) throws BizfwServiceException {
 		People people = getLoginPeople(request);
 		role.update(people.getCode());
 		roleService.modify(role);
