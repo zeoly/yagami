@@ -50,12 +50,10 @@ public class RoleServiceTest extends BaseTest {
 	public void testBindRole() {
 		try {
 			People people = peopleService.getByCode("rrrr");
-			List<Role> roleList = new ArrayList<Role>();
-			Role role1 = roleService.queryById("8a8080875825fe41015825fe6ad40000");
-			Role role2 = roleService.queryById("8a8080875825fe41015825ff02d60002");
-			roleList.add(role1);
-			roleList.add(role2);
-			people.setRoleList(roleList);
+			List<String> roleList = new ArrayList<String>();
+			roleList.add("8a8080875825fe41015825fe6ad40000");
+			roleList.add("8a8080875825fe41015825ff02d60002");
+			people.setRoleIdList(roleList);
 			roleService.setRoleOfPeople(people);
 			List<Role> list = roleService.getRoleListByPeople(people.getIdBfPeople());
 			for (Role role : list) {

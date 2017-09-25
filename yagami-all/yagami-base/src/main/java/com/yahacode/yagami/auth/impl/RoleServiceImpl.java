@@ -77,11 +77,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 	@Override
 	public void setRoleOfPeople(People people) throws BizfwServiceException {
 		deletePeopleRoleRelation(people);
-		for (Role role : people.getRoleList()) {
-			Role roleDb = queryById(role.getIdBfRole());
-			if (roleDb == null) {
-				throw new BizfwServiceException(ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND,
-						role.getIdBfRole());
+		for (String id : people.getRoleIdList()) {
+			Role role = queryById(id);
+			if (role == null) {
+				throw new BizfwServiceException(ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND, id);
 			}
 			PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(people.getUpdateBy(), people.getIdBfPeople(),
 					role.getIdBfRole());

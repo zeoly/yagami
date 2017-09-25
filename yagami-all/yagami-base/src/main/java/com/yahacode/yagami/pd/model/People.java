@@ -11,7 +11,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.common.StringUtils;
@@ -74,7 +73,7 @@ public class People extends BaseModel {
 
 	/** 人员角色列表 */
 	@Transient
-	private List<Role> roleList;
+	private List<String> roleIdList;
 
 	public People() {
 		super();
@@ -143,12 +142,12 @@ public class People extends BaseModel {
 		this.status = status;
 	}
 
-	public List<Role> getRoleList() {
-		return roleList;
+	public List<String> getRoleIdList() {
+		return roleIdList;
 	}
 
-	public void setRoleList(List<Role> roleList) {
-		this.roleList = roleList;
+	public void setRoleIdList(List<String> roleIdList) {
+		this.roleIdList = roleIdList;
 	}
 
 }
