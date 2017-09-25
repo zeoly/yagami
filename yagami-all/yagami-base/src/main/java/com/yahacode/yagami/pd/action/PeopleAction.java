@@ -17,7 +17,6 @@ import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.pd.model.People;
-import com.yahacode.yagami.pd.model.PeopleForm;
 import com.yahacode.yagami.pd.service.PeopleService;
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -41,28 +40,23 @@ public class PeopleAction extends BaseAction {
 	private RoleService roleService;
 
 	@ApiOperation(value = "新增人员信息")
-	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = PeopleForm.class)
+	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public void addPeople(HttpServletRequest request, @RequestBody PeopleForm peopleForm) throws BizfwServiceException {
+	public void addPeople(HttpServletRequest request, @RequestBody People people) throws BizfwServiceException {
 		People loginPeople = getLoginPeople(request);
-		People people = peopleForm.getPeople();
 		people.init(loginPeople.getCode());
 		peopleService.addPeople(people);
-		roleService.setRoleOfPeople(people, peopleForm.getRoleIdList());
 	}
 
 	@ApiOperation(value = "修改人员信息")
-	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = PeopleForm.class)
+	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.PATCH)
-	public void modifyPeople(HttpServletRequest request, @RequestBody PeopleForm peopleForm)
-			throws BizfwServiceException {
+	public void modifyPeople(HttpServletRequest request, @RequestBody People people) throws BizfwServiceException {
 		People loginPeople = getLoginPeople(request);
-		People people = peopleForm.getPeople();
 		people.update(loginPeople.getCode());
 		peopleService.modifyPeople(people);
-		roleService.setRoleOfPeople(people, peopleForm.getRoleIdList());
 	}
 
 	@ApiOperation(value = "删除人员")

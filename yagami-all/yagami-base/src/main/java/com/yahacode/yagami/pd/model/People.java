@@ -1,13 +1,17 @@
 package com.yahacode.yagami.pd.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.common.StringUtils;
@@ -67,6 +71,10 @@ public class People extends BaseModel {
 	/** 密码错误次数 */
 	@Column(name = "error_count")
 	private int errorCount;
+
+	/** 人员角色列表 */
+	@Transient
+	private List<Role> roleList;
 
 	public People() {
 		super();
@@ -133,6 +141,14 @@ public class People extends BaseModel {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<Role> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
 	}
 
 }

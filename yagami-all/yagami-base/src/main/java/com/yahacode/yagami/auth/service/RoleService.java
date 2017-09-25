@@ -66,11 +66,9 @@ public interface RoleService extends BaseService<Role> {
 	 * 
 	 * @param people
 	 *            人员
-	 * @param roleIdList
-	 *            角色id列表
 	 * @throws BizfwServiceException
 	 */
-	public void setRoleOfPeople(People people, List<String> roleIdList) throws BizfwServiceException;
+	public void setRoleOfPeople(People people) throws BizfwServiceException;
 
 	/**
 	 * 获取角色关联的人员数量

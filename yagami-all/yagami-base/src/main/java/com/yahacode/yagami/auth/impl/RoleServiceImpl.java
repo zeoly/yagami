@@ -75,15 +75,16 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
 	@Transactional
 	@Override
-	public void setRoleOfPeople(People people, List<String> roleIdList) throws BizfwServiceException {
+	public void setRoleOfPeople(People people) throws BizfwServiceException {
 		deletePeopleRoleRelation(people);
-		for (String roleId : roleIdList) {
-			Role role = queryById(roleId);
-			if (role == null) {
-				throw new BizfwServiceException(ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND, roleId);
+		for (Role role : people.getRoleList()) {
+			Role roleDb = queryById(role.getIdBfRole());
+			if (roleDb == null) {
+				throw new BizfwServiceException(ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND,
+						role.getIdBfRole());
 			}
 			PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(people.getUpdateBy(), people.getIdBfPeople(),
-					roleId);
+					role.getIdBfRole());
 			peopleRoleRelDao.save(peopleRoleRelation);
 		}
 	}

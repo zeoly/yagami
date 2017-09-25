@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.yahacode.yagami.auth.dao.PeopleRoleRelDao;
 import com.yahacode.yagami.auth.model.PeopleRoleRelation;
+import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.PropertiesUtils;
@@ -38,6 +39,9 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 	private DepartmentService departmentService;
 
 	@Autowired
+	private RoleService roleService;
+
+	@Autowired
 	private PeopleDao peopleDao;
 
 	@Autowired
@@ -60,12 +64,16 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 		people.setErrorCount(0);
 		people.setStatus(People.STATUS_NORMAL);
 		people.setPassword(StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd")));
-		return save(people);
+		String id = save(people);
+		roleService.setRoleOfPeople(people);
+		return id;
 	}
 
+	@Transactional
 	@Override
 	public void modifyPeople(People people) throws BizfwServiceException {
 		logger.info("{}修改人员{}操作开始", people.getUpdateBy(), people.getCode());
+		roleService.setRoleOfPeople(people);
 		update(people);
 		logger.info("{}修改人员{}操作完成", people.getUpdateBy(), people.getCode());
 	}
