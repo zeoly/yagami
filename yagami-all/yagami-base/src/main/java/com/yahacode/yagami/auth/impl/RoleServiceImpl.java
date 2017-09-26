@@ -90,7 +90,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Override
     public List<Role> getRoleListByPeople(String peopleId) throws BizfwServiceException {
-        List<Role> roleList = new ArrayList<Role>();
+        List<Role> roleList = new ArrayList<>();
         List<PeopleRoleRelation> relationList = peopleRoleRelDao
                 .queryByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, peopleId);
         for (PeopleRoleRelation relation : relationList) {
@@ -102,8 +102,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Override
     public long countPeopleByRole(Role role) throws BizfwServiceException {
-        long count = peopleRoleRelDao.getCountByFieldAndValue(PeopleRoleRelation.COLUMN_ROLE_ID, role.getIdBfRole());
-        return count;
+        return peopleRoleRelDao.getCountByFieldAndValue(PeopleRoleRelation.COLUMN_ROLE_ID, role.getIdBfRole());
     }
 
     /**
@@ -112,6 +111,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
      * @param people
      *         人员
      * @throws BizfwServiceException
+     *         业务异常
      */
     private void deletePeopleRoleRelation(People people) throws BizfwServiceException {
         peopleRoleRelDao.deleteByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, people.getIdBfPeople());
@@ -123,6 +123,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
      * @param role
      *         角色
      * @throws BizfwServiceException
+     *         角色关联人员异常
      */
     private void checkCanDeleteRole(Role role) throws BizfwServiceException {
         long peopleCount = countPeopleByRole(role);
