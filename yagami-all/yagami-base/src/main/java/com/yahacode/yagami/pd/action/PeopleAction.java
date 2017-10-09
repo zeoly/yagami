@@ -25,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
 
 /**
  * 人员管理action
- * 
+ *
  * @author zengyongli
  * @date 2016年3月18日
  */
@@ -33,75 +33,73 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/people")
 public class PeopleAction extends BaseAction {
 
-	@Autowired
-	private PeopleService peopleService;
+    @Autowired
+    private PeopleService peopleService;
 
-	@Autowired
-	private RoleService roleService;
+    @Autowired
+    private RoleService roleService;
 
-	@ApiOperation(value = "新增人员信息")
-	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.POST)
-	public void addPeople(HttpServletRequest request, @RequestBody People people) throws BizfwServiceException {
-		People loginPeople = getLoginPeople(request);
-		people.init(loginPeople.getCode());
-		peopleService.addPeople(people);
-	}
+    @ApiOperation(value = "新增人员信息")
+    @ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST)
+    public void addPeople(@RequestBody People people) throws BizfwServiceException {
+        People loginPeople = getLoginPeople();
+        people.init(loginPeople.getCode());
+        peopleService.addPeople(people);
+    }
 
-	@ApiOperation(value = "修改人员信息")
-	@ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.PATCH)
-	public void modifyPeople(HttpServletRequest request, @RequestBody People people) throws BizfwServiceException {
-		People loginPeople = getLoginPeople(request);
-		people.update(loginPeople.getCode());
-		peopleService.modifyPeople(people);
-	}
+    @ApiOperation(value = "修改人员信息")
+    @ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.PATCH)
+    public void modifyPeople(@RequestBody People people) throws BizfwServiceException {
+        People loginPeople = getLoginPeople();
+        people.update(loginPeople.getCode());
+        peopleService.modifyPeople(people);
+    }
 
-	@ApiOperation(value = "删除人员")
-	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-	public void deletePeople(HttpServletRequest request, @PathVariable("id") String peopleId)
-			throws BizfwServiceException {
-		People loginPeople = getLoginPeople(request);
-		People people = peopleService.queryById(peopleId);
-		people.update(loginPeople.getCode());
-		peopleService.deletePeople(people);
-	}
+    @ApiOperation(value = "删除人员")
+    @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
+    public void deletePeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
+        People loginPeople = getLoginPeople();
+        People people = peopleService.queryById(peopleId);
+        people.update(loginPeople.getCode());
+        peopleService.deletePeople(people);
+    }
 
-	@ApiOperation(value = "解锁人员")
-	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.PATCH, value = "{id}/unlock")
-	public void unlockPeople(HttpServletRequest request, @PathVariable("id") String peopleId)
-			throws BizfwServiceException {
-		People loginPeople = getLoginPeople(request);
-		People people = peopleService.queryById(peopleId);
-		people.update(loginPeople.getCode());
-		peopleService.unlock(people);
-	}
+    @ApiOperation(value = "解锁人员")
+    @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.PATCH, value = "{id}/unlock")
+    public void unlockPeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
+        People loginPeople = getLoginPeople();
+        People people = peopleService.queryById(peopleId);
+        people.update(loginPeople.getCode());
+        peopleService.unlock(people);
+    }
 
-	@ApiOperation(value = "修改登录用户密码")
-	@ApiImplicitParams({ @ApiImplicitParam(name = "old", value = "原密码", required = true, dataTypeClass = String.class),
-			@ApiImplicitParam(name = "new", value = "新密码", required = true, dataTypeClass = String.class) })
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.PATCH, value = "/password/{old}/{new}")
-	public void modifyPassword(HttpServletRequest request, @PathVariable("old") String oldPassword,
-			@PathVariable("new") String newPassword) throws BizfwServiceException {
-		People loginPeople = getLoginPeople(request);
-		loginPeople.update();
-		peopleService.modifyPassword(loginPeople, oldPassword, newPassword);
-	}
+    @ApiOperation(value = "修改登录用户密码")
+    @ApiImplicitParams({@ApiImplicitParam(name = "old", value = "原密码", required = true, dataTypeClass = String.class)
+            , @ApiImplicitParam(name = "new", value = "新密码", required = true, dataTypeClass = String.class)})
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.PATCH, value = "/password/{old}/{new}")
+    public void modifyPassword(@PathVariable("old") String oldPassword, @PathVariable("new") String newPassword)
+            throws BizfwServiceException {
+        People loginPeople = getLoginPeople();
+        loginPeople.update();
+        peopleService.modifyPassword(loginPeople, oldPassword, newPassword);
+    }
 
-	@ApiOperation(value = "获取人员所有角色")
-	@ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value = "/{id}/role")
-	public List<Role> getRoleOfPeople(HttpServletRequest request, @PathVariable("id") String peopleId)
-			throws BizfwServiceException {
-		List<Role> roleList = roleService.getRoleListByPeople(peopleId);
-		return roleList;
-	}
+    @ApiOperation(value = "获取人员所有角色")
+    @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}/role")
+    public List<Role> getRoleOfPeople(HttpServletRequest request, @PathVariable("id") String peopleId) throws
+            BizfwServiceException {
+        List<Role> roleList = roleService.getRoleListByPeople(peopleId);
+        return roleList;
+    }
 }

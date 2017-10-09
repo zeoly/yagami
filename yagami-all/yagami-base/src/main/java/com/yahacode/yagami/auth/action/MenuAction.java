@@ -25,67 +25,67 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/menuAction")
 public class MenuAction extends BaseAction {
 
-	@Autowired
-	private MenuService menuService;
+    @Autowired
+    private MenuService menuService;
 
-	@Autowired
-	private RoleService roleService;
+    @Autowired
+    private RoleService roleService;
 
-	@ResponseBody
-	@RequestMapping("/addMenu.do")
-	public String addMenu(HttpServletRequest request, Menu menu) throws BizfwServiceException {
-		People people = getLoginPeople(request);
-		menu.init(people.getCode());
-		menuService.addMenu(menu);
-		return SUCCESS;
-	}
+    @ResponseBody
+    @RequestMapping("/addMenu.do")
+    public String addMenu(Menu menu) throws BizfwServiceException {
+        People people = getLoginPeople();
+        menu.init(people.getCode());
+        menuService.addMenu(menu);
+        return SUCCESS;
+    }
 
-	@ResponseBody
-	@RequestMapping("/modifyMenu.do")
-	public String modifyMenu(HttpServletRequest request, Menu menu) throws BizfwServiceException {
-		People people = getLoginPeople(request);
-		menu.update(people.getCode());
-		menuService.modifyMenu(menu);
-		return SUCCESS;
-	}
+    @ResponseBody
+    @RequestMapping("/modifyMenu.do")
+    public String modifyMenu(Menu menu) throws BizfwServiceException {
+        People people = getLoginPeople();
+        menu.update(people.getCode());
+        menuService.modifyMenu(menu);
+        return SUCCESS;
+    }
 
-	@ResponseBody
-	@RequestMapping("/deleteMenu.do")
-	public String deleteMenu(String menuId) throws BizfwServiceException {
-		menuService.deleteMenu(menuId);
-		return SUCCESS;
-	}
+    @ResponseBody
+    @RequestMapping("/deleteMenu.do")
+    public String deleteMenu(String menuId) throws BizfwServiceException {
+        menuService.deleteMenu(menuId);
+        return SUCCESS;
+    }
 
-	@ResponseBody
-	@RequestMapping("/getMenuOfRole.do")
-	public List<Menu> getMenuOfRole(String roleId) throws BizfwServiceException {
-		Role role = roleService.queryById(roleId);
-		List<Menu> menuList = menuService.getMenuListByRole(role);
-		return menuList;
-	}
+    @ResponseBody
+    @RequestMapping("/getMenuOfRole.do")
+    public List<Menu> getMenuOfRole(String roleId) throws BizfwServiceException {
+        Role role = roleService.queryById(roleId);
+        List<Menu> menuList = menuService.getMenuListByRole(role);
+        return menuList;
+    }
 
-	@ResponseBody
-	@RequestMapping("/setMenuOfRole.do")
-	public String setMenuOfRole(HttpServletRequest request, String roleId,
-			@RequestParam(value = "menuIdList[]") List<String> menuIdList) throws BizfwServiceException {
-		People people = getLoginPeople(request);
-		Role role = roleService.queryById(roleId);
-		role.update(people.getCode());
-		menuService.setMenuOfRole(role, menuIdList);
-		return SUCCESS;
-	}
+    @ResponseBody
+    @RequestMapping("/setMenuOfRole.do")
+    public String setMenuOfRole(String roleId, @RequestParam(value = "menuIdList[]") List<String> menuIdList) throws
+            BizfwServiceException {
+        People people = getLoginPeople();
+        Role role = roleService.queryById(roleId);
+        role.update(people.getCode());
+        menuService.setMenuOfRole(role, menuIdList);
+        return SUCCESS;
+    }
 
-	@RequestMapping("/getMenuTree.do")
-	@ResponseBody
-	public List<Menu> getMenuTree(HttpServletRequest request) throws BizfwServiceException {
-		People people = getLoginPeople(request);
-		Menu menu = menuService.getMenuTreeByPeople(people.getIdBfPeople());
-		return menu.getChildList();
-	}
+    @RequestMapping("/getMenuTree.do")
+    @ResponseBody
+    public List<Menu> getMenuTree() throws BizfwServiceException {
+        People people = getLoginPeople();
+        Menu menu = menuService.getMenuTreeByPeople(people.getIdBfPeople());
+        return menu.getChildList();
+    }
 
-	@ResponseBody
-	@RequestMapping("/getAllMenu.do")
-	public Menu getAllMenu() throws BizfwServiceException {
-		return menuService.getAllMenuTree();
-	}
+    @ResponseBody
+    @RequestMapping("/getAllMenu.do")
+    public Menu getAllMenu() throws BizfwServiceException {
+        return menuService.getAllMenuTree();
+    }
 }

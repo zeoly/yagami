@@ -1,45 +1,52 @@
 package com.yahacode.yagami.base;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.yahacode.yagami.pd.model.People;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.yahacode.yagami.pd.model.People;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 框架基础action
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
+ * @copyright THINKEQUIP
  * @date 2017年3月18日
  */
 public class BaseAction {
 
-	public static final String PEOPLE_KEY = "peopleInfo";
+    public static final String PEOPLE_KEY = "peopleInfo";
 
-	protected static final String SUCCESS = "success";
+    protected static final String SUCCESS = "success";
 
-	public People getLoginPeople(HttpServletRequest request) {
-		return (People) request.getSession().getAttribute(PEOPLE_KEY);
-	}
+    protected HttpSession getSession() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest httpServletRequest = requestAttributes.getRequest();
+        return httpServletRequest.getSession();
+    }
 
-	public void setLoginPeople(HttpServletRequest request, People peopleInfo) {
-		request.getSession().setAttribute(PEOPLE_KEY, peopleInfo);
-	}
+    protected People getLoginPeople() {
+        return (People) getSession().getAttribute(PEOPLE_KEY);
+    }
 
-	public void removeLoginInfo(HttpServletRequest request) {
-		request.getSession().removeAttribute(PEOPLE_KEY);
-	}
+    public void setLoginPeople(People peopleInfo) {
+        getSession().setAttribute(PEOPLE_KEY, peopleInfo);
+    }
 
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class,
-				new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), true));
-	}
+    public void removeLoginInfo(HttpServletRequest request) {
+        request.getSession().removeAttribute(PEOPLE_KEY);
+    }
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Date.class,
+                new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), true));
+    }
 
 }
