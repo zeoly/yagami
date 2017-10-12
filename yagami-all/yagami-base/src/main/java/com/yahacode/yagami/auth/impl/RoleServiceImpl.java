@@ -3,6 +3,8 @@ package com.yahacode.yagami.auth.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,8 @@ import com.yahacode.yagami.pd.model.People;
 @Service("roleService")
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private RoleDao roleDao;
 
@@ -47,6 +51,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         if (ListUtils.isNotEmpty(tmpRole)) {
             throw new BizfwServiceException(ErrorCode.Auth.Role.ADD_FAIL_EXISTED);
         }
+        logger.info("{}新增角色{}", role.getUpdateBy(), role.getName());
         return save(role);
     }
 
@@ -82,8 +87,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
             if (role == null) {
                 throw new BizfwServiceException(ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND, id);
             }
-            PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(people.getUpdateBy(), people.getIdBfPeople(),
-                    role.getIdBfRole());
+            PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(people.getUpdateBy(), people.getIdBfPeople
+                    (), role.getIdBfRole());
             peopleRoleRelDao.save(peopleRoleRelation);
         }
     }
@@ -91,8 +96,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     @Override
     public List<Role> getRoleListByPeople(String peopleId) throws BizfwServiceException {
         List<Role> roleList = new ArrayList<>();
-        List<PeopleRoleRelation> relationList = peopleRoleRelDao
-                .queryByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, peopleId);
+        List<PeopleRoleRelation> relationList = peopleRoleRelDao.queryByFieldAndValue(PeopleRoleRelation
+                .COLUMN_PEOPLE_ID, peopleId);
         for (PeopleRoleRelation relation : relationList) {
             Role role = queryById(relation.getRoleId());
             roleList.add(role);
