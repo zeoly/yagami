@@ -11,7 +11,7 @@ import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.base.common.FileUtils;
+import com.yahacode.yagami.document.utils.FileUtils;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;

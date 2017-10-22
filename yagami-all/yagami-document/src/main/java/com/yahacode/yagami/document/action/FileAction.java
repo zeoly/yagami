@@ -12,14 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.base.common.FileUtils;
+import com.yahacode.yagami.document.utils.FileUtils;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.pd.model.People;
@@ -32,8 +30,8 @@ public class FileAction extends BaseAction {
     private DocumentService documentService;
 
     @ResponseBody
-    @RequestMapping("/getContentOfFolder.do")
-    public List<Document> getContentOfFolder(String folderId) throws BizfwServiceException {
+    @RequestMapping(method = RequestMethod.GET, value = "folderId}")
+    public List<Document> getContentOfFolder(@PathVariable("folderId") String folderId) throws BizfwServiceException {
         People people = getLoginPeople();
         Document folder = documentService.queryById(folderId);
         folder.update(people.getCode());
@@ -42,13 +40,15 @@ public class FileAction extends BaseAction {
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.POST)
-    public String addFile(MultipartFile file, String folderId) throws BizfwServiceException {
+    @RequestMapping(method = RequestMethod.POST, value = "{folderId}")
+    public String addFile(@RequestBody MultipartFile file, @PathVariable("folderId") String folderId) throws
+            BizfwServiceException {
         try {
             String fileName = file.getOriginalFilename();
             String url = FileUtils.getStorageUrl(fileName);
             String filePath = FileUtils.getLocalStorage() + url;
-            file.transferTo(new File(filePath));
+            File newFile = new File(filePath);
+            file.transferTo(newFile);
 
             People people = getLoginPeople();
             Document document = new Document(people.getCode());
@@ -56,7 +56,7 @@ public class FileAction extends BaseAction {
             document.setName(fileName);
             document.setUrl(url);
             document.setSize(file.getSize());
-            // TODO md5
+            document.setMd5(FileUtils.getMd5(filePath));
             documentService.addFile(document);
         } catch (IllegalStateException | IOException e) {
             // TODO Auto-generated catch block
@@ -67,8 +67,7 @@ public class FileAction extends BaseAction {
 
     @ResponseBody
     @RequestMapping("/updateFile.do")
-    public String updateFile(MultipartFile file, String fileId)
-            throws BizfwServiceException {
+    public String updateFile(MultipartFile file, String fileId) throws BizfwServiceException {
         try {
             String fileName = file.getOriginalFilename();
             String url = FileUtils.getStorageUrl(fileName);
@@ -126,16 +125,16 @@ public class FileAction extends BaseAction {
 
     @ResponseBody
     @RequestMapping("/downloadFile.do")
-    public void downloadFile(HttpServletRequest request, HttpServletResponse response, String fileId)
-            throws BizfwServiceException, IOException {
+    public void downloadFile(HttpServletRequest request, HttpServletResponse response, String fileId) throws
+            BizfwServiceException, IOException {
         try {
             Document document = documentService.queryById(fileId);
             String name = FileUtils.getLocalStorage() + document.getUrl();
 
             File file = new File(name);
             response.setContentType("application/x-msdownload;");
-            response.setHeader("Content-disposition",
-                    "attachment; filename=" + new String(document.getName().getBytes("utf-8"), "iso8859-1"));
+            response.setHeader("Content-disposition", "attachment; filename=" + new String(document.getName()
+                    .getBytes("utf-8"), "iso8859-1"));
             response.setHeader("Content-Length", String.valueOf(file.length()));
             InputStream in = new FileInputStream(name);
             OutputStream out = response.getOutputStream();

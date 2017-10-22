@@ -10,10 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class DepartmentAction extends BaseAction {
     @ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
-    public String addDepartment(Department department) throws BizfwServiceException {
+    public String addDepartment(@RequestBody Department department) throws BizfwServiceException {
         People people = getLoginPeople();
         department.init(people.getCode());
         departmentService.addDepartment(department);
@@ -42,7 +39,7 @@ public class DepartmentAction extends BaseAction {
     @ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.PATCH)
-    public String modifyDepartment(Department department) throws BizfwServiceException {
+    public String modifyDepartment(@RequestBody Department department) throws BizfwServiceException {
         People people = getLoginPeople();
         department.update(people.getCode());
         departmentService.modifyDepartment(department);
@@ -53,8 +50,7 @@ public class DepartmentAction extends BaseAction {
     @ApiImplicitParam(name = "id", value = "机构id", required = true, dataTypeClass = String.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public String deleteDepartment(@PathVariable("id") String departmentId)
-            throws BizfwServiceException {
+    public String deleteDepartment(@PathVariable("id") String departmentId) throws BizfwServiceException {
         People people = getLoginPeople();
         Department department = departmentService.queryById(departmentId);
         department.update(people.getCode());
@@ -76,8 +72,8 @@ public class DepartmentAction extends BaseAction {
     @ApiImplicitParam(name = "id", value = "机构id", required = true, dataTypeClass = String.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "{id}/people")
-    public List<People> getPeopleListByDepartment(@PathVariable("id") String departmentId)
-            throws BizfwServiceException {
+    public List<People> getPeopleListByDepartment(@PathVariable("id") String departmentId) throws
+            BizfwServiceException {
         List<People> list = peopleService.getPeopleListByDepartment(departmentId);
         return list;
     }

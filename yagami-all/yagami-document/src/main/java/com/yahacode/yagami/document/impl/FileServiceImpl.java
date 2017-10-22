@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.base.common.FileUtils;
+import com.yahacode.yagami.document.utils.FileUtils;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.document.dao.FileDao;
