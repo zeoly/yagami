@@ -10,6 +10,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yahacode.yagami.base.consts.ErrorCode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,8 @@ import com.yahacode.yagami.pd.model.People;
 @Controller
 @RequestMapping("/file")
 public class FileAction extends BaseAction {
+
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private DocumentService documentService;
@@ -59,8 +64,8 @@ public class FileAction extends BaseAction {
             document.setMd5(FileUtils.getMd5(filePath));
             documentService.addFile(document);
         } catch (IllegalStateException | IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.error("文件上传失败", e);
+            throw new BizfwServiceException(ErrorCode.Doc.File.ACCESS_FAIL_NO_AUTH, e);
         }
         return SUCCESS;
     }
