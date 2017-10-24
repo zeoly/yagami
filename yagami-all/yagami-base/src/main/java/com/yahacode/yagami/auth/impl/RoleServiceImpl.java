@@ -25,18 +25,14 @@ import com.yahacode.yagami.pd.model.People;
  * 角色服务实现类
  *
  * @author zengyongli
- * @copyright THINKEQUIP
- * @date 2017年3月19日
  */
-@Service("roleService")
+@Service
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
     private RoleDao roleDao;
 
-    @Autowired
     private PeopleRoleRelDao peopleRoleRelDao;
 
     @Override
@@ -142,4 +138,13 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         return roleDao;
     }
 
+    @Autowired
+    public void setRoleDao(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
+
+    @Autowired
+    public void setPeopleRoleRelDao(PeopleRoleRelDao peopleRoleRelDao) {
+        this.peopleRoleRelDao = peopleRoleRelDao;
+    }
 }

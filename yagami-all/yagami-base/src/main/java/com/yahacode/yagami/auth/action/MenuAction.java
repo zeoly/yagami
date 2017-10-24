@@ -1,15 +1,5 @@
 package com.yahacode.yagami.auth.action;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.yahacode.yagami.auth.model.Menu;
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.service.MenuService;
@@ -17,18 +7,22 @@ import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.pd.model.People;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 @ApiIgnore
 @Controller
 @RequestMapping("/menuAction")
 public class MenuAction extends BaseAction {
 
-    @Autowired
     private MenuService menuService;
 
-    @Autowired
     private RoleService roleService;
 
     @ResponseBody
@@ -60,8 +54,7 @@ public class MenuAction extends BaseAction {
     @RequestMapping("/getMenuOfRole.do")
     public List<Menu> getMenuOfRole(String roleId) throws BizfwServiceException {
         Role role = roleService.queryById(roleId);
-        List<Menu> menuList = menuService.getMenuListByRole(role);
-        return menuList;
+        return menuService.getMenuListByRole(role);
     }
 
     @ResponseBody
@@ -87,5 +80,15 @@ public class MenuAction extends BaseAction {
     @RequestMapping("/getAllMenu.do")
     public Menu getAllMenu() throws BizfwServiceException {
         return menuService.getAllMenuTree();
+    }
+
+    @Autowired
+    public void setMenuService(MenuService menuService) {
+        this.menuService = menuService;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 }

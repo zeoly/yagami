@@ -1,9 +1,12 @@
 package com.yahacode.yagami.auth.action;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.yahacode.yagami.auth.model.Role;
+import com.yahacode.yagami.auth.service.RoleService;
+import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.pd.model.People;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,20 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yahacode.yagami.auth.model.Role;
-import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseAction;
-import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.pd.model.People;
-
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
 
 @Controller
 @RequestMapping("/role")
 public class RoleAction extends BaseAction {
 
-    @Autowired
     private RoleService roleService;
 
     @ApiOperation(value = "获取所有角色列表")
@@ -63,4 +58,8 @@ public class RoleAction extends BaseAction {
         roleService.deleteRole(roleId);
     }
 
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
 }

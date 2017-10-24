@@ -8,12 +8,10 @@ import com.yahacode.yagami.base.impl.BaseDaoImpl;
 
 /**
  * 角色dao实现
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
- * @date 2017年3月19日
  */
-@Repository("roleDao")
+@Repository
 public class RoleDaoImpl extends BaseDaoImpl<Role> implements RoleDao {
 
 }

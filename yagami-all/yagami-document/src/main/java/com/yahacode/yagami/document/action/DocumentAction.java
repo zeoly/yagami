@@ -1,29 +1,28 @@
 package com.yahacode.yagami.document.action;
 
+import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.document.model.Document;
+import com.yahacode.yagami.document.service.DocumentService;
+import com.yahacode.yagami.document.utils.FileUtils;
+import com.yahacode.yagami.pd.model.People;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.yahacode.yagami.document.service.FolderService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.yahacode.yagami.base.BaseAction;
-import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.document.utils.FileUtils;
-import com.yahacode.yagami.document.model.Document;
-import com.yahacode.yagami.document.service.DocumentService;
-import com.yahacode.yagami.pd.model.People;
 
 @Controller
 @RequestMapping("/document")
@@ -31,7 +30,6 @@ public class DocumentAction extends BaseAction {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
     private DocumentService documentService;
 
     @ResponseBody
@@ -75,5 +73,10 @@ public class DocumentAction extends BaseAction {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Autowired
+    public void setDocumentService(DocumentService documentService) {
+        this.documentService = documentService;
     }
 }
