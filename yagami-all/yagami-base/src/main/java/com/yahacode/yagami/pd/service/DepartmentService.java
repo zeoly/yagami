@@ -100,24 +100,24 @@ public interface DepartmentService extends BaseService<Department> {
     /**
      * 获取子机构列表
      *
-     * @param deparmentId
+     * @param departmentId
      *         机构id
      * @return 子机构列表
      * @throws BizfwServiceException
      *         业务异常
      */
-    List<Department> getChildDepartmentList(String deparmentId) throws BizfwServiceException;
+    List<Department> getChildDepartmentList(String departmentId) throws BizfwServiceException;
 
     /**
      * 获取所有上级机构信息（包含跨级）
      *
-     * @param deparmentId
+     * @param departmentId
      *         机构id
      * @return 父机构列表
      * @throws BizfwServiceException
      *         业务异常
      */
-    List<Department> getAllParentDeptmentList(String deparmentId) throws BizfwServiceException;
+    List<Department> getAllParentDeptList(String departmentId) throws BizfwServiceException;
 
     /**
      * 获取所有子机构列表（包含跨级）
@@ -133,12 +133,12 @@ public interface DepartmentService extends BaseService<Department> {
     /**
      * 获取当前机构下的机构树
      *
-     * @param deparmentId
+     * @param departmentId
      *         机构id
      * @return 机构树
      * @throws BizfwServiceException
      *         业务异常
      */
-    Department getDepartmentTreeByDepartmentId(String deparmentId) throws BizfwServiceException;
+    Department getDepartmentTreeByDepartmentId(String departmentId) throws BizfwServiceException;
 
 }

@@ -18,10 +18,8 @@ import java.util.List;
 @RequestMapping("/department")
 public class DepartmentAction extends BaseAction {
 
-    @Autowired
     private DepartmentService departmentService;
 
-    @Autowired
     private PeopleService peopleService;
 
     @ApiOperation(value = "新增机构")
@@ -64,8 +62,7 @@ public class DepartmentAction extends BaseAction {
     public Department getDepartmentTree() throws BizfwServiceException {
         People people = getLoginPeople();
         Department loginDepartment = departmentService.queryById(people.getDepartmentId());
-        Department department = departmentService.getDepartmentTreeByDepartmentId(loginDepartment.getIdBfDepartment());
-        return department;
+        return departmentService.getDepartmentTreeByDepartmentId(loginDepartment.getIdBfDepartment());
     }
 
     @ApiOperation(value = "获取机构下属所有人员")
@@ -74,7 +71,16 @@ public class DepartmentAction extends BaseAction {
     @RequestMapping(method = RequestMethod.GET, value = "{id}/people")
     public List<People> getPeopleListByDepartment(@PathVariable("id") String departmentId) throws
             BizfwServiceException {
-        List<People> list = peopleService.getPeopleListByDepartment(departmentId);
-        return list;
+        return peopleService.getPeopleListByDepartment(departmentId);
+    }
+
+    @Autowired
+    public void setDepartmentService(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
+
+    @Autowired
+    public void setPeopleService(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 }

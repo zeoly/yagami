@@ -8,12 +8,10 @@ import com.yahacode.yagami.pd.model.People;
 
 /**
  * 人员信息dao实现类
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
- * @date 2017年3月19日
  */
-@Repository("peopleDao")
+@Repository
 public class PeopleDaoImpl extends BaseDaoImpl<People> implements PeopleDao {
 
 }

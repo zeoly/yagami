@@ -8,12 +8,10 @@ import com.yahacode.yagami.pd.model.Department;
 
 /**
  * 机构信息dao实现类
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
- * @date 2017年3月19日
  */
-@Repository("departmentDao")
+@Repository
 public class DepartmentDaoImpl extends BaseDaoImpl<Department> implements DepartmentDao {
 
 }
