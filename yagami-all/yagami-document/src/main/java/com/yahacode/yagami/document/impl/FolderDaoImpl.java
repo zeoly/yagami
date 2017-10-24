@@ -1,62 +1,43 @@
 package com.yahacode.yagami.document.impl;
 
-import java.util.List;
-
-import org.hibernate.Query;
-import org.springframework.stereotype.Repository;
-
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.impl.BaseDaoImpl;
 import com.yahacode.yagami.document.dao.FolderDao;
-import com.yahacode.yagami.document.model.Document;
+import com.yahacode.yagami.document.model.Folder;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * 文件夹dao实现
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
- * @date 2017年3月21日
  */
-@Repository("folderDao")
-public class FolderDaoImpl extends BaseDaoImpl<Document> implements FolderDao {
+@Repository
+public class FolderDaoImpl extends BaseDaoImpl<Folder> implements FolderDao {
 
-	@Override
-	public long getChildCount(Document document) {
-		long childCount = getCountByFieldAndValue(Document.COLUMN_OWNER_DOCUMENT_ID, document.getIdBfDocument());
-		return childCount;
-	}
+    @Override
+    public long getChildFolderCount(Folder folder) {
+        return getCountByFieldAndValue(Folder.COLUMN_PARENT_ID, folder.getIdBfFolder());
+    }
 
-	@Override
-	public List<Document> getAllFolder() {
-		List<Document> list = queryByFieldAndValue(Document.COLUMN_TYPE, Document.TYPE_DIRECTORY);
-		return list;
-	}
+    @Override
+    public List<Folder> getAllFolder() {
+        return list();
+    }
 
-	@Override
-	public Document getRootFolder() {
-		List<Document> list = queryByFieldAndValue(Document.COLUMN_NAME, Document.ROOT_NAME);
-		if (ListUtils.isNotEmpty(list)) {
-			return list.get(0);
-		}
-		return null;
-	}
+    @Override
+    public Folder getRootFolder() {
+        List<Folder> list = queryByFieldAndValue(Folder.COLUMN_NAME, Folder.ROOT_NAME);
+        if (ListUtils.isNotEmpty(list)) {
+            return list.get(0);
+        }
+        return null;
+    }
 
-	@Override
-	public List<Document> getChildFolderList(Document document) {
-		String hql = "from " + getTableName() + " where " + Document.COLUMN_TYPE + " = '" + Document.TYPE_DIRECTORY
-				+ "' and " + Document.COLUMN_OWNER_DOCUMENT_ID + " = '" + document.getIdBfDocument() + "'";
-		Query query = createQuery(hql);
-		List<Document> list = query.list();
-		return list;
-	}
+    @Override
+    public List<Folder> getChildFolderList(Folder folder) {
+        return queryByFieldAndValue(Folder.COLUMN_PARENT_ID, folder.getIdBfFolder());
+    }
 
-	@Override
-	public List<Document> getContentOfFolder(Document document) {
-		String hql = "from " + getTableName() + " where " + Document.COLUMN_OWNER_DOCUMENT_ID + "= :"
-				+ Document.COLUMN_OWNER_DOCUMENT_ID + " order by " + Document.COLUMN_TYPE;
-		Query query = createQuery(hql);
-		query.setParameter(Document.COLUMN_OWNER_DOCUMENT_ID, document.getIdBfDocument());
-		List<Document> list = query.list();
-		return list;
-	}
 }

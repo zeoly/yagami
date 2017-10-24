@@ -15,80 +15,109 @@ import com.yahacode.yagami.base.BaseModel;
 
 /**
  * 文件夹模型
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
- * @date 2017年5月4日
  */
 @Entity
 @Table(name = "bf_folder")
 public class Folder extends BaseModel {
 
-	private static final long serialVersionUID = -1240258850763689533L;
+    private static final long serialVersionUID = -1240258850763689533L;
 
-	/** 主键 */
-	@Id
-	@Column(name = "id_bf_folder")
-	@GenericGenerator(name = "uuid", strategy = "uuid")
-	@GeneratedValue(generator = "uuid")
-	private String idBfFolder;
+    public static final String ROOT_NAME = "root";
 
-	/** 文件夹名 */
-	@Column(name = "name")
-	private String name;
+    public static final String COLUMN_NAME = "name";
 
-	/** 路径 */
-	@Column(name = "path")
-	private String path;
+    public static final String COLUMN_PARENT_ID = "parentId";
 
-	/** 父文件夹id */
-	@Column(name = "parent_id")
-	private String parentId;
+    /**
+     * 主键
+     */
+    @Id
+    @Column(name = "id_bf_folder")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GeneratedValue(generator = "uuid")
+    private String idBfFolder;
 
-	@Transient
-	private List<Folder> childFolderList;
+    /**
+     * 文件夹名
+     */
+    @Column(name = "name")
+    private String name;
 
-	public Folder(String peopleCode) {
-		super(peopleCode);
-	}
+    /**
+     * 路径
+     */
+    @Column(name = "path")
+    private String path;
 
-	public String getIdBfFolder() {
-		return idBfFolder;
-	}
+    /**
+     * 父文件夹id
+     */
+    @Column(name = "parent_id")
+    private String parentId;
 
-	public void setIdBfFolder(String idBfFolder) {
-		this.idBfFolder = idBfFolder;
-	}
+    /**
+     * 子文件夹列表
+     */
+    @Transient
+    private List<Folder> childFolderList;
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * 子文件列表
+     */
+    @Transient
+    private List<Document> documentList;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Folder(String peopleCode) {
+        super(peopleCode);
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public String getIdBfFolder() {
+        return idBfFolder;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public void setIdBfFolder(String idBfFolder) {
+        this.idBfFolder = idBfFolder;
+    }
 
-	public String getParentId() {
-		return parentId;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public List<Folder> getChildFolderList() {
-		return childFolderList;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setChildFolderList(List<Folder> childFolderList) {
-		this.childFolderList = childFolderList;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public List<Folder> getChildFolderList() {
+        return childFolderList;
+    }
+
+    public void setChildFolderList(List<Folder> childFolderList) {
+        this.childFolderList = childFolderList;
+    }
+
+    public List<Document> getDocumentList() {
+        return documentList;
+    }
+
+    public void setFileList(List<Document> documentList) {
+        this.documentList = documentList;
+    }
 }

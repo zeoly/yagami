@@ -1,229 +1,189 @@
 package com.yahacode.yagami.document.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
-import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.document.dao.FolderDao;
+import com.yahacode.yagami.document.dao.FolderDocRelDao;
 import com.yahacode.yagami.document.dao.RoleDocumentRelDao;
 import com.yahacode.yagami.document.model.Document;
-import com.yahacode.yagami.document.model.DocumentOperationLog;
-import com.yahacode.yagami.document.model.RoleDocumentRelation;
-import com.yahacode.yagami.document.service.DocumentOptLogService;
+import com.yahacode.yagami.document.model.Folder;
+import com.yahacode.yagami.document.model.FolderDocRelation;
+import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.service.FolderService;
 import com.yahacode.yagami.pd.model.People;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文件夹服务实现类
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
- * @date 2017年3月21日
  */
 @Service("folderService")
-public class FolderServiceImpl extends BaseServiceImpl<Document> implements FolderService {
+public class FolderServiceImpl extends BaseServiceImpl<Folder> implements FolderService {
 
-	@Autowired
-	private FolderDao folderDao;
+    @Autowired
+    private FolderDao folderDao;
 
-	@Autowired
-	private RoleDocumentRelDao roleDocumentRelDao;
+    @Autowired
+    private FolderDocRelDao folderDocRelDao;
 
-	@Autowired
-	private RoleService roleService;
+    @Autowired
+    private DocumentService documentService;
 
-	@Autowired
-	private DocumentOptLogService documentOptLogService;
+    @Autowired
+    private RoleDocumentRelDao roleDocumentRelDao;
 
-	@Override
-	public Document getAllFolderTree() throws BizfwServiceException {
-		List<Document> folderList = folderDao.getAllFolder();
-		ListUtils.sort(folderList, Document.COLUMN_NAME);
-		Document rootFolder = folderDao.getRootFolder();
-		Document folder = convertListToTree(folderList, rootFolder);
-		return folder;
-	}
+    @Autowired
+    private RoleService roleService;
 
-	@Override
-	public Document getAuthFolderTree(People people) throws BizfwServiceException {
-		List<Document> authFolderList = new ArrayList<Document>();
-		List<Role> roleList = roleService.getRoleListByPeople(people.getIdBfPeople());
-		for (Role role : roleList) {
-			List<Document> folderList = getFolderOfRole(role);
-			for (Document folder : folderList) {
-				if (!authFolderList.contains(folder)) {
-					authFolderList.add(folder);
-				}
-			}
-		}
-		replenishAuthFolderList(authFolderList);
-		ListUtils.sort(authFolderList, Document.COLUMN_NAME);
-		Document rootFolder = folderDao.getRootFolder();
-		Document folder = convertListToTree(authFolderList, rootFolder);
-		return folder;
-	}
+    @Override
+    public Folder getAllFolderTree() throws BizfwServiceException {
+        List<Folder> folderList = folderDao.getAllFolder();
+        ListUtils.sort(folderList, Folder.COLUMN_NAME);
+        Folder rootFolder = folderDao.getRootFolder();
+        Folder folder = convertListToTree(folderList, rootFolder);
+        return folder;
+    }
 
-	@Override
-	public List<Document> getFolderOfRole(Role role) throws BizfwServiceException {
-		List<Document> folderList = new ArrayList<Document>();
-		List<RoleDocumentRelation> relationList = roleDocumentRelDao
-				.queryByFieldAndValue(RoleDocumentRelation.COLUMN_ROLE_ID, role.getIdBfRole());
-		for (RoleDocumentRelation relation : relationList) {
-			Document folder = queryById(relation.getIdBfDocument());
-			folderList.add(folder);
-		}
-		return folderList;
-	}
+    @Override
+    public List<Document> getDocsOfFolder(Folder folder) throws BizfwServiceException {
+        List<FolderDocRelation> relations = folderDocRelDao.queryByFieldAndValue(FolderDocRelation.COLUMN_FOLDER_ID,
+                folder.getIdBfFolder());
+        List<Document> documents = new ArrayList<>();
+        for (FolderDocRelation relation : relations) {
+            Document document = documentService.queryById(relation.getFileId());
+            documents.add(document);
+        }
+        return documents;
+    }
 
-	@Override
-	public String addFolder(Document document) throws BizfwServiceException {
-		Document parentDocument = queryById(document.getOwnerDocumentId());
-		checkObjectNotNull(parentDocument, "文件夹[" + document.getOwnerDocumentId() + "]", "新增文件夹");
-		document.setType(Document.TYPE_DIRECTORY);
-		document.setPath(parentDocument.getPath() + "/" + document.getName());
-		String id = save(document);
-		documentOptLogService.addLog(document, DocumentOperationLog.OPT_ADD);
-		return id;
-	}
+    @Override
+    public Folder getContentOfFolder(Folder folder) throws BizfwServiceException {
+        List<Folder> folders = folderDao.getChildFolderList(folder);
+        List<Document> documents = getDocsOfFolder(folder);
+        folder.setChildFolderList(folders);
+        folder.setFileList(documents);
+        return folder;
+    }
 
-	@Override
-	public void modifyFolder(Document document) throws BizfwServiceException {
-		Document dbDocument = queryById(document.getIdBfDocument());
-		String oldPath = dbDocument.getPath();
-		String newPath = oldPath.replace(dbDocument.getName(), document.getName());
-		dbDocument.setName(document.getName());
-		dbDocument.setMemo(document.getMemo());
-		dbDocument.update(document.getUpdateBy());
-		update(dbDocument);
-		modifyChildPath(dbDocument, oldPath, newPath);
-		documentOptLogService.addLog(document, DocumentOperationLog.OPT_MOD);
-	}
+    @Override
+    public String addFolder(Folder folder) throws BizfwServiceException {
+        Folder parentFolder = queryById(folder.getParentId());
+        checkObjectNotNull(parentFolder, "文件夹[" + folder.getParentId() + "]", "新增文件夹");
+        folder.setPath(parentFolder.getPath() + "/" + folder.getName());
+        return save(folder);
+    }
 
-	@Override
-	public void deleteFolder(String documentId, People people) throws BizfwServiceException {
-		Document document = queryById(documentId);
-		checkObjectNotNull(document, "文件夹[" + documentId + "]", "删除文件夹");
-		checkCanDeleteFolder(document);
-		roleDocumentRelDao.deleteByFieldAndValue(RoleDocumentRelation.COLUMN_DOCUMENT_ID, documentId);
-		delete(documentId);
-		document.setUpdateBy(people.getCode());
-		documentOptLogService.addLog(document, DocumentOperationLog.OPT_DEL);
-	}
+    @Override
+    public void modifyFolder(Folder folder) throws BizfwServiceException {
+        Folder dbFolder = queryById(folder.getIdBfFolder());
+        String oldPath = dbFolder.getPath();
+        String newPath = oldPath.replace(dbFolder.getName(), folder.getName());
+        dbFolder.setName(folder.getName());
+        dbFolder.update(folder.getUpdateBy());
+        update(dbFolder);
+        modifyChildPath(dbFolder, oldPath, newPath);
+    }
 
-	@Override
-	public void setRoleOfFolder(Document folder, List<String> roleIdList) throws BizfwServiceException {
-		roleDocumentRelDao.deleteByFieldAndValue(RoleDocumentRelation.COLUMN_DOCUMENT_ID, folder.getIdBfDocument());
-		for (String roleId : roleIdList) {
-			RoleDocumentRelation relation = new RoleDocumentRelation(folder.getUpdateBy(), roleId,
-					folder.getIdBfDocument());
-			roleDocumentRelDao.save(relation);
-		}
-	}
+    @Override
+    public void deleteFolder(String folderId, People people) throws BizfwServiceException {
+        Folder folder = queryById(folderId);
+        checkObjectNotNull(folder, "文件夹[" + folderId + "]", "删除文件夹");
+        checkCanDeleteFolder(folder);
+        delete(folderId);
+    }
 
-	@Override
-	public List<Role> getRoleOfFolder(Document folder) throws BizfwServiceException {
-		List<Role> roleList = new ArrayList<Role>();
-		List<RoleDocumentRelation> relationList = roleDocumentRelDao
-				.queryByFieldAndValue(RoleDocumentRelation.COLUMN_DOCUMENT_ID, folder.getIdBfDocument());
-		for (RoleDocumentRelation relation : relationList) {
-			Role role = roleService.queryById(relation.getIdBfRole());
-			roleList.add(role);
-		}
-		return roleList;
-	}
+    @Transactional
+    @Override
+    public String addDocument(Document document, String folderId) throws BizfwServiceException {
+        String documentId = documentService.addDocument(document);
+        FolderDocRelation relation = new FolderDocRelation(document.getUpdateBy(), folderId, documentId);
+        folderDocRelDao.save(relation);
+        return documentId;
+    }
 
-	/**
-	 * 转换文档列表为文档树接口
-	 * 
-	 * @param list
-	 *            文档列表
-	 * @param rootFolder
-	 *            根文档
-	 * @return 文档树
-	 * @throws BizfwServiceException
-	 */
-	private Document convertListToTree(List<Document> list, Document rootFolder) throws BizfwServiceException {
-		List<Document> childList = new ArrayList<Document>();
-		for (Document folder : list) {
-			if (rootFolder.getIdBfDocument().equals(folder.getOwnerDocumentId())) {
-				Document childFolder = convertListToTree(list, folder);
-				childList.add(childFolder);
-			}
-		}
-		rootFolder.setChildList(childList);
-		return rootFolder;
-	}
+    /**
+     * 将文件夹列表转换为文件夹树结构
+     *
+     * @param list
+     *         文件夹列表
+     * @param rootFolder
+     *         根文件夹
+     * @return 文件夹树
+     * @throws BizfwServiceException
+     *         业务异常
+     */
+    private Folder convertListToTree(List<Folder> list, Folder rootFolder) throws BizfwServiceException {
+        List<Folder> childList = new ArrayList<>();
+        for (Folder folder : list) {
+            if (rootFolder.getIdBfFolder().equals(folder.getParentId())) {
+                Folder childFolder = convertListToTree(list, folder);
+                childList.add(childFolder);
+            }
+        }
+        rootFolder.setChildFolderList(childList);
+        return rootFolder;
+    }
 
-	/**
-	 * 
-	 * @param authFolderList
-	 * @throws BizfwServiceException
-	 */
-	private void replenishAuthFolderList(List<Document> authFolderList) throws BizfwServiceException {
-		List<Document> parentFolderList = new ArrayList<Document>();
-		for (Document folder : authFolderList) {
-			List<Document> tempParentFolderList = replenishParentFolder(folder);
-			parentFolderList.addAll(tempParentFolderList);
-		}
-		for (Document folder : parentFolderList) {
-			if (!authFolderList.contains(folder)) {
-				authFolderList.add(folder);
-			}
-		}
-	}
+    /**
+     * 修改子文件夹的路径
+     *
+     * @param folder
+     *         文件夹
+     * @param oldPrefix
+     *         修改前文件夹路径
+     * @param newPrefix
+     *         修改后新文件夹路径
+     * @throws BizfwServiceException
+     *         业务异常
+     */
+    private void modifyChildPath(Folder folder, String oldPrefix, String newPrefix) throws BizfwServiceException {
+        String path = folder.getPath();
+        String newPath = path.replace(oldPrefix, newPrefix);
+        if (!path.equals(newPath)) {
+            folder.setPath(newPath);
+            update(folder);
+        }
+        List<Folder> list = folderDao.getChildFolderList(folder);
+        if (ListUtils.isNotEmpty(list)) {
+            for (Folder childFolder : list) {
+                modifyChildPath(childFolder, oldPrefix, newPrefix);
+            }
+        }
+    }
 
-	private List<Document> replenishParentFolder(Document childFolder) throws BizfwServiceException {
-		List<Document> parentFolderList = new ArrayList<Document>();
-		while (StringUtils.isNotEmpty(childFolder.getOwnerDocumentId())) {
-			Document parentFolder = queryById(childFolder.getOwnerDocumentId());
-			parentFolderList.add(parentFolder);
-			childFolder = parentFolder;
-		}
-		return parentFolderList;
-	}
+    /**
+     * 检查文件夹是否可删除
+     *
+     * @param folder
+     *         文件夹
+     * @throws BizfwServiceException
+     *         业务异常
+     */
+    private void checkCanDeleteFolder(Folder folder) throws BizfwServiceException {
+        long childFolderCount = folderDao.getChildFolderCount(folder);
+        if (childFolderCount > 0) {
+            throw new BizfwServiceException(ErrorCode.Doc.Folder.DEL_FAIL_WITH_CHILD_FOLDER);
+        }
+        long childDocumentCount = folderDocRelDao.getCountByFieldAndValue(FolderDocRelation.COLUMN_FOLDER_ID, folder
+                .getIdBfFolder());
+        if (childDocumentCount > 0) {
+            throw new BizfwServiceException(ErrorCode.Doc.Folder.DEL_FAIL_WITH_CHILD_DOC);
+        }
+    }
 
-	private void modifyChildPath(Document document, String oldPrefix, String newPrefix) throws BizfwServiceException {
-		String path = document.getPath();
-		String newPath = path.replace(oldPrefix, newPrefix);
-		if (!path.equals(newPath)) {
-			document.setPath(newPath);
-			update(document);
-		}
-		List<Document> list = folderDao.getChildFolderList(document);
-		if (ListUtils.isNotEmpty(list)) {
-			for (Document folder : list) {
-				modifyChildPath(folder, oldPrefix, newPrefix);
-			}
-		}
-	}
-
-	/**
-	 * 检查文件夹是否可删除
-	 * 
-	 * @param document
-	 *            文档
-	 * @throws BizfwServiceException
-	 */
-	private void checkCanDeleteFolder(Document document) throws BizfwServiceException {
-		long childCount = folderDao.getChildCount(document);
-		if (childCount > 0) {
-			throw new BizfwServiceException(ErrorCode.Doc.Folder.DEL_FAIL_WITH_CHILD);
-		}
-	}
-
-	@Override
-	public BaseDao<Document> getBaseDao() {
-		return folderDao;
-	}
+    @Override
+    public BaseDao<Folder> getBaseDao() {
+        return folderDao;
+    }
 
 }
