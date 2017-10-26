@@ -12,14 +12,13 @@ import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.service.DocumentService;
 
 /**
- * 文档服务
+ * the implementation of DocumentService
  *
  * @author zengyongli
  */
 @Service
 public class DocumentServiceImpl extends BaseServiceImpl<Document> implements DocumentService {
 
-    @Autowired
     private DocumentDao documentDao;
 
     @Override
@@ -56,4 +55,8 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
         return documentDao;
     }
 
+    @Autowired
+    public void setDocumentDao(DocumentDao documentDao) {
+        this.documentDao = documentDao;
+    }
 }

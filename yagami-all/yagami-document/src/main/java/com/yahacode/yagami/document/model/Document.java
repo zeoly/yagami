@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 文档模型
+ * the model of document for all format
  *
  * @author zengyongli
  */
@@ -27,7 +27,7 @@ public class Document extends BaseModel {
     public static final String COLUMN_REVISION = "revision";
 
     /**
-     * 主键
+     * primary key
      */
     @Id
     @Column(name = "id_bf_document")
@@ -36,43 +36,43 @@ public class Document extends BaseModel {
     private String idBfDocument;
 
     /**
-     * 文件名
+     * docuemnt name
      */
     @Column(name = "name")
     private String name;
 
     /**
-     * 扩展名
+     * file extension
      */
     @Column(name = "extension")
     private String extension;
 
     /**
-     * 文件物理存储url，下载用
+     * document relative storage path, for downloading
      */
     @Column(name = "url")
     private String url;
 
     /**
-     * 文件大小，单位byte
+     * the document size in byte
      */
     @Column(name = "size")
     private Long size;
 
     /**
-     * 备注
+     * memo
      */
     @Column(name = "memo")
     private String memo;
 
     /**
-     * 下载次数
+     * document download counter
      */
     @Column(name = "download_count")
     private Integer downloadCount;
 
     /**
-     * 文档对应md5
+     * the md5 of document for avoiding redundancy
      */
     @Column(name = "md5")
     private String md5;

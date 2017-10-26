@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 文件夹与文件关联关系模型
+ * the model for the relation of folder and its child documents
  *
  * @author zengyongli
  */
@@ -21,7 +21,7 @@ public class FolderDocRelation extends BaseModel {
     public static final String COLUMN_FOLDER_ID = "folderId";
 
     /**
-     * 主键
+     * primary key
      */
     @Id
     @Column(name = "id_bf_folder_file_rel")
@@ -30,16 +30,16 @@ public class FolderDocRelation extends BaseModel {
     private String idBfFolderFileRel;
 
     /**
-     * 文件夹id
+     * folder pk
      */
     @Column(name = "id_bf_folder")
     private String folderId;
 
     /**
-     * 文件id
+     * document pk
      */
-    @Column(name = "id_bf_file")
-    private String fileId;
+    @Column(name = "id_bf_document")
+    private String documentId;
 
 
     public FolderDocRelation() {
@@ -49,10 +49,10 @@ public class FolderDocRelation extends BaseModel {
         super(peopleCode);
     }
 
-    public FolderDocRelation(String peopleCode, String folderId, String fileId) {
+    public FolderDocRelation(String peopleCode, String folderId, String documentId) {
         super(peopleCode);
         this.folderId = folderId;
-        this.fileId = fileId;
+        this.documentId = documentId;
     }
 
     public String getIdBfFolderFileRel() {
@@ -71,12 +71,12 @@ public class FolderDocRelation extends BaseModel {
         this.folderId = folderId;
     }
 
-    public String getFileId() {
-        return fileId;
+    public String getDocumentId() {
+        return documentId;
     }
 
-    public void setFileId(String fileId) {
-        this.fileId = fileId;
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
 }

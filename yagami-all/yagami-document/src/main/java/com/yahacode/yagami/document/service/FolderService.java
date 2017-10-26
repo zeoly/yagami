@@ -1,6 +1,5 @@
 package com.yahacode.yagami.document.service;
 
-import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.model.Document;
@@ -10,85 +9,87 @@ import com.yahacode.yagami.pd.model.People;
 import java.util.List;
 
 /**
- * 文件夹服务接口
+ * folder service
  *
  * @author zengyongli
  */
 public interface FolderService extends BaseService<Folder> {
 
     /**
-     * 获取所有所有文件夹
+     * get the tree structure of all folder
      *
-     * @return 文件夹树结构
+     * @return root folder with all children
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     Folder getAllFolderTree() throws BizfwServiceException;
 
     /**
-     * 获取文件夹下文件
+     * get child folders of target folder
      *
      * @param folder
-     *         文件夹
-     * @return 文件列表
+     *         target folder
+     * @return the list of child folders
      * @throws BizfwServiceException
+     *         framework exception
      */
     List<Document> getDocsOfFolder(Folder folder) throws BizfwServiceException;
 
     /**
-     * 获取文件夹下内容，包含文件夹及文件
+     * get the content of target folder , including documents and child folders
      *
      * @param folder
-     *         文件夹
-     * @return 文档内容
+     *         target folder
+     * @return the folder contain required content
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     Folder getContentOfFolder(Folder folder) throws BizfwServiceException;
 
     /**
-     * 新增文件夹
+     * add new folder
      *
      * @param folder
-     *         文件夹
-     * @return 文件夹主键
+     *         target folder
+     * @return folder pk
      * @throws BizfwServiceException
-     *         业务异常
+     *         if parent folder is not exists
      */
     String addFolder(Folder folder) throws BizfwServiceException;
 
     /**
-     * 修改文件夹
+     * modify folder name
      *
      * @param folder
-     *         文件夹
+     *         target folder
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     void modifyFolder(Folder folder) throws BizfwServiceException;
 
     /**
-     * 删除文件夹
+     * delete folder
      *
      * @param folderId
-     *         文件夹id
+     *         folder pk
      * @param people
-     *         操作人员
+     *         operation people, just for log
      * @throws BizfwServiceException
-     *         业务异常
+     *         if target folder is not exists;
+     *         if folder contains any child folder or document;
      */
     void deleteFolder(String folderId, People people) throws BizfwServiceException;
 
     /**
-     * 在文件夹下新增文件
+     * add a document in folder
      *
      * @param document
-     *         文件
+     *         target document
      * @param folderId
-     *         文件夹id
-     * @return 文件id
+     *         folder pk
+     * @return docoument pk
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     String addDocument(Document document, String folderId) throws BizfwServiceException;
 }

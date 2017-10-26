@@ -6,41 +6,41 @@ import com.yahacode.yagami.document.model.Folder;
 import java.util.List;
 
 /**
- * 文件夹dao接口
+ * the DAO interface of Folder
  *
  * @author zengyongli
  */
 public interface FolderDao extends BaseDao<Folder> {
 
     /**
-     * 获取子文件夹数量
+     * get the count of child folders of the target folder
      *
      * @param folder
-     *         文件夹
-     * @return 子文件夹数量
+     *         target folder
+     * @return the count of child folders
      */
     long getChildFolderCount(Folder folder);
 
     /**
-     * 获取所有文件夹
+     * get all folder in list of the database
      *
-     * @return 文件夹列表
+     * @return the list of folder
      */
     List<Folder> getAllFolder();
 
     /**
-     * 获取根文件夹
+     * get the root folder
      *
-     * @return 根文件夹
+     * @return root folder
      */
     Folder getRootFolder();
 
     /**
-     * 获取子文件夹列表
+     * get list of child folders of the target folder
      *
      * @param folder
-     *         文件夹
-     * @return 子文件夹列表
+     *         target folder
+     * @return list of child folders
      */
     List<Folder> getChildFolderList(Folder folder);
 

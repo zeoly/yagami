@@ -14,7 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 import com.yahacode.yagami.base.BaseModel;
 
 /**
- * 文件夹模型
+ * the model for folder which contain several documents
  *
  * @author zengyongli
  */
@@ -31,7 +31,7 @@ public class Folder extends BaseModel {
     public static final String COLUMN_PARENT_ID = "parentId";
 
     /**
-     * 主键
+     * primary key
      */
     @Id
     @Column(name = "id_bf_folder")
@@ -40,31 +40,25 @@ public class Folder extends BaseModel {
     private String idBfFolder;
 
     /**
-     * 文件夹名
+     * folder name
      */
     @Column(name = "name")
     private String name;
 
     /**
-     * 路径
-     */
-    @Column(name = "path")
-    private String path;
-
-    /**
-     * 父文件夹id
+     * the parent folder's pk
      */
     @Column(name = "parent_id")
     private String parentId;
 
     /**
-     * 子文件夹列表
+     * the child folders
      */
     @Transient
     private List<Folder> childFolderList;
 
     /**
-     * 子文件列表
+     * the child documents
      */
     @Transient
     private List<Document> documentList;
@@ -87,14 +81,6 @@ public class Folder extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
     }
 
     public String getParentId() {

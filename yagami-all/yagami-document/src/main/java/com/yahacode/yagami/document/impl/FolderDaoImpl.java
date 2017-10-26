@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 文件夹dao实现
+ * the implementation of FolderDao
  *
  * @author zengyongli
  */

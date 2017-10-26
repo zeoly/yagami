@@ -4,7 +4,7 @@ import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.document.model.Document;
 
 /**
- * 文件dao接口
+ * the DAO interface of Document
  *
  * @author zengyongli
  */

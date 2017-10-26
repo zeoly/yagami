@@ -1,6 +1,5 @@
 package com.yahacode.yagami.document.impl;
 
-import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
@@ -8,7 +7,6 @@ import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.document.dao.FolderDao;
 import com.yahacode.yagami.document.dao.FolderDocRelDao;
-import com.yahacode.yagami.document.dao.RoleDocumentRelDao;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
 import com.yahacode.yagami.document.model.FolderDocRelation;
@@ -23,35 +21,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 文件夹服务实现类
+ * the implementation of FolderService
  *
  * @author zengyongli
  */
-@Service("folderService")
+@Service
 public class FolderServiceImpl extends BaseServiceImpl<Folder> implements FolderService {
 
-    @Autowired
     private FolderDao folderDao;
 
-    @Autowired
     private FolderDocRelDao folderDocRelDao;
 
-    @Autowired
     private DocumentService documentService;
-
-    @Autowired
-    private RoleDocumentRelDao roleDocumentRelDao;
-
-    @Autowired
-    private RoleService roleService;
 
     @Override
     public Folder getAllFolderTree() throws BizfwServiceException {
         List<Folder> folderList = folderDao.getAllFolder();
         ListUtils.sort(folderList, Folder.COLUMN_NAME);
         Folder rootFolder = folderDao.getRootFolder();
-        Folder folder = convertListToTree(folderList, rootFolder);
-        return folder;
+        return convertListToTree(folderList, rootFolder);
     }
 
     @Override
@@ -60,7 +48,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
                 folder.getIdBfFolder());
         List<Document> documents = new ArrayList<>();
         for (FolderDocRelation relation : relations) {
-            Document document = documentService.queryById(relation.getFileId());
+            Document document = documentService.queryById(relation.getDocumentId());
             documents.add(document);
         }
         return documents;
@@ -79,19 +67,15 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     public String addFolder(Folder folder) throws BizfwServiceException {
         Folder parentFolder = queryById(folder.getParentId());
         checkObjectNotNull(parentFolder, "文件夹[" + folder.getParentId() + "]", "新增文件夹");
-        folder.setPath(parentFolder.getPath() + "/" + folder.getName());
         return save(folder);
     }
 
     @Override
     public void modifyFolder(Folder folder) throws BizfwServiceException {
         Folder dbFolder = queryById(folder.getIdBfFolder());
-        String oldPath = dbFolder.getPath();
-        String newPath = oldPath.replace(dbFolder.getName(), folder.getName());
         dbFolder.setName(folder.getName());
         dbFolder.update(folder.getUpdateBy());
         update(dbFolder);
-        modifyChildPath(dbFolder, oldPath, newPath);
     }
 
     @Override
@@ -112,15 +96,15 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     }
 
     /**
-     * 将文件夹列表转换为文件夹树结构
+     * convert folder list to the tree structure
      *
      * @param list
-     *         文件夹列表
+     *         folder list
      * @param rootFolder
-     *         根文件夹
-     * @return 文件夹树
+     *         the root folder in the folder list
+     * @return root folder with its child folders
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     private Folder convertListToTree(List<Folder> list, Folder rootFolder) throws BizfwServiceException {
         List<Folder> childList = new ArrayList<>();
@@ -134,40 +118,15 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         return rootFolder;
     }
 
-    /**
-     * 修改子文件夹的路径
-     *
-     * @param folder
-     *         文件夹
-     * @param oldPrefix
-     *         修改前文件夹路径
-     * @param newPrefix
-     *         修改后新文件夹路径
-     * @throws BizfwServiceException
-     *         业务异常
-     */
-    private void modifyChildPath(Folder folder, String oldPrefix, String newPrefix) throws BizfwServiceException {
-        String path = folder.getPath();
-        String newPath = path.replace(oldPrefix, newPrefix);
-        if (!path.equals(newPath)) {
-            folder.setPath(newPath);
-            update(folder);
-        }
-        List<Folder> list = folderDao.getChildFolderList(folder);
-        if (ListUtils.isNotEmpty(list)) {
-            for (Folder childFolder : list) {
-                modifyChildPath(childFolder, oldPrefix, newPrefix);
-            }
-        }
-    }
 
     /**
-     * 检查文件夹是否可删除
+     * check whether the folder can delete, will throw exception if not
      *
      * @param folder
-     *         文件夹
+     *         target folder
      * @throws BizfwServiceException
-     *         业务异常
+     *         if contain any child folder;
+     *         if contain any document;
      */
     private void checkCanDeleteFolder(Folder folder) throws BizfwServiceException {
         long childFolderCount = folderDao.getChildFolderCount(folder);
@@ -186,4 +145,18 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         return folderDao;
     }
 
+    @Autowired
+    public void setFolderDao(FolderDao folderDao) {
+        this.folderDao = folderDao;
+    }
+
+    @Autowired
+    public void setFolderDocRelDao(FolderDocRelDao folderDocRelDao) {
+        this.folderDocRelDao = folderDocRelDao;
+    }
+
+    @Autowired
+    public void setDocumentService(DocumentService documentService) {
+        this.documentService = documentService;
+    }
 }
