@@ -101,9 +101,9 @@ public class DepartmentServiceTest extends BaseTest {
 	}
 
 	@Test
-	public void testGetAllParentDeptmentList() throws BizfwServiceException {
+	public void testGetAllParentDeptList() throws BizfwServiceException {
 		Department department = departmentService.queryByCode("1");
-		List<Department> list = departmentService.getAllParentDeptmentList(department.getIdBfDepartment());
+		List<Department> list = departmentService.getAllParentDeptList(department.getIdBfDepartment());
 		assertEquals(list.size(), 1);
 	}
 

@@ -87,7 +87,7 @@ public interface FolderService extends BaseService<Folder> {
      *         target document
      * @param folderId
      *         folder pk
-     * @return docoument pk
+     * @return document pk
      * @throws BizfwServiceException
      *         framework exception
      */

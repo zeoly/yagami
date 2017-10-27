@@ -1,16 +1,13 @@
 package com.yahacode.yagami.document.action;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.consts.ErrorCode;
+import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
-import com.yahacode.yagami.document.model.FolderDocRelation;
-import com.yahacode.yagami.document.service.DocumentService;
+import com.yahacode.yagami.document.service.FolderService;
 import com.yahacode.yagami.document.utils.FileUtils;
+import com.yahacode.yagami.pd.model.People;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,29 +16,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.yahacode.yagami.auth.model.Role;
-import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseAction;
-import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.document.model.Document;
-import com.yahacode.yagami.document.service.FolderService;
-import com.yahacode.yagami.pd.model.People;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/folder")
 public class FolderAction extends BaseAction {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
     private FolderService folderService;
-
-    @Autowired
-    private DocumentService documentService;
 
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
@@ -105,5 +92,10 @@ public class FolderAction extends BaseAction {
             throw new BizfwServiceException(ErrorCode.Doc.File.ACCESS_FAIL_NO_AUTH, e);
         }
         return SUCCESS;
+    }
+
+    @Autowired
+    public void setFolderService(FolderService folderService) {
+        this.folderService = folderService;
     }
 }
