@@ -13,11 +13,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * 框架基础action
+ * framework base Action, recommend to extends this class to build your business Action.
+ * provide session control functions.
  *
  * @author zengyongli
- * @copyright THINKEQUIP
- * @date 2017年3月18日
  */
 public class BaseAction {
 
@@ -26,7 +25,8 @@ public class BaseAction {
     protected static final String SUCCESS = "success";
 
     protected HttpSession getSession() {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes();
         HttpServletRequest httpServletRequest = requestAttributes.getRequest();
         return httpServletRequest.getSession();
     }
@@ -45,8 +45,8 @@ public class BaseAction {
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Date.class,
-                new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"), true));
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"),
+                true));
     }
 
 }

@@ -5,41 +5,47 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+/**
+ * framework base DAO. provide base operations including save, update, delete, list, queryById and so on.
+ *
+ * @param <T>
+ *         model which extends BaseModel
+ */
 public interface BaseDao<T extends BaseModel> {
 
-	public Class<T> getClazz();
+    Class<T> getClazz();
 
-	public Session getSession();
+    Session getSession();
 
-	public List<T> list();
+    List<T> list();
 
-	public List<T> listAndSortAsc(String sortField);
+    List<T> listAndSortAsc(String sortField);
 
-	public List<T> listAndSortDesc(String sortField);
+    List<T> listAndSortDesc(String sortField);
 
-	public String save(T t);
+    String save(T t);
 
-	public void saveOrUpdate(T t);
+    void saveOrUpdate(T t);
 
-	public void delete(String id);
+    void delete(String id);
 
-	public void update(T t);
+    void update(T t);
 
-	public T queryById(String id);
+    T queryById(String id);
 
-	public List<T> queryByFieldAndValue(String field, Object value);
+    List<T> queryByFieldAndValue(String field, Object value);
 
-	public void deleteByFieldAndValue(String field, Object value);
+    void deleteByFieldAndValue(String field, Object value);
 
-	public long getCountByFieldAndValue(String field, Object value);
+    long getCountByFieldAndValue(String field, Object value);
 
-	public T load(String id);
+    T load(String id);
 
-	public T get(String id);
+    T get(String id);
 
-	public String getTableName();
+    String getTableName();
 
-	public Query createQuery(String hql);
+    Query createQuery(String hql);
 
 //	public T redisGet(String id);
 //
