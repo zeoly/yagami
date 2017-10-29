@@ -22,7 +22,7 @@ import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.model.People;
 
 /**
- * 角色服务实现类
+ * role service implementation
  *
  * @author zengyongli
  */
@@ -107,24 +107,24 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     /**
-     * 根据人员删除人员角色关联关系
+     * delete all PeopleRoleRelation of a people
      *
      * @param people
-     *         人员
+     *         entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     private void deletePeopleRoleRelation(People people) throws BizfwServiceException {
         peopleRoleRelDao.deleteByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, people.getIdBfPeople());
     }
 
     /**
-     * 检查角色是否可删除
+     * check if the role can be deleted, will throw an exception if not
      *
      * @param role
-     *         角色
+     *         entity
      * @throws BizfwServiceException
-     *         角色关联人员异常
+     *         if the role has any relation with people
      */
     private void checkCanDeleteRole(Role role) throws BizfwServiceException {
         long peopleCount = countPeopleByRole(role);

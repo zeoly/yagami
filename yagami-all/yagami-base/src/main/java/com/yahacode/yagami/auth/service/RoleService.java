@@ -8,80 +8,81 @@ import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.pd.model.People;
 
 /**
- * 角色服务接口
+ * Role service
  *
  * @author zengyongli
  */
 public interface RoleService extends BaseService<Role> {
 
     /**
-     * 获取所有角色列表
+     * get the list of all role
      *
-     * @return 角色列表
+     * @return list of all role
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     List<Role> getAllRoleList() throws BizfwServiceException;
 
     /**
-     * 添加角色
+     * add a role
      *
      * @param role
-     *         角色
+     *         entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     String addRole(Role role) throws BizfwServiceException;
 
     /**
-     * 修改角色
+     * modify role's name and description
      *
      * @param role
-     *         角色
+     *         entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         if the same role name is exists
      */
     void modify(Role role) throws BizfwServiceException;
 
     /**
-     * 根据id删除角色
+     * delete role by primary key
      *
      * @param roleId
-     *         角色id
+     *         primary key
      * @throws BizfwServiceException
-     *         业务异常
+     *         if the role is not exists;
+     *         if the role has relation with any people;
      */
     void deleteRole(String roleId) throws BizfwServiceException;
 
     /**
-     * 获取人员关联的角色列表
+     * get the role list of a people
      *
      * @param peopleId
-     *         人员id
-     * @return 角色列表
+     *         people pk
+     * @return role list
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     List<Role> getRoleListByPeople(String peopleId) throws BizfwServiceException;
 
     /**
-     * 设置人员关联的角色列表
+     * set the role list of a people, use the roleIdList list.
      *
      * @param people
-     *         人员
+     *         entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         if the role is not exists
      */
     void setRoleOfPeople(People people) throws BizfwServiceException;
 
     /**
-     * 获取角色关联的人员数量
+     * count how many people have the role
      *
      * @param role
-     *         角色
-     * @return 关联数量
+     *         entity
+     * @return the people count
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     long countPeopleByRole(Role role) throws BizfwServiceException;
 
