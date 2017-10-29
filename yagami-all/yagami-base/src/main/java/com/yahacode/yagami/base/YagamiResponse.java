@@ -4,54 +4,66 @@ import java.io.Serializable;
 
 import com.yahacode.yagami.base.common.PropertiesUtils;
 
+/**
+ * framework response body
+ */
 public class YagamiResponse implements Serializable {
 
-	private static final long serialVersionUID = -2100466391754160456L;
+    private static final long serialVersionUID = -2100466391754160456L;
 
-	String code;
+    /**
+     * response code
+     */
+    private String code;
 
-	String msg;
+    /**
+     * response message
+     */
+    private String msg;
 
-	Object data;
+    /**
+     * response body data
+     */
+    private Object data;
 
-	public YagamiResponse() {
-		super();
-	}
+    public YagamiResponse() {
+        super();
+    }
 
-	/**
-	 * constructor for error
-	 * 
-	 * @param code
-	 * @param msg
-	 */
-	public YagamiResponse(String code) {
-		super();
-		this.code = code;
-		this.msg = PropertiesUtils.getErrorMsg(code);
-	}
+    /**
+     * constructor for error response
+     *
+     * @param code
+     *         error code
+     */
+    public YagamiResponse(String code) {
+        super();
+        this.code = code;
+        this.msg = PropertiesUtils.getErrorMsg(code);
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public String getMsg() {
-		return msg;
-	}
+    public String getMsg() {
+        return msg;
+    }
 
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
-	public Object getData() {
-		return data;
-	}
+    public Object getData() {
+        return data;
+    }
 
-	public void setData(Object data) {
-		this.data = data;
-	}
+    public void setData(Object data) {
+        this.data = data;
+    }
 
 }

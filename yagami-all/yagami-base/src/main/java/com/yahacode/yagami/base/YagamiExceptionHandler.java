@@ -11,25 +11,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 
+/**
+ * convert framework business exception to YagamiResponse
+ *
+ * @author zengyongli
+ */
 @ControllerAdvice
 public class YagamiExceptionHandler {
 
-	Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
-	@ExceptionHandler(value = Exception.class)
-	@ResponseBody
-	public YagamiResponse jsonErrorHandler(HttpServletRequest req, Exception e) throws Exception {
-		YagamiResponse response = new YagamiResponse();
-		if (e instanceof BizfwServiceException) {
-			BizfwServiceException serviceException = (BizfwServiceException) e;
-			response.setCode(serviceException.getErrorCode());
-			response.setMsg(serviceException.getErrorMsg());
-		} else {
-			logger.error("none biz error", e);
-			response.setCode(ErrorCode.DEFAULT_ERROR);
-			response.setMsg(PropertiesUtils.getErrorMsg(ErrorCode.DEFAULT_ERROR));
-		}
-		return response;
-	}
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public YagamiResponse jsonErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+        YagamiResponse response = new YagamiResponse();
+        if (e instanceof BizfwServiceException) {
+            BizfwServiceException serviceException = (BizfwServiceException) e;
+            response.setCode(serviceException.getErrorCode());
+            response.setMsg(serviceException.getErrorMsg());
+        } else {
+            logger.error("none biz error", e);
+            response.setCode(ErrorCode.DEFAULT_ERROR);
+            response.setMsg(PropertiesUtils.getErrorMsg(ErrorCode.DEFAULT_ERROR));
+        }
+        return response;
+    }
 
 }
