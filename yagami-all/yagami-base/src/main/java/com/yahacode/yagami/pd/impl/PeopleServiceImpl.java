@@ -24,7 +24,7 @@ import com.yahacode.yagami.pd.service.DepartmentService;
 import com.yahacode.yagami.pd.service.PeopleService;
 
 /**
- * 人员服务实现类
+ * PeopleService implementation
  *
  * @author zengyongli
  */

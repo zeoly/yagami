@@ -23,7 +23,7 @@ import com.yahacode.yagami.pd.service.DepartmentService;
 import com.yahacode.yagami.pd.service.PeopleService;
 
 /**
- * 机构服务实现类
+ * DepartmentService implementation
  *
  * @author zengyongli
  */
@@ -71,12 +71,6 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     }
 
     @Override
-    public void deleteUpperDepartmentRelation(Department department) throws BizfwServiceException {
-        departmentRelationDao.deleteByFieldAndValue(DepartmentRelation.COLUMN_CHILD_DEPARTMENT_ID, department
-                .getIdBfDepartment());
-    }
-
-    @Override
     public Department queryByCode(String code) throws BizfwServiceException {
         List<Department> list = queryByFieldAndValue(Department.COLUMN_CODE, code);
         if (ListUtils.isEmpty(list)) {
@@ -94,30 +88,6 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     @Override
     public List<Department> getChildDepartmentList(String departmentId) throws BizfwServiceException {
         return departmentDao.queryByFieldAndValue(Department.COLUMN_PARENT_DEPT_ID, departmentId);
-    }
-
-    @Override
-    public List<Department> getAllParentDeptList(String departmentId) throws BizfwServiceException {
-        List<Department> deptList = new ArrayList<>();
-        List<DepartmentRelation> relationList = departmentRelationDao.queryByFieldAndValue(DepartmentRelation
-                .COLUMN_CHILD_DEPARTMENT_ID, departmentId);
-        for (DepartmentRelation relation : relationList) {
-            Department parentDepartment = queryById(relation.getParentDepartmentId());
-            deptList.add(parentDepartment);
-        }
-        return deptList;
-    }
-
-    @Override
-    public List<Department> getAllChildDeptmentList(String deparmentId) throws BizfwServiceException {
-        List<Department> deptList = new ArrayList<>();
-        List<DepartmentRelation> relationList = departmentRelationDao.queryByFieldAndValue(DepartmentRelation
-                .COLUMN_PARENT_DEPARTMENT_ID, deparmentId);
-        for (DepartmentRelation relation : relationList) {
-            Department childDepartment = queryById(relation.getChildDepartmentId());
-            deptList.add(childDepartment);
-        }
-        return deptList;
     }
 
     @Override
@@ -187,6 +157,40 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
             logger.error("{}删除机构{}操作失败，存在人员", department.getUpdateBy(), department.getCode());
             throw new BizfwServiceException(ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_PEOPLE);
         }
+    }
+
+    /**
+     * delete the relation with upper departement
+     *
+     * @param department
+     *         target department
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    private void deleteUpperDepartmentRelation(Department department) throws BizfwServiceException {
+        departmentRelationDao.deleteByFieldAndValue(DepartmentRelation.COLUMN_CHILD_DEPARTMENT_ID, department
+                .getIdBfDepartment());
+    }
+
+
+    /**
+     * get the list of all parent departments
+     *
+     * @param departmentId
+     *         primary key
+     * @return the list of all parent departments
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    private List<Department> getAllParentDeptList(String departmentId) throws BizfwServiceException {
+        List<Department> deptList = new ArrayList<>();
+        List<DepartmentRelation> relationList = departmentRelationDao.queryByFieldAndValue(DepartmentRelation
+                .COLUMN_CHILD_DEPARTMENT_ID, departmentId);
+        for (DepartmentRelation relation : relationList) {
+            Department parentDepartment = queryById(relation.getParentDepartmentId());
+            deptList.add(parentDepartment);
+        }
+        return deptList;
     }
 
     @Override

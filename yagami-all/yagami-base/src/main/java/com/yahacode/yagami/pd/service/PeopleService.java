@@ -8,97 +8,98 @@ import com.yahacode.yagami.pd.model.Department;
 import com.yahacode.yagami.pd.model.People;
 
 /**
- * 人员服务接口
+ * people service
  *
  * @author zengyongli
  */
 public interface PeopleService extends BaseService<People> {
 
     /**
-     * 新增人员
+     * add a new people
      *
      * @param people
-     *         人员模型
-     * @return 主键
+     *         entity
+     * @return pk
      * @throws BizfwServiceException
-     *         业务异常
+     *         if the same name people is exists;
+     *         if the people's department is not exists;
      */
     String addPeople(People people) throws BizfwServiceException;
 
     /**
-     * 修改人员信息
+     * modify people's roles
      *
      * @param people
-     *         人员模型
+     *         entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     void modifyPeople(People people) throws BizfwServiceException;
 
     /**
-     * 根据id删除人员记录
+     * delete people by pk
      *
      * @param people
-     *         人员信息
+     *         entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         if the target people is the operator
      */
     void deletePeople(People people) throws BizfwServiceException;
 
     /**
-     * 根据人员代码获取人员信息
+     * get people by code
      *
      * @param code
-     *         人员代码
-     * @return 人员信息
+     *         people code
+     * @return entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     People getByCode(String code) throws BizfwServiceException;
 
     /**
-     * 获取机构下人员数量
+     * count how many people in a department
      *
      * @param department
-     *         机构
-     * @return 人员数量
+     *         target department
+     * @return the people count
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     long getPeopleCountByDepartment(Department department) throws BizfwServiceException;
 
     /**
-     * 获取机构下人员列表
+     * get the people list in a department
      *
      * @param departmentId
-     *         机构id
-     * @return 人员信息列表
+     *         target department pk
+     * @return the list of people
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     List<People> getPeopleListByDepartment(String departmentId) throws BizfwServiceException;
 
     /**
-     * 解锁状态为“锁定”的用户
+     * unlock a people's account
      *
      * @param people
-     *         人员信息
+     *         entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         if the status of people is not locked
      */
     void unlock(People people) throws BizfwServiceException;
 
     /**
-     * 修改用户密码
+     * modify people's login password
      *
      * @param people
-     *         人员信息
+     *         target people
      * @param oldPwd
-     *         旧密码
+     *         old password
      * @param newPwd
-     *         新密码
+     *         new password
      * @throws BizfwServiceException
-     *         业务异常
+     *         if the old password is not correct
      */
     void modifyPassword(People people, String oldPwd, String newPwd) throws BizfwServiceException;
 }

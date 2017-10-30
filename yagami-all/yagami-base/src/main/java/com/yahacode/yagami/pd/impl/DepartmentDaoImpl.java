@@ -7,7 +7,7 @@ import com.yahacode.yagami.pd.dao.DepartmentDao;
 import com.yahacode.yagami.pd.model.Department;
 
 /**
- * 机构信息dao实现类
+ * DepartmentDao implementation
  *
  * @author zengyongli
  */

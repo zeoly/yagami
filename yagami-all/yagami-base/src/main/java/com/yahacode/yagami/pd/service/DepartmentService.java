@@ -7,137 +7,106 @@ import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.pd.model.Department;
 
 /**
- * 机构服务接口
+ * department service
  *
  * @author zengyongli
  */
 public interface DepartmentService extends BaseService<Department> {
 
     /**
-     * 增加机构
+     * add a new department
      *
      * @param department
-     *         机构
+     *         entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     void addDepartment(Department department) throws BizfwServiceException;
 
     /**
-     * 修改机构，更新机构名、机构代码
+     * modify department's name and code
      *
      * @param department
-     *         机构
+     *         target department
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     void modifyDepartment(Department department) throws BizfwServiceException;
 
     /**
-     * 删除机构（根据id）
+     * delete department by pk
      *
      * @param department
-     *         机构
+     *         target department
      * @throws BizfwServiceException
-     *         业务异常
+     *         if the department is not exists;
+     *         if the department contain any child department or people;
      */
     void deleteDepartment(Department department) throws BizfwServiceException;
 
     /**
-     * 删除所有上级机构关联关系
-     *
-     * @param department
-     *         机构
-     * @throws BizfwServiceException
-     *         业务异常
-     */
-    void deleteUpperDepartmentRelation(Department department) throws BizfwServiceException;
-
-    /**
-     * 根据机构代码获取机构信息
+     * get department by code
      *
      * @param code
-     *         机构代码
-     * @return 机构
+     *         department code
+     * @return entity
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     Department queryByCode(String code) throws BizfwServiceException;
 
     /**
-     * 判断是否机构下存在子机构
+     * if department has any child department
      *
      * @param department
-     *         机构
+     *         target department
      * @return boolean
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     boolean hasChildDepartment(Department department) throws BizfwServiceException;
 
     /**
-     * 判断机构下是否存在人员
+     * if department contain any people
      *
      * @param department
-     *         机构
+     *         target department
      * @return boolean
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     boolean hasPeople(Department department) throws BizfwServiceException;
 
     /**
-     * 获取父机构
+     * get the parent department
      *
      * @param department
-     *         机构
-     * @return 父机构
+     *         target department
+     * @return parent department
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     Department getParentDepartment(Department department) throws BizfwServiceException;
 
     /**
-     * 获取子机构列表
+     * get the child department list
      *
      * @param departmentId
-     *         机构id
-     * @return 子机构列表
+     *         department pk
+     * @return list of child departments
      * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     List<Department> getChildDepartmentList(String departmentId) throws BizfwServiceException;
 
     /**
-     * 获取所有上级机构信息（包含跨级）
+     * get the tree structure of target department and its child departments
      *
      * @param departmentId
-     *         机构id
-     * @return 父机构列表
+     *         primary key
+     * @return target department of tree structure
      * @throws BizfwServiceException
-     *         业务异常
-     */
-    List<Department> getAllParentDeptList(String departmentId) throws BizfwServiceException;
-
-    /**
-     * 获取所有子机构列表（包含跨级）
-     *
-     * @param deparmentId
-     *         机构id
-     * @return 子机构列表
-     * @throws BizfwServiceException
-     *         业务异常
-     */
-    List<Department> getAllChildDeptmentList(String deparmentId) throws BizfwServiceException;
-
-    /**
-     * 获取当前机构下的机构树
-     *
-     * @param departmentId
-     *         机构id
-     * @return 机构树
-     * @throws BizfwServiceException
-     *         业务异常
+     *         framework exception
      */
     Department getDepartmentTreeByDepartmentId(String departmentId) throws BizfwServiceException;
 

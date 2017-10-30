@@ -14,104 +14,114 @@ import org.hibernate.annotations.GenericGenerator;
 import com.yahacode.yagami.base.BaseModel;
 
 /**
- * 机构模型
- * 
- * @copyright THINKEQUIP
+ * model of department
+ *
  * @author zengyongli
- * @date 2017年3月18日
  */
 @Entity
 @Table(name = "bf_department")
 public class Department extends BaseModel {
 
-	private static final long serialVersionUID = -8679405946033789045L;
+    private static final long serialVersionUID = -8679405946033789045L;
 
-	public static final String COLUMN_CODE = "code";
+    public static final String COLUMN_CODE = "code";
 
-	public static final String COLUMN_PARENT_DEPT_ID = "parentDepartmentId";
+    public static final String COLUMN_PARENT_DEPT_ID = "parentDepartmentId";
 
-	public static final int LEVEL_ROOT = 0;
+    public static final int LEVEL_ROOT = 0;
 
-	/** 主键 */
-	@Id
-	@Column(name = "id_bf_department")
-	@GenericGenerator(name = "uuid", strategy = "uuid")
-	@GeneratedValue(generator = "uuid")
-	private String idBfDepartment;
+    /**
+     * primary key
+     */
+    @Id
+    @Column(name = "id_bf_department")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GeneratedValue(generator = "uuid")
+    private String idBfDepartment;
 
-	/** 机构码 */
-	@Column(name = "code")
-	private String code;
+    /**
+     * department code
+     */
+    @Column(name = "code")
+    private String code;
 
-	/** 机构名称 */
-	@Column(name = "name")
-	private String name;
+    /**
+     * department name, recommend in Chinese
+     */
+    @Column(name = "name")
+    private String name;
 
-	/** 机构等级 */
-	@Column(name = "level")
-	private Integer level;
+    /**
+     * department level, the level of root department is 0, the offspring's level increase 1
+     */
+    @Column(name = "level")
+    private Integer level;
 
-	/** 父机构id */
-	@Column(name = "parent_dept_id")
-	private String parentDepartmentId;
+    /**
+     * parent department pk
+     */
+    @Column(name = "parent_dept_id")
+    private String parentDepartmentId;
 
-	/** 自机构列表 */
-	@Transient
-	private List<Department> childDepartmentList;
+    /**
+     * list of child department
+     */
+    @Transient
+    private List<Department> childDepartmentList;
 
-	public Department() {
-		super();
-	}
+    public Department() {
+        super();
+    }
 
-	public Department(String peopleCode) {
-		super(peopleCode);
-	}
+    public Department(String peopleCode) {
+        super(peopleCode);
+    }
 
-	public String getIdBfDepartment() {
-		return idBfDepartment;
-	}
+    public String getIdBfDepartment() {
+        return idBfDepartment;
+    }
 
-	public void setIdBfDepartment(String idBfDepartment) {
-		this.idBfDepartment = idBfDepartment;
-	}
+    public void setIdBfDepartment(String idBfDepartment) {
+        this.idBfDepartment = idBfDepartment;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Integer getLevel() {
-		return level;
-	}
+    public Integer getLevel() {
+        return level;
+    }
 
-	public void setLevel(Integer level) {
-		this.level = level;
-	}
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 
-	public String getParentDepartmentId() {
-		return parentDepartmentId;
-	}
+    public String getParentDepartmentId() {
+        return parentDepartmentId;
+    }
 
-	public void setParentDepartmentId(String parentDepartmentId) {
-		this.parentDepartmentId = parentDepartmentId;
-	}
+    public void setParentDepartmentId(String parentDepartmentId) {
+        this.parentDepartmentId = parentDepartmentId;
+    }
 
-	public List<Department> getChildDepartmentList() {
-		return childDepartmentList;
-	}
+    public List<Department> getChildDepartmentList() {
+        return childDepartmentList;
+    }
 
-	public void setChildDepartmentList(List<Department> childDepartmentList) {
-		this.childDepartmentList = childDepartmentList;
-	}
+    public void setChildDepartmentList(List<Department> childDepartmentList) {
+        this.childDepartmentList = childDepartmentList;
+    }
 }

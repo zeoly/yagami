@@ -7,7 +7,7 @@ import com.yahacode.yagami.pd.dao.PeopleDao;
 import com.yahacode.yagami.pd.model.People;
 
 /**
- * 人员信息dao实现类
+ * PeopleDao implementation
  *
  * @author zengyongli
  */
