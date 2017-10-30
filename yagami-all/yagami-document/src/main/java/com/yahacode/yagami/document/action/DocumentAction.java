@@ -6,6 +6,8 @@ import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.utils.FileUtils;
 import com.yahacode.yagami.pd.model.People;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,8 @@ public class DocumentAction extends BaseAction {
 
     private DocumentService documentService;
 
+    @ApiOperation(value = "修改文件")
+    @ApiImplicitParam(name = "document", value = "文件", required = true, dataTypeClass = Document.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.PATCH)
     public void modifyDocument(@RequestBody Document document) throws BizfwServiceException {
@@ -40,15 +44,8 @@ public class DocumentAction extends BaseAction {
         documentService.modifyDocument(document);
     }
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{documentId}")
-    public void deleteDocument(@PathVariable("documentId") String documentId) throws BizfwServiceException {
-        People people = getLoginPeople();
-        Document document = documentService.queryById(documentId);
-        document.update(people.getCode());
-        documentService.deleteDocument(document);
-    }
-
+    @ApiOperation(value = "下载文件")
+    @ApiImplicitParam(name = "documentId", value = "主键", required = true, dataTypeClass = String.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/{documentId}")
     public void downloadDocument(HttpServletRequest request, HttpServletResponse response, @PathVariable

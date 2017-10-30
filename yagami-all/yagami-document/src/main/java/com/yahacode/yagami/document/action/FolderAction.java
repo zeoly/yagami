@@ -8,6 +8,9 @@ import com.yahacode.yagami.document.model.Folder;
 import com.yahacode.yagami.document.service.FolderService;
 import com.yahacode.yagami.document.utils.FileUtils;
 import com.yahacode.yagami.pd.model.People;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class FolderAction extends BaseAction {
 
     private FolderService folderService;
 
+    @ApiOperation(value = "新增文件夹")
+    @ApiImplicitParam(name = "folder", value = "文件夹模型", required = true, dataTypeClass = Folder.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST)
     public void addFolder(@RequestBody Folder folder) throws BizfwServiceException {
@@ -38,6 +43,8 @@ public class FolderAction extends BaseAction {
         folderService.addFolder(folder);
     }
 
+    @ApiOperation(value = "更新文件夹")
+    @ApiImplicitParam(name = "folder", value = "文件夹模型", required = true, dataTypeClass = Folder.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.PATCH)
     public void modifyFolder(@RequestBody Folder folder) throws BizfwServiceException {
@@ -46,6 +53,8 @@ public class FolderAction extends BaseAction {
         folderService.modifyFolder(folder);
     }
 
+    @ApiOperation(value = "删除文件夹")
+    @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.DELETE, value = "/{folderId}")
     public void deleteFolder(@PathVariable("folderId") String folderId) throws BizfwServiceException {
@@ -53,12 +62,15 @@ public class FolderAction extends BaseAction {
         folderService.deleteFolder(folderId, people);
     }
 
+    @ApiOperation(value = "获取所有文件夹树结构")
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET)
     public Folder getAllFolderTree() throws BizfwServiceException {
         return folderService.getAllFolderTree();
     }
 
+    @ApiOperation(value = "获取文件夹下内容")
+    @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "folderId}")
     public Folder getContentOfFolder(@PathVariable("folderId") String folderId) throws BizfwServiceException {
@@ -68,6 +80,10 @@ public class FolderAction extends BaseAction {
         return folderService.getContentOfFolder(folder);
     }
 
+    @ApiOperation(value = "在文件夹下新增文件")
+    @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "文件", required = true, dataTypeClass = MultipartFile
+            .class), @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String
+            .class)})
     @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/{folderId}/document")
     public String addDocument(@RequestBody MultipartFile file, @PathVariable("folderId") String folderId) throws

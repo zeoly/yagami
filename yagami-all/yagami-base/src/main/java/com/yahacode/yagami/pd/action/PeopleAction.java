@@ -1,9 +1,14 @@
 package com.yahacode.yagami.pd.action;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.yahacode.yagami.auth.model.Role;
+import com.yahacode.yagami.auth.service.RoleService;
+import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.service.PeopleService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,31 +17,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yahacode.yagami.auth.model.Role;
-import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseAction;
-import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.pd.model.People;
-import com.yahacode.yagami.pd.service.PeopleService;
-
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
 
 /**
- * 人员管理action
+ * people action
  *
  * @author zengyongli
- * @date 2016年3月18日
  */
 @Controller
 @RequestMapping("/people")
 public class PeopleAction extends BaseAction {
 
-    @Autowired
     private PeopleService peopleService;
 
-    @Autowired
     private RoleService roleService;
 
     @ApiOperation(value = "新增人员信息")
@@ -97,9 +90,17 @@ public class PeopleAction extends BaseAction {
     @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/role")
-    public List<Role> getRoleOfPeople(HttpServletRequest request, @PathVariable("id") String peopleId) throws
-            BizfwServiceException {
-        List<Role> roleList = roleService.getRoleListByPeople(peopleId);
-        return roleList;
+    public List<Role> getRoleOfPeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
+        return roleService.getRoleListByPeople(peopleId);
+    }
+
+    @Autowired
+    public void setPeopleService(PeopleService peopleService) {
+        this.peopleService = peopleService;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 }

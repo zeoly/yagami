@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * department action
+ *
+ * @author zengyongli
+ */
 @Controller
 @RequestMapping("/department")
 public class DepartmentAction extends BaseAction {
