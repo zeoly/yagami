@@ -33,4 +33,9 @@ public class RoleFolderAuthorityDaoImpl extends BaseDaoImpl<RoleFolderAuthority>
         return null;
     }
 
+    @Override
+    public void deleteByFolder(String folderId) {
+        deleteByFieldAndValue(RoleFolderAuthority.COLUMN_FOLDER_ID, folderId);
+    }
+
 }

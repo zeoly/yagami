@@ -4,6 +4,7 @@ import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
+import com.yahacode.yagami.document.model.RoleFolderAuthority;
 import com.yahacode.yagami.pd.model.People;
 
 import java.util.List;
@@ -92,4 +93,27 @@ public interface FolderService extends BaseService<Folder> {
      *         framework exception
      */
     String addDocument(Document document, String folderId) throws BizfwServiceException;
+
+    /**
+     * set the role authority of a folder
+     *
+     * @param folder
+     *         target folder
+     * @param roleIdList
+     *         the role pk list
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    void setFolderAuthority(Folder folder, List<String> roleIdList) throws BizfwServiceException;
+
+    /**
+     * get the role authority of a folder
+     *
+     * @param folderId
+     *         target folder pk
+     * @return the list of authority
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    List<RoleFolderAuthority> getFolderAuthority(String folderId) throws BizfwServiceException;
 }

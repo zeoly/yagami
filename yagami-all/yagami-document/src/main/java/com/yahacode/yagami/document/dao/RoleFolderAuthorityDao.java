@@ -20,4 +20,12 @@ public interface RoleFolderAuthorityDao extends BaseDao<RoleFolderAuthority> {
      * @return authority entity
      */
     RoleFolderAuthority getAuthority(String roleId, String documentId);
+
+    /**
+     * delete the relation by folder pk
+     *
+     * @param folderId
+     *         target folder pk
+     */
+    void deleteByFolder(String folderId);
 }

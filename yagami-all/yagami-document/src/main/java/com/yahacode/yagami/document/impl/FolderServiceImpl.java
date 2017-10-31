@@ -7,9 +7,11 @@ import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.document.dao.FolderDao;
 import com.yahacode.yagami.document.dao.FolderDocRelDao;
+import com.yahacode.yagami.document.dao.RoleFolderAuthorityDao;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
 import com.yahacode.yagami.document.model.FolderDocRelation;
+import com.yahacode.yagami.document.model.RoleFolderAuthority;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.service.FolderService;
 import com.yahacode.yagami.pd.model.People;
@@ -33,6 +35,8 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     private FolderDocRelDao folderDocRelDao;
 
     private DocumentService documentService;
+
+    private RoleFolderAuthorityDao roleFolderAuthorityDao;
 
     @Override
     public Folder getAllFolderTree() throws BizfwServiceException {
@@ -93,6 +97,22 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         FolderDocRelation relation = new FolderDocRelation(document.getUpdateBy(), folderId, documentId);
         folderDocRelDao.save(relation);
         return documentId;
+    }
+
+    @Transactional
+    @Override
+    public void setFolderAuthority(Folder folder, List<String> roleIdList) throws BizfwServiceException {
+        roleFolderAuthorityDao.deleteByFolder(folder.getIdBfFolder());
+        for (String roleId : roleIdList) {
+            RoleFolderAuthority roleFolderAuthority = new RoleFolderAuthority(folder.getUpdateBy(), roleId, folder
+                    .getIdBfFolder());
+            roleFolderAuthorityDao.save(roleFolderAuthority);
+        }
+    }
+
+    @Override
+    public List<RoleFolderAuthority> getFolderAuthority(String folderId) throws BizfwServiceException {
+        return roleFolderAuthorityDao.queryByFieldAndValue(RoleFolderAuthority.COLUMN_FOLDER_ID, folderId);
     }
 
     /**
@@ -158,5 +178,10 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     @Autowired
     public void setDocumentService(DocumentService documentService) {
         this.documentService = documentService;
+    }
+
+    @Autowired
+    public void setRoleFolderAuthorityDao(RoleFolderAuthorityDao roleFolderAuthorityDao) {
+        this.roleFolderAuthorityDao = roleFolderAuthorityDao;
     }
 }
