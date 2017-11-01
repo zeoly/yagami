@@ -1,6 +1,5 @@
 package com.yahacode.yagami.document.impl;
 
-import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.impl.BaseDaoImpl;
 import com.yahacode.yagami.document.dao.FolderDao;
