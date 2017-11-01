@@ -1,8 +1,11 @@
 package com.yahacode.yagami.document.impl;
 
+import com.yahacode.yagami.auth.model.Role;
+import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
+import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.document.dao.FolderDao;
@@ -37,6 +40,8 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     private DocumentService documentService;
 
     private RoleFolderAuthorityDao roleFolderAuthorityDao;
+
+    private RoleService roleService;
 
     @Override
     public Folder getAllFolderTree() throws BizfwServiceException {
@@ -115,6 +120,15 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         return roleFolderAuthorityDao.queryByFieldAndValue(RoleFolderAuthority.COLUMN_FOLDER_ID, folderId);
     }
 
+    @Override
+    public Folder getAuthorizedFolderTree(People people) throws BizfwServiceException {
+        List<Folder> folders = getAuthorizedFolderList(people.getIdBfPeople());
+        replenishAuthFolderList(folders);
+        ListUtils.sort(folders, Folder.COLUMN_NAME);
+        Folder rootFolder = folderDao.getRootFolder();
+        return convertListToTree(folders, rootFolder);
+    }
+
     /**
      * convert folder list to the tree structure
      *
@@ -160,6 +174,69 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         }
     }
 
+    /**
+     * get authorized folder list of people
+     *
+     * @param peopleId
+     *         people pk
+     * @return authorized folder list
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    private List<Folder> getAuthorizedFolderList(String peopleId) throws BizfwServiceException {
+        List<Folder> authorizedFolders = new ArrayList<>();
+        List<Role> roles = roleService.getRoleListByPeople(peopleId);
+        for (Role role : roles) {
+            List<Folder> folders = folderDao.getAuthorizedFolderByRole(role.getIdBfRole());
+            for (Folder folder : folders) {
+                if (!authorizedFolders.contains(folder)) {
+                    authorizedFolders.add(folder);
+                }
+            }
+        }
+        return authorizedFolders;
+    }
+
+    /**
+     * replenish the auth folder list with their parent folder which not authorized
+     *
+     * @param authFolderList
+     *         the list of authorized folder
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    private void replenishAuthFolderList(List<Folder> authFolderList) throws BizfwServiceException {
+        List<Folder> parentFolderList = new ArrayList<>();
+        for (Folder folder : authFolderList) {
+            List<Folder> tempParentFolderList = getParentFolders(folder);
+            parentFolderList.addAll(tempParentFolderList);
+        }
+        for (Folder folder : parentFolderList) {
+            if (!authFolderList.contains(folder)) {
+                authFolderList.add(folder);
+            }
+        }
+    }
+
+    /**
+     * get the parent folders, including cross level
+     *
+     * @param childFolder
+     *         target folder
+     * @return parent folder list
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    private List<Folder> getParentFolders(Folder childFolder) throws BizfwServiceException {
+        List<Folder> parentFolderList = new ArrayList<>();
+        while (StringUtils.isNotEmpty(childFolder.getParentId())) {
+            Folder parentFolder = queryById(childFolder.getParentId());
+            parentFolderList.add(parentFolder);
+            childFolder = parentFolder;
+        }
+        return parentFolderList;
+    }
+
     @Override
     public BaseDao<Folder> getBaseDao() {
         return folderDao;
@@ -183,5 +260,10 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     @Autowired
     public void setRoleFolderAuthorityDao(RoleFolderAuthorityDao roleFolderAuthorityDao) {
         this.roleFolderAuthorityDao = roleFolderAuthorityDao;
+    }
+
+    @Autowired
+    public void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
     }
 }

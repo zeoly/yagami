@@ -30,7 +30,7 @@ public class PeopleRoleRelation extends BaseModel {
      */
     @Id
     @Column(name = "id_bf_people_role_rel")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     private String idBfPeopleRoleRel;
 

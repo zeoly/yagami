@@ -31,7 +31,7 @@ public class Document extends BaseModel {
      */
     @Id
     @Column(name = "id_bf_document")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     private String idBfDocument;
 
@@ -76,6 +76,9 @@ public class Document extends BaseModel {
      */
     @Column(name = "md5")
     private String md5;
+
+    public Document() {
+    }
 
     public Document(String peopleCode) {
         super(peopleCode);

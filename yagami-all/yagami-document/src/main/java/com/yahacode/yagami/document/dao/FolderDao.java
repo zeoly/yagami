@@ -44,4 +44,12 @@ public interface FolderDao extends BaseDao<Folder> {
      */
     List<Folder> getChildFolderList(Folder folder);
 
+    /**
+     * get folder list of authorized of a role
+     *
+     * @param roleId
+     *         target role pk
+     * @return authorized folder list
+     */
+    List<Folder> getAuthorizedFolderByRole(String roleId);
 }

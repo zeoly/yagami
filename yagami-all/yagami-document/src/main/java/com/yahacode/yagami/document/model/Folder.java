@@ -26,6 +26,8 @@ public class Folder extends BaseModel {
 
     public static final String ROOT_NAME = "root";
 
+    public static final String COLUMN_ID = "idBfFolder";
+
     public static final String COLUMN_NAME = "name";
 
     public static final String COLUMN_PARENT_ID = "parentId";
@@ -35,7 +37,7 @@ public class Folder extends BaseModel {
      */
     @Id
     @Column(name = "id_bf_folder")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     private String idBfFolder;
 
@@ -62,6 +64,9 @@ public class Folder extends BaseModel {
      */
     @Transient
     private List<Document> documentList;
+
+    public Folder() {
+    }
 
     public Folder(String peopleCode) {
         super(peopleCode);

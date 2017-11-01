@@ -32,7 +32,7 @@ public class RoleFolderAuthority extends BaseModel {
      */
     @Id
     @Column(name = "id_bf_role_folder_auth")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     private String idBfRoleFolderAuth;
 

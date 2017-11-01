@@ -23,7 +23,7 @@ public class DocumentGroup extends BaseModel {
      */
     @Id
     @Column(name = "id_bf_doc_group")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     private String idBfDocumentGroup;
 

@@ -116,4 +116,15 @@ public interface FolderService extends BaseService<Folder> {
      *         framework exception
      */
     List<RoleFolderAuthority> getFolderAuthority(String folderId) throws BizfwServiceException;
+
+    /**
+     * get the authorized folders of people
+     *
+     * @param people
+     *         target people
+     * @return authorized folders with tree structure
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    Folder getAuthorizedFolderTree(People people) throws BizfwServiceException;
 }

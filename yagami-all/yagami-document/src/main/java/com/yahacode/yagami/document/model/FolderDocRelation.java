@@ -25,7 +25,7 @@ public class FolderDocRelation extends BaseModel {
      */
     @Id
     @Column(name = "id_bf_folder_file_rel")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     private String idBfFolderFileRel;
 
