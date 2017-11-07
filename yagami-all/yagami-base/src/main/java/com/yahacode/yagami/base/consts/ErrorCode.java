@@ -1,11 +1,9 @@
 package com.yahacode.yagami.base.consts;
 
 /**
- * 异常码常量定义
+ * error code with service exception
  *
  * @author zengyongli
- * @copyright THINKEQUIP
- * @date 2017年3月18日
  */
 public class ErrorCode {
 
@@ -26,35 +24,34 @@ public class ErrorCode {
     /**
      * 机构人员模块前缀
      */
-    public static final String PO_PREFIX = "01";
+    private static final String PO_PREFIX = "01";
 
     /**
      * 权限模块前缀
      */
-    public static final String AUTH_PREFIX = "02";
+    private static final String AUTH_PREFIX = "02";
 
     /**
      * 文档模块前缀
      */
-    public static final String DOC_PREFIX = "03";
+    private static final String DOC_PREFIX = "03";
 
     /**
      * 机构人员模块
      *
      * @author zengyongli
-     * @date 2016年11月10日
      */
     public class PeopleDept {
 
         /**
          * 人员模块前缀
          */
-        public static final String PEOPLE_PREFIX = PO_PREFIX + "00";
+        private static final String PEOPLE_PREFIX = PO_PREFIX + "00";
 
         /**
          * 机构模块前缀
          */
-        public static final String DEPT_PREFIX = PO_PREFIX + "01";
+        private static final String DEPT_PREFIX = PO_PREFIX + "01";
 
         /**
          * 人员模块
@@ -118,25 +115,23 @@ public class ErrorCode {
      * 权限模块
      *
      * @author zengyongli
-     * @date 2016年11月12日
      */
     public class Auth {
 
         /**
          * 菜单模块前缀
          */
-        public static final String MENU_PREFIX = AUTH_PREFIX + "00";
+        private static final String MENU_PREFIX = AUTH_PREFIX + "00";
 
         /**
          * 角色模块前缀
          */
-        public static final String ROLE_PREFIX = AUTH_PREFIX + "01";
+        private static final String ROLE_PREFIX = AUTH_PREFIX + "01";
 
         /**
          * 菜单模块
          *
          * @author zengyongli
-         * @date 2016年11月13日
          */
         public class Menu {
 
@@ -155,7 +150,6 @@ public class ErrorCode {
          * 角色模块
          *
          * @author zengyongli
-         * @date 2016年11月13日
          */
         public class Role {
 
@@ -185,25 +179,23 @@ public class ErrorCode {
      * 文档模块
      *
      * @author zengyongli
-     * @date 2016年12月12日
      */
     public class Doc {
 
         /**
          * 文件夹模块前缀
          */
-        public static final String FOLDER_PREFIX = DOC_PREFIX + "00";
+        private static final String FOLDER_PREFIX = DOC_PREFIX + "00";
 
         /**
          * 文件模块前缀
          */
-        public static final String FILE_PREFIX = DOC_PREFIX + "01";
+        private static final String FILE_PREFIX = DOC_PREFIX + "01";
 
         /**
          * 文件夹模块
          *
          * @author zengyongli
-         * @date 2016年12月12日
          */
         public class Folder {
 
@@ -224,6 +216,11 @@ public class ErrorCode {
              * 无权访问文件夹下内容
              */
             public static final String ACCESS_FAIL_NO_AUTH = FILE_PREFIX + "00";
+
+            /**
+             * 保存文件失败
+             */
+            public static final String SAVE_FILE_ERROR = FILE_PREFIX + "01";
         }
 
     }

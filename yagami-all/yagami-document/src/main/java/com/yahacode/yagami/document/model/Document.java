@@ -26,6 +26,10 @@ public class Document extends BaseModel {
 
     public static final String COLUMN_REVISION = "revision";
 
+    public static final String STATUS_DELETED = "0";
+
+    public static final String STATUS_NORMAL = "1";
+
     /**
      * primary key
      */
@@ -76,6 +80,11 @@ public class Document extends BaseModel {
      */
     @Column(name = "md5")
     private String md5;
+
+    /**
+     * the status of document
+     */
+    private String status;
 
     public Document() {
     }
@@ -148,4 +157,11 @@ public class Document extends BaseModel {
         this.md5 = md5;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

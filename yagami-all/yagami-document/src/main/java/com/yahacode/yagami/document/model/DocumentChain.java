@@ -18,6 +18,13 @@ import javax.persistence.Table;
 @Table(name = "bf_document_chain")
 public class DocumentChain extends BaseModel {
 
+    public static final int REVISION_FIRST = 1;
+
+    public static final String COLUMN_DOCUMENT_ID = "documentId";
+
+    public static final String COLUMN_CHAIN_NO = "chainNo";
+
+    public static final String COLUMN_REVISION = "revision";
 
     /**
      * primary key
@@ -53,6 +60,10 @@ public class DocumentChain extends BaseModel {
     private String memo;
 
     public DocumentChain() {
+    }
+
+    public DocumentChain(String peopleCode) {
+        super(peopleCode);
     }
 
     public String getIdBfDocumentChain() {

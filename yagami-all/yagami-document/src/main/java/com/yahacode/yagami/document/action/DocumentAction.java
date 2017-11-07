@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +31,7 @@ import java.io.OutputStream;
 @RequestMapping("/document")
 public class DocumentAction extends BaseAction {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     private DocumentService documentService;
 
@@ -42,6 +43,15 @@ public class DocumentAction extends BaseAction {
         People people = getLoginPeople();
         document.update(people.getCode());
         documentService.modifyDocument(document);
+    }
+
+    @ApiOperation(value = "更新文件版本")
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST, value = "/{documentId}")
+    public void updateDocument(@RequestBody MultipartFile file, @PathVariable("documentId") String documentId) throws
+            BizfwServiceException {
+        Document document = documentService.saveDocument(file, getLoginPeople().getCode());
+        documentService.updateDocument(document, documentId);
     }
 
     @ApiOperation(value = "下载文件")
