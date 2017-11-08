@@ -2,18 +2,22 @@ package com.yahacode.yagami.document.impl;
 
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.document.dao.DocumentChainDao;
 import com.yahacode.yagami.document.dao.DocumentDao;
+import com.yahacode.yagami.document.dao.DocumentGroupDao;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.DocumentChain;
+import com.yahacode.yagami.document.model.DocumentGroup;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -33,6 +37,8 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
     private DocumentDao documentDao;
 
     private DocumentChainDao documentChainDao;
+
+    private DocumentGroupDao documentGroupDao;
 
     @Override
     public String addDocument(Document document) throws BizfwServiceException {
@@ -67,9 +73,16 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
         }
     }
 
+    @Transactional
     @Override
-    public List<Document> saveDocuments(List<MultipartFile> files, String peopleCode) throws BizfwServiceException {
-        return null;
+    public String saveDocuments(List<MultipartFile> files, String peopleCode) throws BizfwServiceException {
+        String documentGroupNo = StringUtils.generateUUID();
+        for (MultipartFile file : files) {
+            Document document = saveDocument(file, peopleCode);
+            DocumentGroup documentGroup = new DocumentGroup(peopleCode, documentGroupNo, document.getIdBfDocument());
+            documentGroupDao.save(documentGroup);
+        }
+        return documentGroupNo;
     }
 
     @Override
@@ -122,5 +135,10 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
     @Autowired
     public void setDocumentChainDao(DocumentChainDao documentChainDao) {
         this.documentChainDao = documentChainDao;
+    }
+
+    @Autowired
+    public void setDocumentGroupDao(DocumentGroupDao documentGroupDao) {
+        this.documentGroupDao = documentGroupDao;
     }
 }

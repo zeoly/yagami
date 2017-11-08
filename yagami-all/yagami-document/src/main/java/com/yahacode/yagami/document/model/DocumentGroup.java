@@ -46,6 +46,12 @@ public class DocumentGroup extends BaseModel {
         super(peopleCode);
     }
 
+    public DocumentGroup(String peopleCode, String groupNo, String documentId) {
+        super(peopleCode);
+        this.groupNo = groupNo;
+        this.documentId = documentId;
+    }
+
     public String getIdBfDocumentGroup() {
         return idBfDocumentGroup;
     }

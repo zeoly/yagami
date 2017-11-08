@@ -45,11 +45,11 @@ public interface DocumentService extends BaseService<Document> {
      *         target files
      * @param peopleCode
      *         operator code
-     * @return list of documents
+     * @return document group number
      * @throws BizfwServiceException
      *         framework exception
      */
-    List<Document> saveDocuments(List<MultipartFile> files, String peopleCode) throws BizfwServiceException;
+    String saveDocuments(List<MultipartFile> files, String peopleCode) throws BizfwServiceException;
 
     /**
      * modify document's name and extension
