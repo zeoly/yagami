@@ -95,6 +95,18 @@ public interface FolderService extends BaseService<Folder> {
     String addDocument(Document document, String folderId) throws BizfwServiceException;
 
     /**
+     * delete document under folder
+     *
+     * @param documentId
+     *         document pk
+     * @param people
+     *         operator
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    void deleteDocument(String documentId, People people) throws BizfwServiceException;
+
+    /**
      * set the role authority of a folder
      *
      * @param folder

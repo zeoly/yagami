@@ -106,6 +106,16 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
 
     @Transactional
     @Override
+    public void deleteDocument(String documentId, People people) throws BizfwServiceException {
+        Document document = documentService.queryById(documentId);
+        document.update(people.getCode());
+        documentService.deleteDocument(document);
+
+        folderDocRelDao.deleteByFieldAndValue(FolderDocRelation.COLUMN_DOCUMENT_ID, documentId);
+    }
+
+    @Transactional
+    @Override
     public void setFolderAuthority(Folder folder, List<String> roleIdList) throws BizfwServiceException {
         roleFolderAuthorityDao.deleteByFolder(folder.getIdBfFolder());
         for (String roleId : roleIdList) {

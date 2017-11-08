@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * the implementation of DocumentService
@@ -64,6 +65,11 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
             logger.error("保存文件失败", e);
             throw new BizfwServiceException(ErrorCode.Doc.File.SAVE_FILE_ERROR, e);
         }
+    }
+
+    @Override
+    public List<Document> saveDocuments(List<MultipartFile> files, String peopleCode) throws BizfwServiceException {
+        return null;
     }
 
     @Override

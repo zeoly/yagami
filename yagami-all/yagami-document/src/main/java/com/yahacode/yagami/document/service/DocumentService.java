@@ -5,6 +5,8 @@ import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.model.Document;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * document service
  *
@@ -35,6 +37,19 @@ public interface DocumentService extends BaseService<Document> {
      *         framework exception
      */
     Document saveDocument(MultipartFile file, String peopleCode) throws BizfwServiceException;
+
+    /**
+     * save batch files
+     *
+     * @param files
+     *         target files
+     * @param peopleCode
+     *         operator code
+     * @return list of documents
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    List<Document> saveDocuments(List<MultipartFile> files, String peopleCode) throws BizfwServiceException;
 
     /**
      * modify document's name and extension

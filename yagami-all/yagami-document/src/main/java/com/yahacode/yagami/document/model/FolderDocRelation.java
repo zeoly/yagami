@@ -20,6 +20,8 @@ public class FolderDocRelation extends BaseModel {
 
     public static final String COLUMN_FOLDER_ID = "folderId";
 
+    public static final String COLUMN_DOCUMENT_ID = "documentId";
+
     /**
      * primary key
      */
