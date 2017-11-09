@@ -2,6 +2,7 @@ package com.yahacode.yagami.claim;
 
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.pd.model.People;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class ClaimAction extends BaseAction {
     @RequestMapping(method = RequestMethod.POST)
     public void addClaim(@RequestBody List<MultipartFile> files, @RequestBody Claim claim) throws
             BizfwServiceException {
-
+        People loginPeople = getLoginPeople();
     }
 
     @Autowired
