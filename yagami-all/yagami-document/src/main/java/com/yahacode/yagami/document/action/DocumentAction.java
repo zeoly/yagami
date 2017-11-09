@@ -11,12 +11,11 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +26,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-@Controller
+@RestController
 @RequestMapping("/document")
 public class DocumentAction extends BaseAction {
 
@@ -37,7 +36,6 @@ public class DocumentAction extends BaseAction {
 
     @ApiOperation(value = "修改文件")
     @ApiImplicitParam(name = "document", value = "文件", required = true, dataTypeClass = Document.class)
-    @ResponseBody
     @RequestMapping(method = RequestMethod.PATCH)
     public void modifyDocument(@RequestBody Document document) throws BizfwServiceException {
         People people = getLoginPeople();
@@ -46,7 +44,6 @@ public class DocumentAction extends BaseAction {
     }
 
     @ApiOperation(value = "更新文件版本")
-    @ResponseBody
     @RequestMapping(method = RequestMethod.POST, value = "/{documentId}")
     public void updateDocument(@RequestBody MultipartFile file, @PathVariable("documentId") String documentId) throws
             BizfwServiceException {
@@ -56,7 +53,6 @@ public class DocumentAction extends BaseAction {
 
     @ApiOperation(value = "下载文件")
     @ApiImplicitParam(name = "documentId", value = "主键", required = true, dataTypeClass = String.class)
-    @ResponseBody
     @RequestMapping(method = RequestMethod.GET, value = "/{documentId}")
     public void downloadDocument(HttpServletRequest request, HttpServletResponse response, @PathVariable
             ("documentId") String documentId) throws BizfwServiceException, IOException {
