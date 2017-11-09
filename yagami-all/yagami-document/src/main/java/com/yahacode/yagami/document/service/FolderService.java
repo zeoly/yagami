@@ -1,5 +1,6 @@
 package com.yahacode.yagami.document.service;
 
+import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.model.Document;
@@ -112,25 +113,27 @@ public interface FolderService extends BaseService<Folder> {
     /**
      * set the role authority of a folder
      *
-     * @param folder
-     *         target folder
+     * @param folderId
+     *         target folder pk
      * @param roleIdList
      *         the role pk list
+     * @param peopleCode
+     *         operator code
      * @throws BizfwServiceException
      *         framework exception
      */
-    void setFolderAuthority(Folder folder, List<String> roleIdList) throws BizfwServiceException;
+    void setFolderAuthority(String folderId, List<String> roleIdList, String peopleCode) throws BizfwServiceException;
 
     /**
      * get the role authority of a folder
      *
      * @param folderId
      *         target folder pk
-     * @return the list of authority
+     * @return the list of authorized roles
      * @throws BizfwServiceException
      *         framework exception
      */
-    List<RoleFolderAuthority> getFolderAuthority(String folderId) throws BizfwServiceException;
+    List<Role> getFolderAuthority(String folderId) throws BizfwServiceException;
 
     /**
      * get the authorized folders of people

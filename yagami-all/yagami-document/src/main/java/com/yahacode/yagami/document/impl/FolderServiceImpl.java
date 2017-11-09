@@ -117,18 +117,25 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
 
     @Transactional
     @Override
-    public void setFolderAuthority(Folder folder, List<String> roleIdList) throws BizfwServiceException {
-        roleFolderAuthorityDao.deleteByFolder(folder.getIdBfFolder());
+    public void setFolderAuthority(String folderId, List<String> roleIdList, String peopleCode) throws
+            BizfwServiceException {
+        roleFolderAuthorityDao.deleteByFolder(folderId);
         for (String roleId : roleIdList) {
-            RoleFolderAuthority roleFolderAuthority = new RoleFolderAuthority(folder.getUpdateBy(), roleId, folder
-                    .getIdBfFolder());
+            RoleFolderAuthority roleFolderAuthority = new RoleFolderAuthority(peopleCode, roleId, folderId);
             roleFolderAuthorityDao.save(roleFolderAuthority);
         }
     }
 
     @Override
-    public List<RoleFolderAuthority> getFolderAuthority(String folderId) throws BizfwServiceException {
-        return roleFolderAuthorityDao.queryByFieldAndValue(RoleFolderAuthority.COLUMN_FOLDER_ID, folderId);
+    public List<Role> getFolderAuthority(String folderId) throws BizfwServiceException {
+        List<RoleFolderAuthority> list = roleFolderAuthorityDao.queryByFieldAndValue(RoleFolderAuthority
+                .COLUMN_FOLDER_ID, folderId);
+        List<Role> roles = new ArrayList<>();
+        for (RoleFolderAuthority authority : list) {
+            Role role = roleService.queryById(authority.getRoleId());
+            roles.add(role);
+        }
+        return roles;
     }
 
     @Override
