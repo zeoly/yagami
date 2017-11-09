@@ -2,11 +2,8 @@ package com.yahacode.yagami.document.action;
 
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.base.consts.ErrorCode;
-import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
 import com.yahacode.yagami.document.service.FolderService;
-import com.yahacode.yagami.document.utils.FileUtils;
 import com.yahacode.yagami.pd.model.People;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,9 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/folder")
@@ -81,30 +75,14 @@ public class FolderAction extends BaseAction {
     @RequestMapping(method = RequestMethod.POST, value = "/{folderId}/document")
     public void addDocument(@RequestBody MultipartFile file, @PathVariable("folderId") String folderId) throws
             BizfwServiceException {
-        try {
-            String fileName = file.getOriginalFilename();
-            String url = FileUtils.getStorageUrl(fileName);
-            String filePath = FileUtils.getLocalStorage() + url;
-            File newFile = new File(filePath);
-            file.transferTo(newFile);
-
-            People people = getLoginPeople();
-            Document document = new Document(people.getCode());
-            document.setName(fileName);
-            document.setUrl(url);
-            document.setSize(file.getSize());
-            document.setMd5(FileUtils.getMd5(filePath));
-
-            folderService.addDocument(document, folderId);
-        } catch (IllegalStateException | IOException e) {
-            logger.error("文件上传失败", e);
-            throw new BizfwServiceException(ErrorCode.Doc.File.ACCESS_FAIL_NO_AUTH, e);
-        }
+        folderService.addDocument(file, folderId, getLoginPeople().getCode());
     }
 
+    @ApiOperation(value = "删除文件夹下的文件")
+    @ApiImplicitParam(name = "documentId", value = "文件id", required = true, dataTypeClass = String.class)
     @RequestMapping(method = RequestMethod.DELETE, value = "/document/{documentId}")
     public void deleteDocument(@PathVariable("documentId") String documentId) throws BizfwServiceException {
-
+        folderService.deleteDocument(documentId, getLoginPeople());
     }
 
     @Autowired

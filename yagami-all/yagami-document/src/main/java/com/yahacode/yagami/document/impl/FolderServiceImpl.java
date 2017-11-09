@@ -21,6 +21,7 @@ import com.yahacode.yagami.pd.model.People;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,11 +98,11 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
 
     @Transactional
     @Override
-    public String addDocument(Document document, String folderId) throws BizfwServiceException {
-        String documentId = documentService.addDocument(document);
-        FolderDocRelation relation = new FolderDocRelation(document.getUpdateBy(), folderId, documentId);
-        folderDocRelDao.save(relation);
-        return documentId;
+    public String addDocument(MultipartFile file, String folderId, String peopleCode) throws BizfwServiceException {
+        Document document = documentService.saveDocument(file, peopleCode);
+        FolderDocRelation folderDocRelation = new FolderDocRelation(peopleCode, folderId, document.getIdBfDocument());
+        folderDocRelDao.save(folderDocRelation);
+        return document.getIdBfDocument();
     }
 
     @Transactional

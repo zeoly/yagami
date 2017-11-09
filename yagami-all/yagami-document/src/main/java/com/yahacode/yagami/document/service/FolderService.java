@@ -6,6 +6,7 @@ import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
 import com.yahacode.yagami.document.model.RoleFolderAuthority;
 import com.yahacode.yagami.pd.model.People;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -84,15 +85,17 @@ public interface FolderService extends BaseService<Folder> {
     /**
      * add a document in folder
      *
-     * @param document
-     *         target document
+     * @param file
+     *         target file
      * @param folderId
      *         folder pk
+     * @param peopleCode
+     *         operator code
      * @return document pk
      * @throws BizfwServiceException
      *         framework exception
      */
-    String addDocument(Document document, String folderId) throws BizfwServiceException;
+    String addDocument(MultipartFile file, String folderId, String peopleCode) throws BizfwServiceException;
 
     /**
      * delete document under folder
