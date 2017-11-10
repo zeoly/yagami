@@ -1,16 +1,14 @@
 package com.thinkequip.anochat.consumer.controller;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class ConsumerController {
 
-	@RequestMapping("/home")
-	@ResponseBody
-	public String home() {
-		System.out.println("consumer");
-		return "consumer";
-	}
+    @RequestMapping("/home")
+    public String home() {
+        System.out.println("consumer");
+        return "consumer";
+    }
 }
