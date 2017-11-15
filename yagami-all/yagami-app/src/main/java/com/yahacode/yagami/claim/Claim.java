@@ -22,6 +22,9 @@ public class Claim extends BaseModel {
     @GeneratedValue(generator = "uuid")
     private String idBfClaim;
 
+    @Column(name = "reporter_name")
+    private String reporterName;
+
     @Column(name = "reporter_phone")
     private String reporterPhone;
 
@@ -50,6 +53,14 @@ public class Claim extends BaseModel {
 
     public void setIdBfClaim(String idBfClaim) {
         this.idBfClaim = idBfClaim;
+    }
+
+    public String getReporterName() {
+        return reporterName;
+    }
+
+    public void setReporterName(String reporterName) {
+        this.reporterName = reporterName;
     }
 
     public String getReporterPhone() {
