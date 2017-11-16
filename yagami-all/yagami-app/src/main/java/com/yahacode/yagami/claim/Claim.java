@@ -16,6 +16,14 @@ import javax.persistence.Table;
 @Table(name = "bf_claim")
 public class Claim extends BaseModel {
 
+    public static final String STATUS_INVALID = "0";
+
+    public static final String STATUS_INIT = "1";
+
+    public static final String STATUS_REGISTERED = "2";
+
+    public static final String STATUS_PASS = "3";
+
     @Id
     @Column(name = "id_bf_claim")
     @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
