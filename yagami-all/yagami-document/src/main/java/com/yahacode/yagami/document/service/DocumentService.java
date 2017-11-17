@@ -93,4 +93,15 @@ public interface DocumentService extends BaseService<Document> {
      */
     void updateDocument(Document newDocument, String documentId) throws BizfwServiceException;
 
+    /**
+     * get the document by document's md5
+     *
+     * @param md5
+     *         md5 string
+     * @return target document, return null if not found
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    Document getByMD5(String md5) throws BizfwServiceException;
+
 }

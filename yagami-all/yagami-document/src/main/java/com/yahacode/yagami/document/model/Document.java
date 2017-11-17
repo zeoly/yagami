@@ -26,6 +26,8 @@ public class Document extends BaseModel {
 
     public static final String COLUMN_REVISION = "revision";
 
+    public static final String COLUMN_MD5 = "md5";
+
     public static final String STATUS_DELETED = "0";
 
     public static final String STATUS_NORMAL = "1";

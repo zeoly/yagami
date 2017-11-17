@@ -52,19 +52,26 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
     public Document saveDocument(MultipartFile file, String peopleCode) throws BizfwServiceException {
         try {
             String fileName = file.getOriginalFilename();
-            String url = FileUtils.getStorageUrl(fileName);
-            String filePath = FileUtils.getLocalStorage() + url;
-            File newFile = new File(filePath);
-            file.transferTo(newFile);
+            String md5 = FileUtils.getMD5(file);
 
             Document document = new Document(peopleCode);
             document.setName(fileName);
             document.setExtension(FileUtils.getExtension(document.getName()));
-            document.setUrl(url);
             document.setDownloadCount(0);
             document.setSize(file.getSize());
-            document.setMd5(FileUtils.getMd5(filePath));
+            document.setMd5(md5);
             document.setStatus(Document.STATUS_NORMAL);
+
+            Document dbDocument = getByMD5(md5);
+            if (dbDocument != null) {
+                document.setUrl(dbDocument.getUrl());
+            } else {
+                String url = FileUtils.getStorageUrl(fileName);
+                document.setUrl(url);
+                String filePath = FileUtils.getLocalStorage() + url;
+                File newFile = new File(filePath);
+                file.transferTo(newFile);
+            }
             save(document);
             return document;
         } catch (IllegalStateException | IOException e) {
@@ -119,7 +126,11 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
             newChain.setRevision(DocumentChain.REVISION_FIRST);
         }
         documentChainDao.save(newChain);
+    }
 
+    @Override
+    public Document getByMD5(String md5) throws BizfwServiceException {
+        return queryUniqueByFieldAndValue(Document.COLUMN_MD5, md5);
     }
 
     @Override

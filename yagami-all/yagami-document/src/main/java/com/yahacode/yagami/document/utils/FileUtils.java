@@ -4,6 +4,7 @@ import com.yahacode.yagami.base.common.DateUtils;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,8 +15,7 @@ import java.util.UUID;
 public class FileUtils {
 
     public static String getExtension(String fileName) {
-        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
-        return extension;
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     public static String getStorageUrl(String fileName) {
@@ -29,8 +29,7 @@ public class FileUtils {
         if (!file.exists()) {
             file.mkdirs();
         }
-        String fullUrl = url + "/" + storageFileName;
-        return fullUrl;
+        return url + "/" + storageFileName;
     }
 
     public static String getLocalStorage() {
@@ -40,10 +39,18 @@ public class FileUtils {
     public static String getMd5(String path) {
         try {
             FileInputStream fis = new FileInputStream(path);
-            String md5 = DigestUtils.md5Hex(IOUtils.toByteArray(fis));
-            return md5;
+            return DigestUtils.md5Hex(IOUtils.toByteArray(fis));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String getMD5(MultipartFile file) {
+        try {
+            return DigestUtils.md5Hex(file.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
