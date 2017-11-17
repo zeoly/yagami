@@ -66,7 +66,7 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
             if (dbDocument != null) {
                 document.setUrl(dbDocument.getUrl());
             } else {
-                String url = FileUtils.getStorageUrl(fileName);
+                String url = FileUtils.getStorageUrl(fileName, md5);
                 document.setUrl(url);
                 String filePath = FileUtils.getLocalStorage() + url;
                 File newFile = new File(filePath);

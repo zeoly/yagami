@@ -18,8 +18,8 @@ public class FileUtils {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public static String getStorageUrl(String fileName) {
-        String storageFileName = UUID.randomUUID().toString() + "_" + fileName;
+    public static String getStorageUrl(String fileName, String fileMD5) {
+        String storageFileName = fileName + "." + fileMD5;
         int hashcode = fileName.hashCode();
         int dir1 = hashcode & 0xf;
         // int dir2 = (hashcode & 0xf0) >> 4;
