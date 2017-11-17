@@ -64,6 +64,17 @@ public interface BaseService<T extends BaseModel> {
     List<T> queryByFieldAndValue(String field, Object value);
 
     /**
+     * query unique result with equal condition, if contain multiple, return the first
+     *
+     * @param field
+     *         field name
+     * @param value
+     *         target value
+     * @return unique result
+     */
+    T queryUniqueByFieldAndValue(String field, Object value);
+
+    /**
      * make sure the object is not null, otherwise throw a exception with message - "target is null，operation fail"
      *
      * @param object
