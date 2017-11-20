@@ -15,7 +15,7 @@
     <dependency>
       <groupId>com.yahacode.yagami</groupId>
       <artifactId>yagami-document</artifactId>
-      <version>1.0</version>
+      <version>${yagami.version}</version>
     </dependency>
 
     <dependency>
@@ -26,9 +26,6 @@
 
   <build>
     <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>

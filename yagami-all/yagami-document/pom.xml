@@ -9,12 +9,13 @@
   </parent>
 
   <artifactId>yagami-document</artifactId>
+  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
       <groupId>com.yahacode.yagami</groupId>
       <artifactId>yagami-base</artifactId>
-      <version>1.0</version>
+      <version>${yagami.version}</version>
     </dependency>
 
     <dependency>
@@ -33,4 +34,13 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 </project>
