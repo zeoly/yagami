@@ -3,10 +3,12 @@ package com.yahacode.yagami.document.action;
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.model.Document;
+import com.yahacode.yagami.document.service.DocumentGroupService;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.utils.FileUtils;
 import com.yahacode.yagami.pd.model.People;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +36,11 @@ public class DocumentAction extends BaseAction {
 
     private DocumentService documentService;
 
+    private DocumentGroupService documentGroupService;
+
     @ApiOperation(value = "修改文件")
     @ApiImplicitParam(name = "document", value = "文件", required = true, dataTypeClass = Document.class)
-    @RequestMapping(method = RequestMethod.PATCH)
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{documentId}")
     public void modifyDocument(@RequestBody Document document) throws BizfwServiceException {
         People people = getLoginPeople();
         document.update(people.getCode());
@@ -44,6 +48,9 @@ public class DocumentAction extends BaseAction {
     }
 
     @ApiOperation(value = "更新文件版本")
+    @ApiImplicitParams({@ApiImplicitParam(name = "documentId", value = "主键", required = true, dataTypeClass = String
+            .class), @ApiImplicitParam(name = "file", value = "新文件", required = true, dataTypeClass = MultipartFile
+            .class)})
     @RequestMapping(method = RequestMethod.POST, value = "/{documentId}")
     public void updateDocument(@RequestBody MultipartFile file, @PathVariable("documentId") String documentId) throws
             BizfwServiceException {
@@ -78,8 +85,23 @@ public class DocumentAction extends BaseAction {
         }
     }
 
+    @ApiOperation(value = "在文档组中添加文件")
+    @ApiImplicitParams({@ApiImplicitParam(name = "groupNo", value = "文档组编号", required = true, dataTypeClass = String
+            .class), @ApiImplicitParam(name = "file", value = "新文件", required = true, dataTypeClass = MultipartFile
+            .class)})
+    @RequestMapping(method = RequestMethod.POST, value = "/group/{groupNo}")
+    public String addDocument(MultipartFile file, @PathVariable("groupNo") String groupNo) throws
+            BizfwServiceException {
+        return documentGroupService.addDocument(file, groupNo, getLoginPeople().getCode());
+    }
+
     @Autowired
     public void setDocumentService(DocumentService documentService) {
         this.documentService = documentService;
+    }
+
+    @Autowired
+    public void setDocumentGroupService(DocumentGroupService documentGroupService) {
+        this.documentGroupService = documentGroupService;
     }
 }
