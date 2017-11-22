@@ -33,7 +33,7 @@ public class FileUtils {
     }
 
     public static String getLocalStorage() {
-        return PropertiesUtils.getSysConfig("local.storage");
+        return PropertiesUtils.getBaseConfig("local.storage");
     }
 
     public static String getMd5(String path) {
