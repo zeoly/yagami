@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * @author zengyongli
  */
 @Entity
-@Table(name = "bf_folder_file_rel")
+@Table(name = "bf_folder_doc_rel")
 public class FolderDocRelation extends BaseModel {
 
     public static final String COLUMN_FOLDER_ID = "folderId";
@@ -26,10 +26,10 @@ public class FolderDocRelation extends BaseModel {
      * primary key
      */
     @Id
-    @Column(name = "id_bf_folder_file_rel")
+    @Column(name = "id_bf_folder_doc_rel")
     @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
-    private String idBfFolderFileRel;
+    private String idBfFolderDocRel;
 
     /**
      * folder pk
@@ -57,12 +57,12 @@ public class FolderDocRelation extends BaseModel {
         this.documentId = documentId;
     }
 
-    public String getIdBfFolderFileRel() {
-        return idBfFolderFileRel;
+    public String getIdBfFolderDocRel() {
+        return idBfFolderDocRel;
     }
 
-    public void setIdBfFolderFileRel(String idBfFolderFileRel) {
-        this.idBfFolderFileRel = idBfFolderFileRel;
+    public void setIdBfFolderDocRel(String idBfFolderDocRel) {
+        this.idBfFolderDocRel = idBfFolderDocRel;
     }
 
     public String getFolderId() {
