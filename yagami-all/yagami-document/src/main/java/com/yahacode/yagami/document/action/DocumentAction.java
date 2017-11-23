@@ -38,6 +38,8 @@ public class DocumentAction extends BaseAction {
 
     private DocumentGroupService documentGroupService;
 
+    private FileUtils fileUtils;
+
     @ApiOperation(value = "修改文件")
     @ApiImplicitParam(name = "document", value = "文件", required = true, dataTypeClass = Document.class)
     @RequestMapping(method = RequestMethod.PATCH, value = "/{documentId}")
@@ -65,7 +67,7 @@ public class DocumentAction extends BaseAction {
             ("documentId") String documentId) throws BizfwServiceException, IOException {
         try {
             Document document = documentService.queryById(documentId);
-            String name = FileUtils.getLocalStorage() + document.getUrl();
+            String name = fileUtils.getLocalStorage() + document.getUrl();
 
             File file = new File(name);
             response.setContentType("application/x-msdownload;");
@@ -103,5 +105,10 @@ public class DocumentAction extends BaseAction {
     @Autowired
     public void setDocumentGroupService(DocumentGroupService documentGroupService) {
         this.documentGroupService = documentGroupService;
+    }
+
+    @Autowired
+    public void setFileUtils(FileUtils fileUtils) {
+        this.fileUtils = fileUtils;
     }
 }

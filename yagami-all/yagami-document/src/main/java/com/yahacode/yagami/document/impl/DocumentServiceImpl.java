@@ -16,6 +16,7 @@ import com.yahacode.yagami.document.utils.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,8 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
     private DocumentChainDao documentChainDao;
 
     private DocumentGroupDao documentGroupDao;
+
+    private FileUtils fileUtils;
 
     @Override
     public String addDocument(Document document) throws BizfwServiceException {
@@ -66,9 +69,9 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
             if (dbDocument != null) {
                 document.setUrl(dbDocument.getUrl());
             } else {
-                String url = FileUtils.getStorageUrl(fileName, md5);
+                String url = fileUtils.getStorageUrl(fileName, md5);
                 document.setUrl(url);
-                String filePath = FileUtils.getLocalStorage() + url;
+                String filePath = fileUtils.getLocalStorage() + url;
                 File newFile = new File(filePath);
                 file.transferTo(newFile);
             }
@@ -151,5 +154,10 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
     @Autowired
     public void setDocumentGroupDao(DocumentGroupDao documentGroupDao) {
         this.documentGroupDao = documentGroupDao;
+    }
+
+    @Autowired
+    public void setFileUtils(FileUtils fileUtils) {
+        this.fileUtils = fileUtils;
     }
 }

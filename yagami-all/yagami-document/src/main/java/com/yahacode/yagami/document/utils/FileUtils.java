@@ -1,24 +1,25 @@
 package com.yahacode.yagami.document.utils;
 
 import com.yahacode.yagami.base.common.DateUtils;
-import com.yahacode.yagami.base.common.PropertiesUtils;
+import com.yahacode.yagami.document.config.DocumentConfig;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.UUID;
 
+@Component
 public class FileUtils {
+
+    private DocumentConfig documentConfig;
 
     public static String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public static String getStorageUrl(String fileName, String fileMD5) {
+    public String getStorageUrl(String fileName, String fileMD5) {
         String storageFileName = fileName + "." + fileMD5;
         int hashcode = fileName.hashCode();
         int dir1 = hashcode & 0xf;
@@ -32,20 +33,8 @@ public class FileUtils {
         return url + "/" + storageFileName;
     }
 
-    public static String getLocalStorage() {
-        return PropertiesUtils.getBaseConfig("local.storage");
-    }
-
-    public static String getMd5(String path) {
-        try {
-            FileInputStream fis = new FileInputStream(path);
-            return DigestUtils.md5Hex(IOUtils.toByteArray(fis));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
+    public String getLocalStorage() {
+        return documentConfig.getLocalStorage();
     }
 
     public static String getMD5(MultipartFile file) {
@@ -55,5 +44,10 @@ public class FileUtils {
             e.printStackTrace();
         }
         return "";
+    }
+
+    @Autowired
+    public void setDocumentConfig(DocumentConfig documentConfig) {
+        this.documentConfig = documentConfig;
     }
 }
