@@ -1,21 +1,21 @@
 package com.thinkequip.anchat.ribbon.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class RibbonController {
 
-	@Autowired
-	private RestTemplate restTemplate;
+    private HelloService helloService;
 
-	@RequestMapping("/hello")
-	@ResponseBody
-	public String hello() {
-		String result = restTemplate.getForEntity("http://anochat-consumer-service/home", String.class).getBody();
-		return result;
-	}
+    @RequestMapping("/hello")
+    public String hello() {
+        return helloService.hello();
+    }
+
+    @Autowired
+    public void setHelloService(HelloService helloService) {
+        this.helloService = helloService;
+    }
 }
