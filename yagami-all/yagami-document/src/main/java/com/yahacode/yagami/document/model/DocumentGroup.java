@@ -18,6 +18,10 @@ import javax.persistence.Table;
 @Table(name = "bf_doc_group")
 public class DocumentGroup extends BaseModel {
 
+    public static final String COLUMN_GROUP_NO = "groupNo";
+
+    public static final String COLUMN_DOCUMENT_ID = "documentId";
+
     /**
      * primary key
      */

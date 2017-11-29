@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 @RestController
 @RequestMapping("/document")
@@ -95,6 +96,13 @@ public class DocumentAction extends BaseAction {
     public String addDocument(MultipartFile file, @PathVariable("groupNo") String groupNo) throws
             BizfwServiceException {
         return documentGroupService.addDocument(file, groupNo, getLoginPeople().getCode());
+    }
+
+    @ApiOperation(value = "查询文档组下所有文件")
+    @ApiImplicitParam(name = "groupNo", value = "文档组编号", required = true, dataTypeClass = String.class)
+    @RequestMapping(method = RequestMethod.GET, value = "/group/{groupNo}")
+    public List<Document> getByDocumentGroupNo(@PathVariable("groupNo") String groupNo) throws BizfwServiceException {
+        return documentGroupService.getByGroupNo(groupNo);
     }
 
     @Autowired

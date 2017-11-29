@@ -20,7 +20,7 @@ public class FileUtils {
     }
 
     public String getStorageUrl(String fileName, String fileMD5) {
-        String storageFileName = fileName + "." + fileMD5;
+        String storageFileName = fileMD5 + "." + fileName;
         int hashcode = fileName.hashCode();
         int dir1 = hashcode & 0xf;
         // int dir2 = (hashcode & 0xf0) >> 4;

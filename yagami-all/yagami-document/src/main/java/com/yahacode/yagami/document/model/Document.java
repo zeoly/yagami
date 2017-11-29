@@ -22,6 +22,8 @@ public class Document extends BaseModel {
 
     public static final int REVISION_FIRST = 1;
 
+    public static final String COLUMN_ID = "idBfDocument";
+
     public static final String COLUMN_NAME = "name";
 
     public static final String COLUMN_REVISION = "revision";
