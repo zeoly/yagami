@@ -16,13 +16,32 @@ import javax.persistence.Table;
 @Table(name = "bf_claim")
 public class Claim extends BaseModel {
 
+    /**
+     * self cancel case
+     */
     public static final String STATUS_INVALID = "0";
 
+    /**
+     * init, not uploading documents
+     */
     public static final String STATUS_INIT = "1";
 
+    /**
+     * case registered, to be reviewed
+     */
     public static final String STATUS_REGISTERED = "2";
 
-    public static final String STATUS_PASS = "3";
+    /**
+     * accept the case
+     */
+    public static final String STATUS_ACCEPT = "3";
+
+    /**
+     * reject the case
+     */
+    public static final String STATUS_REJECT = "4";
+
+    public static final String COLUMN_STATUS = "status";
 
     @Id
     @Column(name = "id_bf_claim")

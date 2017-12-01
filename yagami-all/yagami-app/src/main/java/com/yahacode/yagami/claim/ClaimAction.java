@@ -6,6 +6,7 @@ import com.yahacode.yagami.pd.model.People;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,6 +40,32 @@ public class ClaimAction extends BaseAction {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
         People loginPeople = getLoginPeople();
         logger.info("claim in");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/review")
+    public List<Claim> getClaimReviewList() throws BizfwServiceException {
+        return claimService.getClaimReviewList();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/report")
+    public List<Claim> getClaimReportList() throws BizfwServiceException {
+        return claimService.getClaimReportList();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/{claimId}")
+    public void accept(@PathVariable("claimId") String claimId, String comment) throws BizfwServiceException {
+        Claim claim = claimService.queryById(claimId);
+        claim.update(getLoginPeople().getCode());
+        claim.setComment(comment);
+        claimService.acceptClaim(claim);
+    }
+
+    @RequestMapping(method = RequestMethod.PATCH, value = "/{claimId}")
+    public void reject(@PathVariable("claimId") String claimId, String comment) throws BizfwServiceException {
+        Claim claim = claimService.queryById(claimId);
+        claim.update(getLoginPeople().getCode());
+        claim.setComment(comment);
+        claimService.acceptClaim(claim);
     }
 
     @Autowired
