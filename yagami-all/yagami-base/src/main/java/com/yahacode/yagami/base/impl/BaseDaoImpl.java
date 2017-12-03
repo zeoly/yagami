@@ -8,11 +8,14 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BaseModel;
+
+import javax.persistence.criteria.CriteriaDelete;
 
 
 public class BaseDaoImpl<T extends BaseModel> implements BaseDao<T> {
@@ -47,26 +50,22 @@ public class BaseDaoImpl<T extends BaseModel> implements BaseDao<T> {
 
     @Override
     public List<T> list() {
-        String hql = "from " + getTableName();
-        Query query = createQuery(hql);
-        List<T> list = query.list();
-        return list;
+        Criteria criteria = getSession().createCriteria(getClazz());
+        return criteria.list();
     }
 
     @Override
     public List<T> listAndSortAsc(String sortField) {
-        String hql = "from " + getTableName() + " order by " + sortField;
-        Query query = createQuery(hql);
-        List<T> list = query.list();
-        return list;
+        Criteria criteria = getSession().createCriteria(getClazz());
+        criteria.addOrder(Order.asc(sortField));
+        return criteria.list();
     }
 
     @Override
     public List<T> listAndSortDesc(String sortField) {
-        String hql = "from " + getTableName() + " order by " + sortField + " desc";
-        Query query = createQuery(hql);
-        List<T> list = query.list();
-        return list;
+        Criteria criteria = getSession().createCriteria(getClazz());
+        criteria.addOrder(Order.desc(sortField));
+        return criteria.list();
     }
 
     @Override
@@ -86,14 +85,8 @@ public class BaseDaoImpl<T extends BaseModel> implements BaseDao<T> {
 
     @Override
     public List<T> queryByFieldAndValue(String field, Object value) {
-        String hql = "from " + getTableName() + " as t where t." + field + " = :value";
-        Query query = createQuery(hql);
-        query.setParameter("value", value);
-        List<T> list = query.list();
-        if (list == null) {
-            list = new ArrayList<T>();
-        }
-        return list;
+        Criteria criteria = getSession().createCriteria(getClazz());
+        return criteria.add(Restrictions.eq(field, value)).list();
     }
 
     @Override
