@@ -1,23 +1,26 @@
 package com.yahacode.yagami.base.impl;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.yahacode.yagami.base.BaseDao;
+import com.yahacode.yagami.base.BaseModel;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.yahacode.yagami.base.BaseDao;
-import com.yahacode.yagami.base.BaseModel;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
 
-import javax.persistence.criteria.CriteriaDelete;
-
-
+/**
+ * base DAO, provide database accessibility
+ *
+ * @param <T>
+ *         business model
+ * @author zengyongli
+ */
 public class BaseDaoImpl<T extends BaseModel> implements BaseDao<T> {
 
     @Autowired
@@ -96,6 +99,12 @@ public class BaseDaoImpl<T extends BaseModel> implements BaseDao<T> {
     }
 
     @Override
+    public List<T> queryByFieldLikeValue(String field, Object value) {
+        Criteria criteria = getSession().createCriteria(getClazz());
+        return criteria.add(Restrictions.like(field, value)).list();
+    }
+
+    @Override
     public void deleteByFieldAndValue(String field, Object value) {
         String hql = "delete from " + getTableName() + " as t where t." + field + " = :value";
         Query query = createQuery(hql);
@@ -105,10 +114,9 @@ public class BaseDaoImpl<T extends BaseModel> implements BaseDao<T> {
 
     @Override
     public long getCountByFieldAndValue(String field, Object value) {
-        String hql = "select count(0) from " + getTableName() + " as t where t." + field + " = :value";
-        Query query = getSession().createQuery(hql);
-        query.setParameter("value", value);
-        return (long) query.uniqueResult();
+        Criteria criteria = getSession().createCriteria(getClazz());
+        criteria.add(Restrictions.eq(field, value));
+        return (long) criteria.setProjection(Projections.rowCount()).uniqueResult();
     }
 
     @Override

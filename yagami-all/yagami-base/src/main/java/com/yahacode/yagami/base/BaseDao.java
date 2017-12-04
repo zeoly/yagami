@@ -37,6 +37,8 @@ public interface BaseDao<T extends BaseModel> {
 
     List<T> queryByFieldAndValues(String field, Object... values);
 
+    List<T> queryByFieldLikeValue(String field, Object value);
+
     void deleteByFieldAndValue(String field, Object value);
 
     long getCountByFieldAndValue(String field, Object value);
