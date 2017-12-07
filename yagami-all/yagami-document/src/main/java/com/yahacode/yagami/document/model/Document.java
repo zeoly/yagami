@@ -1,6 +1,10 @@
 package com.yahacode.yagami.document.model;
 
 import com.yahacode.yagami.base.BaseModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -14,6 +18,10 @@ import javax.persistence.Table;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bf_document")
 public class Document extends BaseModel {
@@ -90,82 +98,8 @@ public class Document extends BaseModel {
      */
     private String status;
 
-    public Document() {
-    }
-
     public Document(String peopleCode) {
         super(peopleCode);
     }
 
-    public String getIdBfDocument() {
-        return idBfDocument;
-    }
-
-    public void setIdBfDocument(String idBfDocument) {
-        this.idBfDocument = idBfDocument;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getExtension() {
-        return extension;
-    }
-
-    public void setExtension(String extension) {
-        this.extension = extension;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-
-    public Integer getDownloadCount() {
-        return downloadCount;
-    }
-
-    public void setDownloadCount(Integer downloadCount) {
-        this.downloadCount = downloadCount;
-    }
-
-    public String getMd5() {
-        return md5;
-    }
-
-    public void setMd5(String md5) {
-        this.md5 = md5;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 }

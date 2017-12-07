@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.yahacode.yagami.base.BaseModel;
@@ -15,6 +19,10 @@ import com.yahacode.yagami.base.BaseModel;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bf_department_rel")
 public class DepartmentRelation extends BaseModel {
@@ -56,42 +64,6 @@ public class DepartmentRelation extends BaseModel {
 
     public DepartmentRelation(String peopleCode) {
         super(peopleCode);
-    }
-
-    public DepartmentRelation() {
-        super();
-    }
-
-    public String getIdBfDepartmentRel() {
-        return idBfDepartmentRel;
-    }
-
-    public void setIdBfDepartmentRel(String idBfDepartmentRel) {
-        this.idBfDepartmentRel = idBfDepartmentRel;
-    }
-
-    public String getParentDepartmentId() {
-        return parentDepartmentId;
-    }
-
-    public void setParentDepartmentId(String parentDepartmentId) {
-        this.parentDepartmentId = parentDepartmentId;
-    }
-
-    public String getChildDepartmentId() {
-        return childDepartmentId;
-    }
-
-    public void setChildDepartmentId(String childDepartmentId) {
-        this.childDepartmentId = childDepartmentId;
-    }
-
-    public int getParentLevel() {
-        return parentLevel;
-    }
-
-    public void setParentLevel(int parentLevel) {
-        this.parentLevel = parentLevel;
     }
 
 }

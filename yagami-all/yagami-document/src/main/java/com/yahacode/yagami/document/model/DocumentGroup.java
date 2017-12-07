@@ -1,6 +1,10 @@
 package com.yahacode.yagami.document.model;
 
 import com.yahacode.yagami.base.BaseModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -14,6 +18,9 @@ import javax.persistence.Table;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
 @Entity
 @Table(name = "bf_doc_group")
 public class DocumentGroup extends BaseModel {
@@ -43,9 +50,6 @@ public class DocumentGroup extends BaseModel {
     @Column(name = "id_bf_document")
     private String documentId;
 
-    public DocumentGroup() {
-    }
-
     public DocumentGroup(String peopleCode) {
         super(peopleCode);
     }
@@ -56,27 +60,4 @@ public class DocumentGroup extends BaseModel {
         this.documentId = documentId;
     }
 
-    public String getIdBfDocumentGroup() {
-        return idBfDocumentGroup;
-    }
-
-    public void setIdBfDocumentGroup(String idBfDocumentGroup) {
-        this.idBfDocumentGroup = idBfDocumentGroup;
-    }
-
-    public String getGroupNo() {
-        return groupNo;
-    }
-
-    public void setGroupNo(String groupNo) {
-        this.groupNo = groupNo;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
 }

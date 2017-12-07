@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.yahacode.yagami.base.BaseModel;
@@ -18,6 +22,10 @@ import com.yahacode.yagami.base.BaseModel;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bf_department")
 public class Department extends BaseModel {
@@ -69,59 +77,8 @@ public class Department extends BaseModel {
     @Transient
     private List<Department> childDepartmentList;
 
-    public Department() {
-        super();
-    }
-
     public Department(String peopleCode) {
         super(peopleCode);
     }
 
-    public String getIdBfDepartment() {
-        return idBfDepartment;
-    }
-
-    public void setIdBfDepartment(String idBfDepartment) {
-        this.idBfDepartment = idBfDepartment;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public String getParentDepartmentId() {
-        return parentDepartmentId;
-    }
-
-    public void setParentDepartmentId(String parentDepartmentId) {
-        this.parentDepartmentId = parentDepartmentId;
-    }
-
-    public List<Department> getChildDepartmentList() {
-        return childDepartmentList;
-    }
-
-    public void setChildDepartmentList(List<Department> childDepartmentList) {
-        this.childDepartmentList = childDepartmentList;
-    }
 }

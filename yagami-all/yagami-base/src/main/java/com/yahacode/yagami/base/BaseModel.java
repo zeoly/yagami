@@ -1,14 +1,12 @@
 package com.yahacode.yagami.base;
 
-import java.io.Serializable;
-import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Base entity model, recommend to extend this to build your own business model

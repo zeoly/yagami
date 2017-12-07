@@ -12,7 +12,7 @@ import com.yahacode.yagami.base.BaseModel;
 
 /**
  * 角色菜单关联模型
- * 
+ *
  * @copyright THINKEQUIP
  * @author zengyongli
  * @date 2017年3月19日

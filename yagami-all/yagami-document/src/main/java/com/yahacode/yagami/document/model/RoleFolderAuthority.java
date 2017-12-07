@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.yahacode.yagami.base.BaseModel;
@@ -15,6 +19,10 @@ import com.yahacode.yagami.base.BaseModel;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bf_role_folder_auth")
 public class RoleFolderAuthority extends BaseModel {
@@ -54,10 +62,6 @@ public class RoleFolderAuthority extends BaseModel {
     @Column(name = "authority")
     private String authority;
 
-    public RoleFolderAuthority() {
-        super();
-    }
-
     public RoleFolderAuthority(String peopleCode) {
         super(peopleCode);
     }
@@ -68,35 +72,4 @@ public class RoleFolderAuthority extends BaseModel {
         this.folderId = folderId;
     }
 
-    public String getIdBfRoleFolderAuth() {
-        return idBfRoleFolderAuth;
-    }
-
-    public void setIdBfRoleFolderAuth(String idBfRoleFolderAuth) {
-        this.idBfRoleFolderAuth = idBfRoleFolderAuth;
-    }
-
-    public String getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
-    }
-
-    public String getFolderId() {
-        return folderId;
-    }
-
-    public void setFolderId(String folderId) {
-        this.folderId = folderId;
-    }
-
-    public String getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
 }

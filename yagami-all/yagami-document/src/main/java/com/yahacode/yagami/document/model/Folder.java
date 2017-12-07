@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.yahacode.yagami.base.BaseModel;
@@ -18,6 +22,10 @@ import com.yahacode.yagami.base.BaseModel;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bf_folder")
 public class Folder extends BaseModel {
@@ -65,50 +73,8 @@ public class Folder extends BaseModel {
     @Transient
     private List<Document> documentList;
 
-    public Folder() {
-    }
-
     public Folder(String peopleCode) {
         super(peopleCode);
     }
 
-    public String getIdBfFolder() {
-        return idBfFolder;
-    }
-
-    public void setIdBfFolder(String idBfFolder) {
-        this.idBfFolder = idBfFolder;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public List<Folder> getChildFolderList() {
-        return childFolderList;
-    }
-
-    public void setChildFolderList(List<Folder> childFolderList) {
-        this.childFolderList = childFolderList;
-    }
-
-    public List<Document> getDocumentList() {
-        return documentList;
-    }
-
-    public void setFileList(List<Document> documentList) {
-        this.documentList = documentList;
-    }
 }

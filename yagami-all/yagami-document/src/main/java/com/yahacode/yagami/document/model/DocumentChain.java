@@ -1,6 +1,10 @@
 package com.yahacode.yagami.document.model;
 
 import com.yahacode.yagami.base.BaseModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -14,6 +18,10 @@ import javax.persistence.Table;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bf_document_chain")
 public class DocumentChain extends BaseModel {
@@ -59,50 +67,8 @@ public class DocumentChain extends BaseModel {
     @Column(name = "memo")
     private String memo;
 
-    public DocumentChain() {
-    }
-
     public DocumentChain(String peopleCode) {
         super(peopleCode);
     }
 
-    public String getIdBfDocumentChain() {
-        return idBfDocumentChain;
-    }
-
-    public void setIdBfDocumentChain(String idBfDocumentChain) {
-        this.idBfDocumentChain = idBfDocumentChain;
-    }
-
-    public String getChainNo() {
-        return chainNo;
-    }
-
-    public void setChainNo(String chainNo) {
-        this.chainNo = chainNo;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
-    }
-
-    public int getRevision() {
-        return revision;
-    }
-
-    public void setRevision(int revision) {
-        this.revision = revision;
-    }
-
-    public String getMemo() {
-        return memo;
-    }
-
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
 }

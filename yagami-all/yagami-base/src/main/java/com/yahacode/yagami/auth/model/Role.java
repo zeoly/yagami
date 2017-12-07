@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.yahacode.yagami.base.BaseModel;
@@ -15,6 +19,9 @@ import com.yahacode.yagami.base.BaseModel;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
 @Entity
 @Table(name = "bf_role")
 public class Role extends BaseModel {
@@ -48,34 +55,6 @@ public class Role extends BaseModel {
         super(peopleCode);
         this.name = name;
         this.description = desc;
-    }
-
-    public Role() {
-        super();
-    }
-
-    public String getIdBfRole() {
-        return idBfRole;
-    }
-
-    public void setIdBfRole(String idBfRole) {
-        this.idBfRole = idBfRole;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
 }

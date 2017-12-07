@@ -9,6 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.yahacode.yagami.base.BaseModel;
@@ -20,6 +24,10 @@ import com.yahacode.yagami.base.common.StringUtils;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bf_people")
 public class People extends BaseModel {
@@ -89,79 +97,11 @@ public class People extends BaseModel {
     @Transient
     private List<String> roleIdList;
 
-    public People() {
-        super();
-    }
-
     public People(String peopleCode) {
         super(peopleCode);
         this.errorCount = 0;
         this.status = STATUS_NORMAL;
         this.password = StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd"));
-    }
-
-    public String getIdBfPeople() {
-        return idBfPeople;
-    }
-
-    public void setIdBfPeople(String idBfPeople) {
-        this.idBfPeople = idBfPeople;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(String departmentId) {
-        this.departmentId = departmentId;
-    }
-
-    public int getErrorCount() {
-        return errorCount;
-    }
-
-    public void setErrorCount(int errorCount) {
-        this.errorCount = errorCount;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public List<String> getRoleIdList() {
-        return roleIdList;
-    }
-
-    public void setRoleIdList(List<String> roleIdList) {
-        this.roleIdList = roleIdList;
     }
 
 }

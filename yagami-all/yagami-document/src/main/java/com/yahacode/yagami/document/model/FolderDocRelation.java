@@ -1,6 +1,10 @@
 package com.yahacode.yagami.document.model;
 
 import com.yahacode.yagami.base.BaseModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -14,6 +18,9 @@ import javax.persistence.Table;
  *
  * @author zengyongli
  */
+@Data
+@Builder
+@NoArgsConstructor
 @Entity
 @Table(name = "bf_folder_doc_rel")
 public class FolderDocRelation extends BaseModel {
@@ -43,10 +50,6 @@ public class FolderDocRelation extends BaseModel {
     @Column(name = "id_bf_document")
     private String documentId;
 
-
-    public FolderDocRelation() {
-    }
-
     public FolderDocRelation(String peopleCode) {
         super(peopleCode);
     }
@@ -54,30 +57,6 @@ public class FolderDocRelation extends BaseModel {
     public FolderDocRelation(String peopleCode, String folderId, String documentId) {
         super(peopleCode);
         this.folderId = folderId;
-        this.documentId = documentId;
-    }
-
-    public String getIdBfFolderDocRel() {
-        return idBfFolderDocRel;
-    }
-
-    public void setIdBfFolderDocRel(String idBfFolderDocRel) {
-        this.idBfFolderDocRel = idBfFolderDocRel;
-    }
-
-    public String getFolderId() {
-        return folderId;
-    }
-
-    public void setFolderId(String folderId) {
-        this.folderId = folderId;
-    }
-
-    public String getDocumentId() {
-        return documentId;
-    }
-
-    public void setDocumentId(String documentId) {
         this.documentId = documentId;
     }
 
