@@ -39,7 +39,7 @@ public class DocumentGroup extends BaseModel {
     private String idBfDocumentGroup;
 
     /**
-     * the group number, doucuments in a group have the same group number
+     * the group number, documents in a group have the same group number
      */
     @Column(name = "group_no")
     private String groupNo;
