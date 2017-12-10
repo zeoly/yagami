@@ -25,6 +25,7 @@
   <modules>
     <module>yagami-base</module>
     <module>yagami-document</module>
+    <module>yagami-claim</module>
     <module>yagami-app</module>
 
     <module>yagami-bpm</module>

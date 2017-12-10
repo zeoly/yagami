@@ -1,7 +1,8 @@
-package com.yahacode.yagami.claim;
+package com.yahacode.yagami.claim.service;
 
 import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.claim.model.Claim;
 
 import java.util.List;
 

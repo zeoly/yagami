@@ -1,4 +1,4 @@
-package com.yahacode.yagami.claim;
+package com.yahacode.yagami.claim.model;
 
 import com.yahacode.yagami.base.BaseModel;
 import org.hibernate.annotations.GenericGenerator;

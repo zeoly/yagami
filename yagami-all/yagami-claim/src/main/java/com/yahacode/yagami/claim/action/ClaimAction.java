@@ -1,7 +1,9 @@
-package com.yahacode.yagami.claim;
+package com.yahacode.yagami.claim.action;
 
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.claim.model.Claim;
+import com.yahacode.yagami.claim.service.ClaimService;
 import com.yahacode.yagami.pd.model.People;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,9 +1,12 @@
-package com.yahacode.yagami.claim;
+package com.yahacode.yagami.claim.impl;
 
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
+import com.yahacode.yagami.claim.dao.ClaimDao;
+import com.yahacode.yagami.claim.model.Claim;
+import com.yahacode.yagami.claim.service.ClaimService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

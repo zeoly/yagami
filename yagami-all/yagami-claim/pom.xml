@@ -9,32 +9,21 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>yagami-app</artifactId>
+  <artifactId>yagami-claim</artifactId>
 
   <dependencies>
     <dependency>
       <groupId>com.yahacode.yagami</groupId>
-      <artifactId>yagami-document</artifactId>
+      <artifactId>yagami-base</artifactId>
       <version>${yagami.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.yahacode.yagami</groupId>
-      <artifactId>yagami-claim</artifactId>
-      <version>${yagami.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
