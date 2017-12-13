@@ -69,7 +69,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         List<Folder> folders = folderDao.getChildFolderList(folder);
         List<Document> documents = getDocsOfFolder(folder);
         folder.setChildFolderList(folders);
-        folder.setFileList(documents);
+        folder.setDocumentList(documents);
         return folder;
     }
 

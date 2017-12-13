@@ -1,14 +1,5 @@
 package com.yahacode.yagami.auth.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.yahacode.yagami.auth.dao.PeopleRoleRelDao;
 import com.yahacode.yagami.auth.dao.RoleDao;
 import com.yahacode.yagami.auth.model.PeopleRoleRelation;
@@ -17,9 +8,21 @@ import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
-import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.model.People;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.yahacode.yagami.base.consts.ErrorCode.Auth.Role.ADD_FAIL_EXISTED;
+import static com.yahacode.yagami.base.consts.ErrorCode.Auth.Role.DEL_FAIL_WITH_PEOPLE;
+import static com.yahacode.yagami.base.consts.ErrorCode.Auth.Role.MOD_FAIL_EXISTED;
+import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND;
 
 /**
  * role service implementation
@@ -45,7 +48,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     public String addRole(Role role) throws BizfwServiceException {
         List<Role> tmpRole = queryByFieldAndValue(Role.COLUMN_NAME, role.getName());
         if (ListUtils.isNotEmpty(tmpRole)) {
-            throw new BizfwServiceException(ErrorCode.Auth.Role.ADD_FAIL_EXISTED);
+            throw new BizfwServiceException(ADD_FAIL_EXISTED);
         }
         logger.info("{}新增角色{}", role.getUpdateBy(), role.getName());
         return save(role);
@@ -56,7 +59,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     public void modify(Role role) throws BizfwServiceException {
         List<Role> tmpRole = queryByFieldAndValue(Role.COLUMN_NAME, role.getName());
         if (ListUtils.isNotEmpty(tmpRole) && !role.getIdBfRole().equals(tmpRole.get(0).getIdBfRole())) {
-            throw new BizfwServiceException(ErrorCode.Auth.Role.MOD_FAIL_EXISTED);
+            throw new BizfwServiceException(MOD_FAIL_EXISTED);
         }
         Role dbRole = queryById(role.getIdBfRole());
         dbRole.setName(role.getName());
@@ -81,7 +84,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         for (String id : people.getRoleIdList()) {
             Role role = queryById(id);
             if (role == null) {
-                throw new BizfwServiceException(ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND, id);
+                throw new BizfwServiceException(SET_ROLE_REL_FAIL_NOT_FOUND, id);
             }
             PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(people.getUpdateBy(), people.getIdBfPeople
                     (), role.getIdBfRole());
@@ -129,7 +132,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     private void checkCanDeleteRole(Role role) throws BizfwServiceException {
         long peopleCount = countPeopleByRole(role);
         if (peopleCount > 0) {
-            throw new BizfwServiceException(ErrorCode.Auth.Role.DEL_FAIL_WITH_PEOPLE);
+            throw new BizfwServiceException(DEL_FAIL_WITH_PEOPLE);
         }
     }
 

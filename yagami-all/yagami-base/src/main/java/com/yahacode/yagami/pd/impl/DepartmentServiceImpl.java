@@ -1,18 +1,8 @@
 package com.yahacode.yagami.pd.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
-import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.consts.SystemConsts;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.dao.DepartmentDao;
@@ -21,6 +11,17 @@ import com.yahacode.yagami.pd.model.Department;
 import com.yahacode.yagami.pd.model.DepartmentRelation;
 import com.yahacode.yagami.pd.service.DepartmentService;
 import com.yahacode.yagami.pd.service.PeopleService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_CHILD;
+import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_PEOPLE;
 
 /**
  * DepartmentService implementation
@@ -150,12 +151,12 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
         boolean hasChildDepartment = hasChildDepartment(department);
         if (hasChildDepartment) {
             logger.error("{}删除机构{}操作失败，存在子机构", department.getUpdateBy(), department.getCode());
-            throw new BizfwServiceException(ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_CHILD);
+            throw new BizfwServiceException(DEL_FAIL_WITH_CHILD);
         }
         boolean hasPeople = hasPeople(department);
         if (hasPeople) {
             logger.error("{}删除机构{}操作失败，存在人员", department.getUpdateBy(), department.getCode());
-            throw new BizfwServiceException(ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_PEOPLE);
+            throw new BizfwServiceException(DEL_FAIL_WITH_PEOPLE);
         }
     }
 
