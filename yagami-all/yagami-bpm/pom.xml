@@ -15,7 +15,7 @@
     <dependency>
       <groupId>org.activiti</groupId>
       <artifactId>spring-boot-starter-basic</artifactId>
-      <version>${activiti.version}</version>
+      <version>${version.activiti}</version>
     </dependency>
 
     <dependency>

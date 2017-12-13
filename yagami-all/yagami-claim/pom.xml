@@ -15,7 +15,7 @@
     <dependency>
       <groupId>com.yahacode.yagami</groupId>
       <artifactId>yagami-base</artifactId>
-      <version>${yagami.version}</version>
+      <version>${version.yagami}</version>
     </dependency>
   </dependencies>
 

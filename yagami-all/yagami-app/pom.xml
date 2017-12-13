@@ -15,13 +15,13 @@
     <dependency>
       <groupId>com.yahacode.yagami</groupId>
       <artifactId>yagami-document</artifactId>
-      <version>${yagami.version}</version>
+      <version>${version.yagami}</version>
     </dependency>
 
     <dependency>
       <groupId>com.yahacode.yagami</groupId>
       <artifactId>yagami-claim</artifactId>
-      <version>${yagami.version}</version>
+      <version>${version.yagami}</version>
     </dependency>
 
     <dependency>

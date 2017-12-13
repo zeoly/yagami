@@ -10,10 +10,10 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.cloud.version>Dalston.SR1</spring.cloud.version>
-    <org.hibernate.version>5.2.8.Final</org.hibernate.version>
-    <activiti.version>5.17.0</activiti.version>
-    <yagami.version>1.0</yagami.version>
+    <version.spring-cloud>Dalston.SR1</version.spring-cloud>
+    <version.hibernate>5.2.8.Final</version.hibernate>
+    <version.activiti>5.17.0</version.activiti>
+    <version.yagami>1.0</version.yagami>
   </properties>
 
   <parent>
@@ -40,7 +40,7 @@
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring.cloud.version}</version>
+        <version>${version.spring-cloud}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
