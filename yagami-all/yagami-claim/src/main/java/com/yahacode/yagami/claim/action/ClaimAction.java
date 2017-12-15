@@ -67,7 +67,7 @@ public class ClaimAction extends BaseAction {
         Claim claim = claimService.queryById(claimId);
         claim.update(getLoginPeople().getCode());
         claim.setComment(comment);
-        claimService.acceptClaim(claim);
+        claimService.rejectClaim(claim);
     }
 
     @Autowired
