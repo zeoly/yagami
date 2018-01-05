@@ -33,6 +33,7 @@
     <module>yagami-ribbon</module>
     <module>anochat-consumer</module>
     <module>anochat-base</module>
+    <module>yagami-app-facade</module>
   </modules>
 
   <dependencyManagement>
