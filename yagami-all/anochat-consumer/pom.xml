@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.yahacode.yagami</groupId>
-		<artifactId>yagami-all</artifactId>
+		<artifactId>yagami</artifactId>
 		<version>1.0</version>
 	</parent>
 	<artifactId>anochat-consumer</artifactId>
