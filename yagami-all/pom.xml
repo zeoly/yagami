@@ -34,7 +34,6 @@
     <module>anochat-consumer</module>
     <module>anochat-base</module>
     <module>yagami-app-facade</module>
-    <module>yagami-base-user</module>
   </modules>
 
   <dependencyManagement>
