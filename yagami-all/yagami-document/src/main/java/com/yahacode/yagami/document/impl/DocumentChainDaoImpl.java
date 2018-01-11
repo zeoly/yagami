@@ -3,12 +3,8 @@ package com.yahacode.yagami.document.impl;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.impl.BaseDaoImpl;
 import com.yahacode.yagami.document.dao.DocumentChainDao;
-import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.DocumentChain;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
