@@ -22,8 +22,6 @@ public class BaseAction {
 
     public static final String PEOPLE_KEY = "peopleInfo";
 
-    protected static final String SUCCESS = "success";
-
     protected HttpSession getSession() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes();

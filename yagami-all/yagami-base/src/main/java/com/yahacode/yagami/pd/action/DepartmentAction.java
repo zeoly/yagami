@@ -33,32 +33,29 @@ public class DepartmentAction extends BaseAction {
     @ApiOperation(value = "新增机构")
     @ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
     @RequestMapping(method = RequestMethod.POST)
-    public String addDepartment(@RequestBody Department department) throws BizfwServiceException {
+    public void addDepartment(@RequestBody Department department) throws BizfwServiceException {
         People people = getLoginPeople();
         department.init(people.getCode());
         departmentService.addDepartment(department);
-        return SUCCESS;
     }
 
     @ApiOperation(value = "修改机构信息")
     @ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
     @RequestMapping(method = RequestMethod.PATCH)
-    public String modifyDepartment(@RequestBody Department department) throws BizfwServiceException {
+    public void modifyDepartment(@RequestBody Department department) throws BizfwServiceException {
         People people = getLoginPeople();
         department.update(people.getCode());
         departmentService.modifyDepartment(department);
-        return SUCCESS;
     }
 
     @ApiOperation(value = "删除机构")
     @ApiImplicitParam(name = "id", value = "机构id", required = true, dataTypeClass = String.class)
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public String deleteDepartment(@PathVariable("id") String departmentId) throws BizfwServiceException {
+    public void deleteDepartment(@PathVariable("id") String departmentId) throws BizfwServiceException {
         People people = getLoginPeople();
         Department department = departmentService.queryById(departmentId);
         department.update(people.getCode());
         departmentService.deleteDepartment(department);
-        return SUCCESS;
     }
 
     @ApiOperation(value = "获取登录人员机构树")

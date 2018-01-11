@@ -27,27 +27,24 @@ public class MenuAction extends BaseAction {
 
     @ResponseBody
     @RequestMapping("/addMenu.do")
-    public String addMenu(Menu menu) throws BizfwServiceException {
+    public void addMenu(Menu menu) throws BizfwServiceException {
         People people = getLoginPeople();
         menu.init(people.getCode());
         menuService.addMenu(menu);
-        return SUCCESS;
     }
 
     @ResponseBody
     @RequestMapping("/modifyMenu.do")
-    public String modifyMenu(Menu menu) throws BizfwServiceException {
+    public void modifyMenu(Menu menu) throws BizfwServiceException {
         People people = getLoginPeople();
         menu.update(people.getCode());
         menuService.modifyMenu(menu);
-        return SUCCESS;
     }
 
     @ResponseBody
     @RequestMapping("/deleteMenu.do")
-    public String deleteMenu(String menuId) throws BizfwServiceException {
+    public void deleteMenu(String menuId) throws BizfwServiceException {
         menuService.deleteMenu(menuId);
-        return SUCCESS;
     }
 
     @ResponseBody
@@ -59,13 +56,12 @@ public class MenuAction extends BaseAction {
 
     @ResponseBody
     @RequestMapping("/setMenuOfRole.do")
-    public String setMenuOfRole(String roleId, @RequestParam(value = "menuIdList[]") List<String> menuIdList) throws
+    public void setMenuOfRole(String roleId, @RequestParam(value = "menuIdList[]") List<String> menuIdList) throws
             BizfwServiceException {
         People people = getLoginPeople();
         Role role = roleService.queryById(roleId);
         role.update(people.getCode());
         menuService.setMenuOfRole(role, menuIdList);
-        return SUCCESS;
     }
 
     @RequestMapping("/getMenuTree.do")
