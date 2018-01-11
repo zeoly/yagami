@@ -14,12 +14,6 @@
   <dependencies>
     <dependency>
       <groupId>com.yahacode.yagami</groupId>
-      <artifactId>yagami-base-user</artifactId>
-      <version>${project.parent.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.yahacode.yagami</groupId>
       <artifactId>yagami-document</artifactId>
       <version>${project.parent.version}</version>
     </dependency>

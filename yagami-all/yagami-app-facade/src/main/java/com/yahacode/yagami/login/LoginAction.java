@@ -99,7 +99,7 @@ public class LoginAction extends BaseAction {
         logger.info("{}登出系统", people.getCode());
         removeLoginInfo(request);
         request.getSession().invalidate();
-        return SUCCESS;
+        return "Y";
     }
 
 }
