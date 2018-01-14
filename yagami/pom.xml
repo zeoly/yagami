@@ -16,16 +16,11 @@
     <version.yagami>1.0</version.yagami>
   </properties>
 
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.4.RELEASE</version>
-  </parent>
-
   <modules>
     <module>yagami-base</module>
     <module>yagami-document</module>
     <module>yagami-claim</module>
+    <module>yagami-app-facade</module>
     <module>yagami-app-bootstrap</module>
 
     <module>yagami-bpm</module>
@@ -33,11 +28,17 @@
     <module>yagami-ribbon</module>
     <module>anochat-consumer</module>
     <module>anochat-base</module>
-    <module>yagami-app-facade</module>
   </modules>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>1.5.6.RELEASE</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
