@@ -3,6 +3,9 @@ package com.yahacode.yagami.base.impl;
 import java.util.List;
 
 import com.yahacode.yagami.base.common.ListUtils;
+import com.yahacode.yagami.base.common.ServletContextHolder;
+import com.yahacode.yagami.base.consts.SessionKeyConsts;
+import com.yahacode.yagami.pd.model.People;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +64,11 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
         if (object == null) {
             throw new BizfwServiceException(ErrorCode.NULL_PARAM, target, operation);
         }
+    }
+
+    @Override
+    public People getLoginPeople() {
+        return (People) ServletContextHolder.getSession().getAttribute(SessionKeyConsts.LOGIN_PEOPLE);
     }
 
 //	@Override

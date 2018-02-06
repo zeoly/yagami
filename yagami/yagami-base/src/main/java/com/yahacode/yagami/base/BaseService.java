@@ -1,5 +1,7 @@
 package com.yahacode.yagami.base;
 
+import com.yahacode.yagami.pd.model.People;
+
 import java.util.List;
 
 /**
@@ -89,10 +91,19 @@ public interface BaseService<T extends BaseModel> {
     void checkObjectNotNull(Object object, String target, String operation) throws BizfwServiceException;
 
     /**
+     * get the login people
+     *
+     * @return login people
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    People getLoginPeople() throws BizfwServiceException;
+
+    /**
      * 保存并放入cache
      *
      * @param t
-     *            维护对象
+     *         维护对象
      * @return 主键
      */
 //	public String saveWithCache(T t);

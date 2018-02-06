@@ -1,5 +1,7 @@
 package com.yahacode.yagami.base;
 
+import com.yahacode.yagami.base.common.ServletContextHolder;
+import com.yahacode.yagami.base.consts.SessionKeyConsts;
 import com.yahacode.yagami.pd.model.People;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
@@ -20,25 +22,16 @@ import java.util.Date;
  */
 public class BaseAction {
 
-    public static final String PEOPLE_KEY = "peopleInfo";
-
-    protected HttpSession getSession() {
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes();
-        HttpServletRequest httpServletRequest = requestAttributes.getRequest();
-        return httpServletRequest.getSession();
-    }
-
     protected People getLoginPeople() {
-        return (People) getSession().getAttribute(PEOPLE_KEY);
+        return (People) ServletContextHolder.getSession().getAttribute(SessionKeyConsts.LOGIN_PEOPLE);
     }
 
     public void setLoginPeople(People peopleInfo) {
-        getSession().setAttribute(PEOPLE_KEY, peopleInfo);
+        ServletContextHolder.getSession().setAttribute(SessionKeyConsts.LOGIN_PEOPLE, peopleInfo);
     }
 
     public void removeLoginInfo(HttpServletRequest request) {
-        request.getSession().removeAttribute(PEOPLE_KEY);
+        request.getSession().removeAttribute(SessionKeyConsts.LOGIN_PEOPLE);
     }
 
     @InitBinder
