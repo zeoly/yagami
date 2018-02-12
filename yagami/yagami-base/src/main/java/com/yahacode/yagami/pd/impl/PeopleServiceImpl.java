@@ -62,7 +62,8 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
         }
         people.setErrorCount(0);
         people.setStatus(People.STATUS_NORMAL);
-        people.setPassword(StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd")));
+        people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(PropertiesUtils
+                .getSysConfig("default.pwd"))));
         String id = save(people);
         roleService.setRoleOfPeople(people);
         return id;
@@ -131,11 +132,10 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     @Override
     public void modifyPassword(People people, String oldPwd, String newPwd) throws BizfwServiceException {
         logger.info("{}修改密码操作开始", people.getCode());
-        String oldMd5 = StringUtils.encryptMD5(oldPwd);
-        if (!oldMd5.equals(people.getPassword())) {
+        if (!oldPwd.equals(people.getPassword())) {
             throw new BizfwServiceException(UPDATE_FAIL_PWD_ERR);
         }
-        people.setPassword(StringUtils.encryptMD5(newPwd));
+        people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(newPwd)));
         update(people);
         logger.info("{}修改密码操作结束", people.getCode());
     }

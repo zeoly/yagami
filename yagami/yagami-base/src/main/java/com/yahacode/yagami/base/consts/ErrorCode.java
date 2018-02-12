@@ -129,6 +129,11 @@ public class ErrorCode {
         private static final String ROLE_PREFIX = AUTH_PREFIX + "01";
 
         /**
+         * 登录模块前缀
+         */
+        private static final String LOGIN_PREFIX = AUTH_PREFIX + "02";
+
+        /**
          * 菜单模块
          *
          * @author zengyongli
@@ -172,6 +177,33 @@ public class ErrorCode {
              * 已有重名角色，修改失败
              */
             public static final String MOD_FAIL_EXISTED = ROLE_PREFIX + "03";
+        }
+
+        /**
+         * 登录模块
+         */
+        public class LOGIN {
+
+            /**
+             * 账户不存在
+             */
+            public static final String ACCOUNT_NOT_EXISTS = LOGIN_PREFIX + "00";
+            ;
+
+            /**
+             * 账户已锁定，请联系管理员解锁
+             */
+            public static final String ACCOUNT_LOCKED = LOGIN_PREFIX + "01";
+
+            /**
+             * 账户正在审核中，请耐心等待
+             */
+            public static final String ACCOUNT_INVALID = LOGIN_PREFIX + "02";
+
+            /**
+             * 密码错误, 你还有{0}次机会尝试
+             */
+            public static final String PASSWORD_ERROR = LOGIN_PREFIX + "03";
         }
     }
 
