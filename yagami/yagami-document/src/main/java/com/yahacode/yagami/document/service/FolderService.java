@@ -75,13 +75,11 @@ public interface FolderService extends BaseService<Folder> {
      *
      * @param folderId
      *         folder pk
-     * @param people
-     *         operation people, just for log
      * @throws BizfwServiceException
      *         if target folder is not exists;
      *         if folder contains any child folder or document;
      */
-    void deleteFolder(String folderId, People people) throws BizfwServiceException;
+    void deleteFolder(String folderId) throws BizfwServiceException;
 
     /**
      * add a document in folder
@@ -90,25 +88,21 @@ public interface FolderService extends BaseService<Folder> {
      *         target file
      * @param folderId
      *         folder pk
-     * @param peopleCode
-     *         operator code
      * @return document pk
      * @throws BizfwServiceException
      *         framework exception
      */
-    String addDocument(MultipartFile file, String folderId, String peopleCode) throws BizfwServiceException;
+    String addDocument(MultipartFile file, String folderId) throws BizfwServiceException;
 
     /**
      * delete document under folder
      *
      * @param documentId
      *         document pk
-     * @param people
-     *         operator
      * @throws BizfwServiceException
      *         framework exception
      */
-    void deleteDocument(String documentId, People people) throws BizfwServiceException;
+    void deleteDocument(String documentId) throws BizfwServiceException;
 
     /**
      * set the role authority of a folder
@@ -117,12 +111,10 @@ public interface FolderService extends BaseService<Folder> {
      *         target folder pk
      * @param roleIdList
      *         the role pk list
-     * @param peopleCode
-     *         operator code
      * @throws BizfwServiceException
      *         framework exception
      */
-    void setFolderAuthority(String folderId, List<String> roleIdList, String peopleCode) throws BizfwServiceException;
+    void setFolderAuthority(String folderId, List<String> roleIdList) throws BizfwServiceException;
 
     /**
      * get the role authority of a folder

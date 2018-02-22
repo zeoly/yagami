@@ -89,7 +89,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     }
 
     @Override
-    public void deleteFolder(String folderId, People people) throws BizfwServiceException {
+    public void deleteFolder(String folderId) throws BizfwServiceException {
         Folder folder = queryById(folderId);
         checkObjectNotNull(folder, "文件夹[" + folderId + "]", "删除文件夹");
         checkCanDeleteFolder(folder);
@@ -98,18 +98,20 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
 
     @Transactional
     @Override
-    public String addDocument(MultipartFile file, String folderId, String peopleCode) throws BizfwServiceException {
-        Document document = documentService.saveDocument(file, peopleCode);
-        FolderDocRelation folderDocRelation = new FolderDocRelation(peopleCode, folderId, document.getIdBfDocument());
+    public String addDocument(MultipartFile file, String folderId) throws BizfwServiceException {
+        People loginPeople = getLoginPeople();
+        Document document = documentService.saveDocument(file, loginPeople.getCode());
+        FolderDocRelation folderDocRelation = new FolderDocRelation(loginPeople.getCode(), folderId, document
+                .getIdBfDocument());
         folderDocRelDao.save(folderDocRelation);
         return document.getIdBfDocument();
     }
 
     @Transactional
     @Override
-    public void deleteDocument(String documentId, People people) throws BizfwServiceException {
+    public void deleteDocument(String documentId) throws BizfwServiceException {
         Document document = documentService.queryById(documentId);
-        document.update(people.getCode());
+        document.update(getLoginPeople().getCode());
         documentService.deleteDocument(document);
 
         folderDocRelDao.deleteByFieldAndValue(FolderDocRelation.COLUMN_DOCUMENT_ID, documentId);
@@ -117,11 +119,11 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
 
     @Transactional
     @Override
-    public void setFolderAuthority(String folderId, List<String> roleIdList, String peopleCode) throws
-            BizfwServiceException {
+    public void setFolderAuthority(String folderId, List<String> roleIdList) throws BizfwServiceException {
         roleFolderAuthorityDao.deleteByFolder(folderId);
         for (String roleId : roleIdList) {
-            RoleFolderAuthority roleFolderAuthority = new RoleFolderAuthority(peopleCode, roleId, folderId);
+            RoleFolderAuthority roleFolderAuthority = new RoleFolderAuthority(getLoginPeople().getCode(), roleId,
+                    folderId);
             roleFolderAuthorityDao.save(roleFolderAuthority);
         }
     }
