@@ -20,13 +20,11 @@ public interface DocumentGroupService extends BaseService<DocumentGroup> {
      *         target file
      * @param groupNo
      *         document group pk
-     * @param peopleCode
-     *         operator code
      * @return document pk
      * @throws BizfwServiceException
      *         framework exception
      */
-    String addDocument(MultipartFile file, String groupNo, String peopleCode) throws BizfwServiceException;
+    String addDocument(MultipartFile file, String groupNo) throws BizfwServiceException;
 
     /**
      * get the documents of the same group number

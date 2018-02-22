@@ -30,26 +30,22 @@ public interface DocumentService extends BaseService<Document> {
      *
      * @param file
      *         target file
-     * @param peopleCode
-     *         operator code
      * @return document entity
      * @throws BizfwServiceException
      *         framework exception
      */
-    Document saveDocument(MultipartFile file, String peopleCode) throws BizfwServiceException;
+    Document saveDocument(MultipartFile file) throws BizfwServiceException;
 
     /**
      * save batch files
      *
      * @param files
      *         target files
-     * @param peopleCode
-     *         operator code
      * @return document group number
      * @throws BizfwServiceException
      *         framework exception
      */
-    String saveDocuments(List<MultipartFile> files, String peopleCode) throws BizfwServiceException;
+    String saveDocuments(List<MultipartFile> files) throws BizfwServiceException;
 
     /**
      * modify document's name and extension

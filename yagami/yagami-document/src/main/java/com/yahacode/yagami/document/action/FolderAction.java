@@ -51,8 +51,7 @@ public class FolderAction extends BaseAction {
     @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String.class)
     @RequestMapping(method = RequestMethod.DELETE, value = "/{folderId}")
     public void deleteFolder(@PathVariable("folderId") String folderId) throws BizfwServiceException {
-        People people = getLoginPeople();
-        folderService.deleteFolder(folderId, people);
+        folderService.deleteFolder(folderId);
     }
 
     @ApiOperation(value = "获取所有文件夹树结构")
@@ -85,7 +84,7 @@ public class FolderAction extends BaseAction {
     @RequestMapping(method = RequestMethod.POST, value = "/{folderId}/authority")
     public void setFolderAuthority(@PathVariable("folderId") String folderId, @RequestBody List<String> roleIdList)
             throws BizfwServiceException {
-        folderService.setFolderAuthority(folderId, roleIdList, getLoginPeople().getCode());
+        folderService.setFolderAuthority(folderId, roleIdList);
     }
 
     @ApiOperation(value = "在文件夹下新增文件")
@@ -95,14 +94,14 @@ public class FolderAction extends BaseAction {
     @RequestMapping(method = RequestMethod.POST, value = "/{folderId}/document")
     public void addDocument(@RequestBody MultipartFile file, @PathVariable("folderId") String folderId) throws
             BizfwServiceException {
-        folderService.addDocument(file, folderId, getLoginPeople().getCode());
+        folderService.addDocument(file, folderId);
     }
 
     @ApiOperation(value = "删除文件夹下的文件")
     @ApiImplicitParam(name = "documentId", value = "文件id", required = true, dataTypeClass = String.class)
     @RequestMapping(method = RequestMethod.DELETE, value = "/document/{documentId}")
     public void deleteDocument(@PathVariable("documentId") String documentId) throws BizfwServiceException {
-        folderService.deleteDocument(documentId, getLoginPeople());
+        folderService.deleteDocument(documentId);
     }
 
     @Autowired

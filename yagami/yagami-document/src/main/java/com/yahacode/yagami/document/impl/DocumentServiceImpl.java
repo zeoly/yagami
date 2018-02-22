@@ -13,6 +13,7 @@ import com.yahacode.yagami.document.model.DocumentChain;
 import com.yahacode.yagami.document.model.DocumentGroup;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.utils.FileUtils;
+import com.yahacode.yagami.pd.model.People;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +52,12 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
     }
 
     @Override
-    public Document saveDocument(MultipartFile file, String peopleCode) throws BizfwServiceException {
+    public Document saveDocument(MultipartFile file) throws BizfwServiceException {
         try {
             String fileName = file.getOriginalFilename();
             String md5 = FileUtils.getMD5(file);
 
-            Document document = new Document(peopleCode);
+            Document document = new Document(getLoginPeople().getCode());
             document.setName(fileName);
             document.setExtension(FileUtils.getExtension(document.getName()));
             document.setDownloadCount(0);
@@ -84,11 +85,13 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
 
     @Transactional
     @Override
-    public String saveDocuments(List<MultipartFile> files, String peopleCode) throws BizfwServiceException {
+    public String saveDocuments(List<MultipartFile> files) throws BizfwServiceException {
         String documentGroupNo = StringUtils.generateUUID();
+        People operator = getLoginPeople();
         for (MultipartFile file : files) {
-            Document document = saveDocument(file, peopleCode);
-            DocumentGroup documentGroup = new DocumentGroup(peopleCode, documentGroupNo, document.getIdBfDocument());
+            Document document = saveDocument(file);
+            DocumentGroup documentGroup = new DocumentGroup(operator.getCode(), documentGroupNo, document
+                    .getIdBfDocument());
             documentGroupDao.save(documentGroup);
         }
         return documentGroupNo;
@@ -99,7 +102,7 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
         Document dbDocument = queryById(document.getIdBfDocument());
         dbDocument.setName(document.getName());
         dbDocument.setExtension(FileUtils.getExtension(document.getName()));
-        dbDocument.update(document.getUpdateBy());
+        dbDocument.update(getLoginPeople().getCode());
         update(dbDocument);
     }
 

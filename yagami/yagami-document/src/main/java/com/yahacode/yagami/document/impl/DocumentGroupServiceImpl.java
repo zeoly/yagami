@@ -28,9 +28,10 @@ public class DocumentGroupServiceImpl extends BaseServiceImpl<DocumentGroup> imp
     private DocumentService documentService;
 
     @Override
-    public String addDocument(MultipartFile file, String groupNo, String peopleCode) throws BizfwServiceException {
-        Document document = documentService.saveDocument(file, peopleCode);
-        DocumentGroup documentGroup = new DocumentGroup(peopleCode, groupNo, document.getIdBfDocument());
+    public String addDocument(MultipartFile file, String groupNo) throws BizfwServiceException {
+        Document document = documentService.saveDocument(file);
+        DocumentGroup documentGroup = new DocumentGroup(getLoginPeople().getCode(), groupNo, document.getIdBfDocument
+                ());
         save(documentGroup);
         return document.getIdBfDocument();
     }

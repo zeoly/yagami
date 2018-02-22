@@ -50,6 +50,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         if (ListUtils.isNotEmpty(tmpRole)) {
             throw new BizfwServiceException(ADD_FAIL_EXISTED);
         }
+        role.init(getLoginPeople().getCode());
         logger.info("{}新增角色{}", role.getUpdateBy(), role.getName());
         return save(role);
     }
@@ -64,7 +65,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         Role dbRole = queryById(role.getIdBfRole());
         dbRole.setName(role.getName());
         dbRole.setDescription(role.getDescription());
-        dbRole.update(role.getUpdateBy());
+        dbRole.update(getLoginPeople().getCode());
         update(dbRole);
     }
 
@@ -86,8 +87,8 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
             if (role == null) {
                 throw new BizfwServiceException(SET_ROLE_REL_FAIL_NOT_FOUND, id);
             }
-            PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(people.getUpdateBy(), people.getIdBfPeople
-                    (), role.getIdBfRole());
+            PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(getLoginPeople().getCode(), people
+                    .getIdBfPeople(), role.getIdBfRole());
             peopleRoleRelDao.save(peopleRoleRelation);
         }
     }

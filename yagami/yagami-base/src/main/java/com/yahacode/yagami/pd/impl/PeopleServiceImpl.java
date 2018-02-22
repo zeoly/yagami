@@ -49,17 +49,19 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     @Transactional
     @Override
     public String addPeople(People people) throws BizfwServiceException {
-        logger.info("{}新增人员{}", people.getUpdateBy(), people.getCode());
+        People operator = getLoginPeople();
+        logger.info("{}新增人员{}", operator.getCode(), people.getCode());
         People tmpPeople = getByCode(people.getCode());
         if (tmpPeople != null) {
-            logger.error("{}新增人员{}失败，人员已存在", people.getUpdateBy(), people.getCode());
+            logger.error("{}新增人员{}失败，人员已存在", operator.getCode(), people.getCode());
             throw new BizfwServiceException(ADD_FAIL_EXISTED, people.getCode());
         }
         Department department = departmentService.queryById(people.getDepartmentId());
         if (department == null) {
-            logger.error("{}新增人员{}失败，机构{}为空", people.getUpdateBy(), people.getCode(), people.getDepartmentId());
+            logger.error("{}新增人员{}失败，机构{}为空", operator.getCode(), people.getCode(), people.getDepartmentId());
             throw new BizfwServiceException(ADD_FAIL_WITHOUT_DEPT);
         }
+        people.init(operator.getCode());
         people.setErrorCount(0);
         people.setStatus(People.STATUS_NORMAL);
         people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(PropertiesUtils
@@ -72,23 +74,26 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     @Transactional
     @Override
     public void modifyPeople(People people) throws BizfwServiceException {
-        logger.info("{}修改人员{}操作开始", people.getUpdateBy(), people.getCode());
+        People operator = getLoginPeople();
+        logger.info("{}修改人员{}操作开始", operator.getCode(), people.getCode());
+        people.update(operator.getCode());
         roleService.setRoleOfPeople(people);
         update(people);
-        logger.info("{}修改人员{}操作完成", people.getUpdateBy(), people.getCode());
+        logger.info("{}修改人员{}操作完成", operator.getCode(), people.getCode());
     }
 
     @Transactional
     @Override
     public void deletePeople(People people) throws BizfwServiceException {
-        logger.info("{}删除人员{}操作开始", people.getUpdateBy(), people.getCode());
+        People operator = getLoginPeople();
+        logger.info("{}删除人员{}操作开始", operator.getCode(), people.getCode());
         if (people.getCode().equals(people.getUpdateBy())) {
-            logger.error("{}删除自己失败", people.getUpdateBy());
+            logger.error("{}删除自己，失败", operator.getCode());
             throw new BizfwServiceException(DEL_FAIL_SELF);
         }
         delete(people.getIdBfPeople());
         peopleRoleRelDao.deleteByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, people.getIdBfPeople());
-        logger.info("{}删除人员{}操作完成", people.getUpdateBy(), people.getCode());
+        logger.info("{}删除人员{}操作完成", people.getCode(), people.getCode());
     }
 
     @Transactional
@@ -116,17 +121,18 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 
     @Override
     public void unlock(People people) throws BizfwServiceException {
-        logger.info("{}解锁人员{}操作开始", people.getUpdateBy(), people.getCode());
+        People operator = getLoginPeople();
+        logger.info("{}解锁人员{}操作开始", operator.getCode(), people.getCode());
         if (!People.STATUS_LOCKED.equals(people.getStatus())) {
-            logger.error("{}解锁人员{}操作失败, 人员状态为{}", people.getUpdateBy(), people.getCode(), people.getStatus());
+            logger.error("{}解锁人员{}操作失败, 人员状态为{}", operator.getCode(), people.getCode(), people.getStatus());
             throw new BizfwServiceException(UNLOCK_FAIL_STATUS_ERR);
         }
-        people.update();
+        people.update(operator.getCode());
         people.setStatus(People.STATUS_NORMAL);
         people.setPassword(StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd")));
         people.setErrorCount(0);
         update(people);
-        logger.info("{}解锁人员{}操作结束", people.getUpdateBy(), people.getCode());
+        logger.info("{}解锁人员{}操作结束", operator.getCode(), people.getCode());
     }
 
     @Override

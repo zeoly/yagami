@@ -45,8 +45,6 @@ public class DocumentAction extends BaseAction {
     @ApiImplicitParam(name = "document", value = "文件", required = true, dataTypeClass = Document.class)
     @RequestMapping(method = RequestMethod.PATCH, value = "/{documentId}")
     public void modifyDocument(@RequestBody Document document) throws BizfwServiceException {
-        People people = getLoginPeople();
-        document.update(people.getCode());
         documentService.modifyDocument(document);
     }
 
@@ -57,7 +55,7 @@ public class DocumentAction extends BaseAction {
     @RequestMapping(method = RequestMethod.POST, value = "/{documentId}")
     public void updateDocument(@RequestBody MultipartFile file, @PathVariable("documentId") String documentId) throws
             BizfwServiceException {
-        Document document = documentService.saveDocument(file, getLoginPeople().getCode());
+        Document document = documentService.saveDocument(file);
         documentService.updateDocument(document, documentId);
     }
 
@@ -95,7 +93,7 @@ public class DocumentAction extends BaseAction {
     @RequestMapping(method = RequestMethod.POST, value = "/group/{groupNo}")
     public String addDocument(MultipartFile file, @PathVariable("groupNo") String groupNo) throws
             BizfwServiceException {
-        return documentGroupService.addDocument(file, groupNo, getLoginPeople().getCode());
+        return documentGroupService.addDocument(file, groupNo);
     }
 
     @ApiOperation(value = "查询文档组下所有文件")

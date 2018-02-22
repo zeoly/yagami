@@ -32,8 +32,6 @@ public class RoleAction extends BaseAction {
     @ApiImplicitParam(name = "role", value = "角色模型", required = true, dataTypeClass = Role.class)
     @RequestMapping(method = RequestMethod.POST)
     public void addRole(@RequestBody Role role) throws BizfwServiceException {
-        People people = getLoginPeople();
-        role.init(people.getCode());
         roleService.addRole(role);
     }
 
@@ -41,8 +39,6 @@ public class RoleAction extends BaseAction {
     @ApiImplicitParam(name = "role", value = "角色模型", required = true, dataTypeClass = Role.class)
     @RequestMapping(method = RequestMethod.PATCH)
     public void modifyRole(@RequestBody Role role) throws BizfwServiceException {
-        People people = getLoginPeople();
-        role.update(people.getCode());
         roleService.modify(role);
     }
 

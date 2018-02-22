@@ -39,8 +39,6 @@ public class PeopleAction extends BaseAction {
     @ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
     @PostMapping
     public void addPeople(@RequestBody People people) throws BizfwServiceException {
-        People loginPeople = getLoginPeople();
-        people.init(loginPeople.getCode());
         peopleService.addPeople(people);
     }
 
@@ -48,8 +46,7 @@ public class PeopleAction extends BaseAction {
     @ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
     @PatchMapping
     public void modifyPeople(@RequestBody People people) throws BizfwServiceException {
-        People loginPeople = getLoginPeople();
-        people.update(loginPeople.getCode());
+        people.update(getLoginPeople().getCode());
         peopleService.modifyPeople(people);
     }
 
@@ -57,9 +54,8 @@ public class PeopleAction extends BaseAction {
     @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
     @DeleteMapping(value = "{id}")
     public void deletePeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
-        People loginPeople = getLoginPeople();
         People people = peopleService.queryById(peopleId);
-        people.update(loginPeople.getCode());
+        people.update(getLoginPeople().getCode());
         peopleService.deletePeople(people);
     }
 
@@ -67,9 +63,8 @@ public class PeopleAction extends BaseAction {
     @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
     @PutMapping(value = "{id}")
     public void unlockPeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
-        People loginPeople = getLoginPeople();
         People people = peopleService.queryById(peopleId);
-        people.update(loginPeople.getCode());
+        people.update(getLoginPeople().getCode());
         peopleService.unlock(people);
     }
 
@@ -79,9 +74,7 @@ public class PeopleAction extends BaseAction {
     @PatchMapping(value = "/password/{old}/{new}")
     public void modifyPassword(@PathVariable("old") String oldPassword, @PathVariable("new") String newPassword)
             throws BizfwServiceException {
-        People loginPeople = getLoginPeople();
-        loginPeople.update();
-        peopleService.modifyPassword(loginPeople, oldPassword, newPassword);
+        peopleService.modifyPassword(getLoginPeople(), oldPassword, newPassword);
     }
 
     @ApiOperation(value = "获取人员所有角色")
