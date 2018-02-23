@@ -6,14 +6,16 @@ import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.service.DocumentGroupService;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.utils.FileUtils;
-import com.yahacode.yagami.pd.model.People;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,7 +45,7 @@ public class DocumentAction extends BaseAction {
 
     @ApiOperation(value = "修改文件")
     @ApiImplicitParam(name = "document", value = "文件", required = true, dataTypeClass = Document.class)
-    @RequestMapping(method = RequestMethod.PATCH, value = "/{documentId}")
+    @PatchMapping("/{documentId}")
     public void modifyDocument(@RequestBody Document document) throws BizfwServiceException {
         documentService.modifyDocument(document);
     }
@@ -52,7 +54,7 @@ public class DocumentAction extends BaseAction {
     @ApiImplicitParams({@ApiImplicitParam(name = "documentId", value = "主键", required = true, dataTypeClass = String
             .class), @ApiImplicitParam(name = "file", value = "新文件", required = true, dataTypeClass = MultipartFile
             .class)})
-    @RequestMapping(method = RequestMethod.POST, value = "/{documentId}")
+    @PostMapping("/{documentId}")
     public void updateDocument(@RequestBody MultipartFile file, @PathVariable("documentId") String documentId) throws
             BizfwServiceException {
         Document document = documentService.saveDocument(file);
@@ -61,7 +63,7 @@ public class DocumentAction extends BaseAction {
 
     @ApiOperation(value = "下载文件")
     @ApiImplicitParam(name = "documentId", value = "主键", required = true, dataTypeClass = String.class)
-    @RequestMapping(method = RequestMethod.GET, value = "/{documentId}")
+    @GetMapping("/{documentId}")
     public void downloadDocument(HttpServletRequest request, HttpServletResponse response, @PathVariable
             ("documentId") String documentId) throws BizfwServiceException, IOException {
         try {
@@ -90,7 +92,7 @@ public class DocumentAction extends BaseAction {
     @ApiImplicitParams({@ApiImplicitParam(name = "groupNo", value = "文档组编号", required = true, dataTypeClass = String
             .class), @ApiImplicitParam(name = "file", value = "新文件", required = true, dataTypeClass = MultipartFile
             .class)})
-    @RequestMapping(method = RequestMethod.POST, value = "/group/{groupNo}")
+    @PostMapping("/group/{groupNo}")
     public String addDocument(MultipartFile file, @PathVariable("groupNo") String groupNo) throws
             BizfwServiceException {
         return documentGroupService.addDocument(file, groupNo);
@@ -98,7 +100,7 @@ public class DocumentAction extends BaseAction {
 
     @ApiOperation(value = "查询文档组下所有文件")
     @ApiImplicitParam(name = "groupNo", value = "文档组编号", required = true, dataTypeClass = String.class)
-    @RequestMapping(method = RequestMethod.GET, value = "/group/{groupNo}")
+    @GetMapping("/group/{groupNo}")
     public List<Document> getByDocumentGroupNo(@PathVariable("groupNo") String groupNo) throws BizfwServiceException {
         return documentGroupService.getByGroupNo(groupNo);
     }

@@ -10,7 +10,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,7 +31,7 @@ public class FolderAction extends BaseAction {
 
     @ApiOperation(value = "新增文件夹")
     @ApiImplicitParam(name = "folder", value = "文件夹模型", required = true, dataTypeClass = Folder.class)
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping
     public void addFolder(@RequestBody Folder folder) throws BizfwServiceException {
         People people = getLoginPeople();
         folder.init(people.getCode());
@@ -38,7 +42,7 @@ public class FolderAction extends BaseAction {
     @ApiImplicitParams({@ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String
             .class), @ApiImplicitParam(name = "folder", value = "文件夹模型", required = true, dataTypeClass = Folder
             .class)})
-    @RequestMapping(method = RequestMethod.PATCH, value = "/{folderId}")
+    @PatchMapping("/{folderId}")
     public void modifyFolder(@PathVariable("folderId") String folderId, @RequestBody Folder folder) throws
             BizfwServiceException {
         People people = getLoginPeople();
@@ -49,20 +53,20 @@ public class FolderAction extends BaseAction {
 
     @ApiOperation(value = "删除文件夹")
     @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String.class)
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{folderId}")
+    @DeleteMapping("/{folderId}")
     public void deleteFolder(@PathVariable("folderId") String folderId) throws BizfwServiceException {
         folderService.deleteFolder(folderId);
     }
 
     @ApiOperation(value = "获取所有文件夹树结构")
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public Folder getAllFolderTree() throws BizfwServiceException {
         return folderService.getAllFolderTree();
     }
 
     @ApiOperation(value = "获取文件夹下内容")
     @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String.class)
-    @RequestMapping(method = RequestMethod.GET, value = "folderId}")
+    @GetMapping("{folderId}")
     public Folder getContentOfFolder(@PathVariable("folderId") String folderId) throws BizfwServiceException {
         People people = getLoginPeople();
         Folder folder = folderService.queryById(folderId);
@@ -72,7 +76,7 @@ public class FolderAction extends BaseAction {
 
     @ApiOperation(value = "获取文件夹权限")
     @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String.class)
-    @RequestMapping(method = RequestMethod.GET, value = "/{folderId}/authority")
+    @GetMapping("/{folderId}/authority")
     public List<Role> getFolderAuthority(@PathVariable("folderId") String folderId) throws BizfwServiceException {
         return folderService.getFolderAuthority(folderId);
     }
@@ -81,7 +85,7 @@ public class FolderAction extends BaseAction {
     @ApiImplicitParams({@ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String
             .class), @ApiImplicitParam(name = "roleIdList", value = "角色id列表", required = true, dataTypeClass = List
             .class)})
-    @RequestMapping(method = RequestMethod.POST, value = "/{folderId}/authority")
+    @PostMapping("/{folderId}/authority")
     public void setFolderAuthority(@PathVariable("folderId") String folderId, @RequestBody List<String> roleIdList)
             throws BizfwServiceException {
         folderService.setFolderAuthority(folderId, roleIdList);
@@ -91,7 +95,7 @@ public class FolderAction extends BaseAction {
     @ApiImplicitParams({@ApiImplicitParam(name = "file", value = "文件", required = true, dataTypeClass = MultipartFile
             .class), @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String
             .class)})
-    @RequestMapping(method = RequestMethod.POST, value = "/{folderId}/document")
+    @PostMapping("/{folderId}/document")
     public void addDocument(@RequestBody MultipartFile file, @PathVariable("folderId") String folderId) throws
             BizfwServiceException {
         folderService.addDocument(file, folderId);
@@ -99,7 +103,7 @@ public class FolderAction extends BaseAction {
 
     @ApiOperation(value = "删除文件夹下的文件")
     @ApiImplicitParam(name = "documentId", value = "文件id", required = true, dataTypeClass = String.class)
-    @RequestMapping(method = RequestMethod.DELETE, value = "/document/{documentId}")
+    @DeleteMapping("/document/{documentId}")
     public void deleteDocument(@PathVariable("documentId") String documentId) throws BizfwServiceException {
         folderService.deleteDocument(documentId);
     }
