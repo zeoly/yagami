@@ -39,12 +39,12 @@ public interface PeopleService extends BaseService<People> {
     /**
      * delete people by pk
      *
-     * @param people
-     *         entity
+     * @param peopleId
+     *         pk
      * @throws BizfwServiceException
      *         if the target people is the operator
      */
-    void deletePeople(People people) throws BizfwServiceException;
+    void deletePeople(String peopleId) throws BizfwServiceException;
 
     /**
      * get people by code

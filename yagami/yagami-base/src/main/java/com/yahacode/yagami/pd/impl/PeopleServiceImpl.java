@@ -84,16 +84,17 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 
     @Transactional
     @Override
-    public void deletePeople(People people) throws BizfwServiceException {
+    public void deletePeople(String peopleId) throws BizfwServiceException {
         People operator = getLoginPeople();
-        logger.info("{}删除人员{}操作开始", operator.getCode(), people.getCode());
-        if (people.getCode().equals(people.getUpdateBy())) {
+        People target = queryById(peopleId);
+        logger.info("{}删除人员{}操作开始", operator.getCode(), target.getCode());
+        if (target.getCode().equals(operator.getCode())) {
             logger.error("{}删除自己，失败", operator.getCode());
             throw new BizfwServiceException(DEL_FAIL_SELF);
         }
-        delete(people.getIdBfPeople());
-        peopleRoleRelDao.deleteByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, people.getIdBfPeople());
-        logger.info("{}删除人员{}操作完成", people.getCode(), people.getCode());
+        delete(peopleId);
+        peopleRoleRelDao.deleteByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, peopleId);
+        logger.info("{}删除人员{}操作完成", operator.getCode(), target.getCode());
     }
 
     @Transactional

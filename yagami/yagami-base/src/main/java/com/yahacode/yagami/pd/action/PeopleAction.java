@@ -54,9 +54,7 @@ public class PeopleAction extends BaseAction {
     @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
     @DeleteMapping(value = "{id}")
     public void deletePeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
-        People people = peopleService.queryById(peopleId);
-        people.update(getLoginPeople().getCode());
-        peopleService.deletePeople(people);
+        peopleService.deletePeople(peopleId);
     }
 
     @ApiOperation(value = "解锁人员")
