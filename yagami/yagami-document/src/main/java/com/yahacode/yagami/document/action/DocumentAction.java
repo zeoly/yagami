@@ -34,8 +34,6 @@ import java.util.List;
 @RequestMapping("/document")
 public class DocumentAction extends BaseAction {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
     private DocumentService documentService;
 
     private DocumentGroupService documentGroupService;

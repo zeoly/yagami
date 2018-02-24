@@ -3,6 +3,7 @@ package com.yahacode.yagami.pd.impl;
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
+import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.consts.SystemConsts;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.dao.DepartmentDao;
@@ -31,8 +32,6 @@ import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.Dept.DEL_FAIL
 @Service
 public class DepartmentServiceImpl extends BaseServiceImpl<Department> implements DepartmentService {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
     private PeopleService peopleService;
 
     private DepartmentDao departmentDao;
@@ -42,33 +41,33 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     @Transactional
     @Override
     public void addDepartment(Department department) throws BizfwServiceException {
-        logger.info("{}新增机构{}操作开始", department.getUpdateBy(), department.getCode());
+        LogUtils.info("{}新增机构{}操作开始", department.getUpdateBy(), department.getCode());
         Department parentDept = queryById(department.getParentDepartmentId());
         department.setLevel(parentDept.getLevel() + 1);
         save(department);
         saveDepartmentRelation(department, parentDept);
-        logger.info("{}新增机构{}操作结束", department.getUpdateBy(), department.getCode());
+        LogUtils.info("{}新增机构{}操作结束", department.getUpdateBy(), department.getCode());
     }
 
     @Override
     public void modifyDepartment(Department department) throws BizfwServiceException {
-        logger.info("{}修改机构{}操作开始", department.getUpdateBy(), department.getCode());
+        LogUtils.info("{}修改机构{}操作开始", department.getUpdateBy(), department.getCode());
         Department dbDepartment = queryById(department.getIdBfDepartment());
         dbDepartment.setName(department.getName());
         dbDepartment.setCode(department.getCode());
         dbDepartment.update(department.getUpdateBy());
         update(dbDepartment);
-        logger.info("{}修改机构{}操作结束", department.getUpdateBy(), department.getCode());
+        LogUtils.info("{}修改机构{}操作结束", department.getUpdateBy(), department.getCode());
     }
 
     @Override
     public void deleteDepartment(Department department) throws BizfwServiceException {
-        logger.info("{}删除机构{}操作开始", department.getUpdateBy(), department.getCode());
+        LogUtils.info("{}删除机构{}操作开始", department.getUpdateBy(), department.getCode());
         checkObjectNotNull(department, "机构[" + department.getIdBfDepartment() + "]", "删除机构");
         checkCanDelete(department);
         delete(department.getIdBfDepartment());
         deleteUpperDepartmentRelation(department);
-        logger.info("{}删除机构{}操作结束", department.getUpdateBy(), department.getCode());
+        LogUtils.info("{}删除机构{}操作结束", department.getUpdateBy(), department.getCode());
     }
 
     @Override
@@ -150,12 +149,12 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     private void checkCanDelete(Department department) throws BizfwServiceException {
         boolean hasChildDepartment = hasChildDepartment(department);
         if (hasChildDepartment) {
-            logger.error("{}删除机构{}操作失败，存在子机构", department.getUpdateBy(), department.getCode());
+            LogUtils.error("{}删除机构{}操作失败，存在子机构", department.getUpdateBy(), department.getCode());
             throw new BizfwServiceException(DEL_FAIL_WITH_CHILD);
         }
         boolean hasPeople = hasPeople(department);
         if (hasPeople) {
-            logger.error("{}删除机构{}操作失败，存在人员", department.getUpdateBy(), department.getCode());
+            LogUtils.error("{}删除机构{}操作失败，存在人员", department.getUpdateBy(), department.getCode());
             throw new BizfwServiceException(DEL_FAIL_WITH_PEOPLE);
         }
     }

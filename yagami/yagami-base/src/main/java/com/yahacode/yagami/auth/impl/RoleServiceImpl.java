@@ -8,10 +8,9 @@ import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
+import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.model.People;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +31,6 @@ import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.SET_RO
 @Service
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
     private RoleDao roleDao;
 
     private PeopleRoleRelDao peopleRoleRelDao;
@@ -51,7 +48,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
             throw new BizfwServiceException(ADD_FAIL_EXISTED);
         }
         role.init(getLoginPeople().getCode());
-        logger.info("{}新增角色{}", role.getUpdateBy(), role.getName());
+        LogUtils.info("{}新增角色{}", role.getUpdateBy(), role.getName());
         return save(role);
     }
 
@@ -62,6 +59,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         if (ListUtils.isNotEmpty(tmpRole) && !role.getIdBfRole().equals(tmpRole.get(0).getIdBfRole())) {
             throw new BizfwServiceException(MOD_FAIL_EXISTED);
         }
+        LogUtils.info("{}修改角色{}", role.getUpdateBy(), role.getName());
         Role dbRole = queryById(role.getIdBfRole());
         dbRole.setName(role.getName());
         dbRole.setDescription(role.getDescription());
