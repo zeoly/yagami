@@ -14,6 +14,13 @@ public class StringUtils {
 
     private static Logger logger = LoggerFactory.getLogger(StringUtils.class);
 
+    public static boolean isEmpty(String str) {
+        if (str == null || "".equals(str)) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 判断字符串是否为null，空字符串
      *
@@ -22,10 +29,7 @@ public class StringUtils {
      * @return boolean
      */
     public static boolean isNotEmpty(String str) {
-        if (str == null || "".equals(str)) {
-            return false;
-        }
-        return true;
+        return !isEmpty(str);
     }
 
     /**

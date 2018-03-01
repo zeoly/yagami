@@ -8,22 +8,18 @@ import javax.servlet.http.HttpServletResponse;
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.PropertiesUtils;
-import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.pd.model.People;
 import com.yahacode.yagami.pd.service.PeopleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * login controller
@@ -57,11 +53,11 @@ public class LoginAction extends BaseAction {
     public People login(HttpServletRequest request, String username, String password) throws BizfwServiceException {
         People peopleInfo = peopleService.getByCode(username);
         if (peopleInfo == null || People.STATUS_INVALID.equals(peopleInfo.getStatus())) {
-            throw new BizfwServiceException(ErrorCode.Auth.LOGIN.ACCOUNT_NOT_EXISTS);
+            throw new BizfwServiceException(ErrorCode.Auth.Login.ACCOUNT_NOT_EXISTS);
         } else if (People.STATUS_LOCKED.equals(peopleInfo.getStatus())) {
-            throw new BizfwServiceException(ErrorCode.Auth.LOGIN.ACCOUNT_LOCKED);
+            throw new BizfwServiceException(ErrorCode.Auth.Login.ACCOUNT_LOCKED);
         } else if (People.STATUS_UNCHECK.equals(peopleInfo.getStatus())) {
-            throw new BizfwServiceException(ErrorCode.Auth.LOGIN.ACCOUNT_INVALID);
+            throw new BizfwServiceException(ErrorCode.Auth.Login.ACCOUNT_INVALID);
         } else if (!password.equals(peopleInfo.getPassword())) {
             peopleInfo.setErrorCount(peopleInfo.getErrorCount() + 1);
             if (peopleInfo.getErrorCount() >= DEFAULT_lOCK_COUNT) {
@@ -70,7 +66,7 @@ public class LoginAction extends BaseAction {
             logger.info("{}尝试登录失败，密码错误次数{}", peopleInfo.getCode(), peopleInfo.getErrorCount());
             peopleService.update(peopleInfo);
             int remainTrials = DEFAULT_lOCK_COUNT - peopleInfo.getErrorCount() + 1;
-            throw new BizfwServiceException(ErrorCode.Auth.LOGIN.PASSWORD_ERROR, remainTrials);
+            throw new BizfwServiceException(ErrorCode.Auth.Login.PASSWORD_ERROR, remainTrials);
         } else if (password.equals(peopleInfo.getPassword())) {
             logger.info("{}登录系统", peopleInfo.getCode());
             setLoginPeople(peopleInfo);

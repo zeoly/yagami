@@ -182,7 +182,7 @@ public class ErrorCode {
         /**
          * 登录模块
          */
-        public class LOGIN {
+        public class Login {
 
             /**
              * 账户不存在

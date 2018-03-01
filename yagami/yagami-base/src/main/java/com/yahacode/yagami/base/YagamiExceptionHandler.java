@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,7 +25,7 @@ public class YagamiExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public YagamiResponse jsonErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+    public ResponseEntity<YagamiResponse> jsonErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         YagamiResponse response = new YagamiResponse();
         if (e instanceof BizfwServiceException) {
             BizfwServiceException serviceException = (BizfwServiceException) e;
@@ -34,7 +36,7 @@ public class YagamiExceptionHandler {
             response.setCode(ErrorCode.DEFAULT_ERROR);
             response.setMsg(PropertiesUtils.getErrorMsg(ErrorCode.DEFAULT_ERROR));
         }
-        return response;
+        return new ResponseEntity<YagamiResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
