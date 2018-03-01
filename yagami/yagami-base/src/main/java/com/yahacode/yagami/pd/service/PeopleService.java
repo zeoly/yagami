@@ -80,14 +80,24 @@ public interface PeopleService extends BaseService<People> {
     List<People> getPeopleListByDepartment(String departmentId) throws BizfwServiceException;
 
     /**
+     * reset target people's password
+     *
+     * @param peopleId
+     *         pk
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    void resetPassword(String peopleId) throws BizfwServiceException;
+
+    /**
      * unlock a people's account
      *
-     * @param people
-     *         entity
+     * @param peopleId
+     *         pk
      * @throws BizfwServiceException
      *         if the status of people is not locked
      */
-    void unlock(People people) throws BizfwServiceException;
+    void unlock(String peopleId) throws BizfwServiceException;
 
     /**
      * modify people's login password

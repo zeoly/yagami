@@ -36,17 +36,16 @@ public class PeopleAction extends BaseAction {
     private RoleService roleService;
 
     @ApiOperation(value = "新增人员信息")
-    @ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
+    @ApiImplicitParam(name = "people", value = "人员表单信息", required = true, dataTypeClass = People.class)
     @PostMapping
     public void addPeople(@RequestBody People people) throws BizfwServiceException {
         peopleService.addPeople(people);
     }
 
     @ApiOperation(value = "修改人员信息")
-    @ApiImplicitParam(name = "peopleForm", value = "人员表单信息", required = true, dataTypeClass = People.class)
+    @ApiImplicitParam(name = "people", value = "人员表单信息", required = true, dataTypeClass = People.class)
     @PatchMapping
     public void modifyPeople(@RequestBody People people) throws BizfwServiceException {
-        people.update(getLoginPeople().getCode());
         peopleService.modifyPeople(people);
     }
 
@@ -59,11 +58,9 @@ public class PeopleAction extends BaseAction {
 
     @ApiOperation(value = "解锁人员")
     @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
-    @PutMapping(value = "{id}")
+    @PutMapping(value = "{id}/unlock")
     public void unlockPeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
-        People people = peopleService.queryById(peopleId);
-        people.update(getLoginPeople().getCode());
-        peopleService.unlock(people);
+        peopleService.unlock(peopleId);
     }
 
     @ApiOperation(value = "修改登录用户密码")

@@ -45,6 +45,8 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 
     private PeopleRoleRelDao peopleRoleRelDao;
 
+    private static final int COUNTER_ZERO = 0;
+
     @Transactional
     @Override
     public String addPeople(People people) throws BizfwServiceException {
@@ -61,7 +63,7 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
             throw new BizfwServiceException(ADD_FAIL_WITHOUT_DEPT);
         }
         people.init(operator.getCode());
-        people.setErrorCount(0);
+        people.setErrorCount(COUNTER_ZERO);
         people.setStatus(People.STATUS_NORMAL);
         people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(PropertiesUtils
                 .getSysConfig("default.pwd"))));
@@ -120,7 +122,20 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     }
 
     @Override
-    public void unlock(People people) throws BizfwServiceException {
+    public void resetPassword(String peopleId) throws BizfwServiceException {
+        People people = queryById(peopleId);
+        People operator = getLoginPeople();
+        LogUtils.info("{}重置密码{}操作开始", operator.getCode(), people.getCode());
+        people.update(operator.getCode());
+        people.setPassword(StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd")));
+        people.setErrorCount(COUNTER_ZERO);
+        update(people);
+        LogUtils.info("{}重置密码{}操作结束", operator.getCode(), people.getCode());
+    }
+
+    @Override
+    public void unlock(String peopleId) throws BizfwServiceException {
+        People people = queryById(peopleId);
         People operator = getLoginPeople();
         LogUtils.info("{}解锁人员{}操作开始", operator.getCode(), people.getCode());
         if (!People.STATUS_LOCKED.equals(people.getStatus())) {
@@ -129,8 +144,7 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
         }
         people.update(operator.getCode());
         people.setStatus(People.STATUS_NORMAL);
-        people.setPassword(StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd")));
-        people.setErrorCount(0);
+        people.setErrorCount(COUNTER_ZERO);
         update(people);
         LogUtils.info("{}解锁人员{}操作结束", operator.getCode(), people.getCode());
     }

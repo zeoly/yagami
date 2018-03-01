@@ -100,7 +100,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     @Override
     public String addDocument(MultipartFile file, String folderId) throws BizfwServiceException {
         People loginPeople = getLoginPeople();
-        Document document = documentService.saveDocument(file, loginPeople.getCode());
+        Document document = documentService.saveDocument(file);
         FolderDocRelation folderDocRelation = new FolderDocRelation(loginPeople.getCode(), folderId, document
                 .getIdBfDocument());
         folderDocRelDao.save(folderDocRelation);
