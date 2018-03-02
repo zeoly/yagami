@@ -6,4 +6,6 @@ package com.yahacode.yagami.base.consts;
 public class SessionKeyConsts {
 
     public static final String LOGIN_PEOPLE = "peopleInfo";
+
+    public static final String AUTHORIZATION = "authorization";
 }

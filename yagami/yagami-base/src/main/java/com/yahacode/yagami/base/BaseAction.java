@@ -6,10 +6,7 @@ import com.yahacode.yagami.pd.model.People;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,15 +20,23 @@ import java.util.Date;
 public class BaseAction {
 
     protected People getLoginPeople() {
-        return (People) ServletContextHolder.getSession().getAttribute(SessionKeyConsts.LOGIN_PEOPLE);
+        return (People) getSession().getAttribute(SessionKeyConsts.LOGIN_PEOPLE);
     }
 
     public void setLoginPeople(People peopleInfo) {
-        ServletContextHolder.getSession().setAttribute(SessionKeyConsts.LOGIN_PEOPLE, peopleInfo);
+        getSession().setAttribute(SessionKeyConsts.LOGIN_PEOPLE, peopleInfo);
     }
 
-    public void removeLoginInfo(HttpServletRequest request) {
-        request.getSession().removeAttribute(SessionKeyConsts.LOGIN_PEOPLE);
+    public HttpSession getSession() {
+        return ServletContextHolder.getSession();
+    }
+
+    public void setSessionItem(String key, Object value) {
+        getSession().setAttribute(key, value);
+    }
+
+    public void removeLoginInfo() {
+        getSession().removeAttribute(SessionKeyConsts.LOGIN_PEOPLE);
     }
 
     @InitBinder

@@ -1,17 +1,15 @@
 package com.yahacode.yagami.base;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.yahacode.yagami.base.common.LogUtils;
+import com.yahacode.yagami.base.common.PropertiesUtils;
+import com.yahacode.yagami.base.consts.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yahacode.yagami.base.common.PropertiesUtils;
-import com.yahacode.yagami.base.consts.ErrorCode;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * convert framework business exception to YagamiResponse
@@ -20,8 +18,6 @@ import com.yahacode.yagami.base.consts.ErrorCode;
  */
 @ControllerAdvice
 public class YagamiExceptionHandler {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
@@ -32,7 +28,7 @@ public class YagamiExceptionHandler {
             response.setCode(serviceException.getErrorCode());
             response.setMsg(serviceException.getErrorMsg());
         } else {
-            logger.error("none biz error", e);
+            LogUtils.error("none biz error", e);
             response.setCode(ErrorCode.DEFAULT_ERROR);
             response.setMsg(PropertiesUtils.getErrorMsg(ErrorCode.DEFAULT_ERROR));
         }
