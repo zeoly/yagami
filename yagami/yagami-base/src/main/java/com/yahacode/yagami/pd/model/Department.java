@@ -81,4 +81,9 @@ public class Department extends BaseModel {
         super(peopleCode);
     }
 
+    @Override
+    public String getId() {
+        return idBfDepartment;
+    }
+
 }

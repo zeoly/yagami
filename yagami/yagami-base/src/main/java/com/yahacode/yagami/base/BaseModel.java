@@ -14,7 +14,7 @@ import java.util.Date;
  * @author zengyongli
  */
 @MappedSuperclass
-public class BaseModel implements Serializable {
+public abstract class BaseModel implements Serializable {
 
     private static final long serialVersionUID = 2305562441218971838L;
 
@@ -103,4 +103,6 @@ public class BaseModel implements Serializable {
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
+
+    public abstract String getId();
 }

@@ -66,4 +66,9 @@ public class DepartmentRelation extends BaseModel {
         super(peopleCode);
     }
 
+    @Override
+    public String getId() {
+        return idBfDepartmentRel;
+    }
+
 }

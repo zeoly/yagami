@@ -57,4 +57,8 @@ public class RoleMenuRelation extends BaseModel {
         this.menuId = menuId;
     }
 
+    @Override
+    public String getId() {
+        return idBfRoleMenuRel;
+    }
 }

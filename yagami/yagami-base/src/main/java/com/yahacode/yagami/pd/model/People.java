@@ -104,4 +104,9 @@ public class People extends BaseModel {
         this.password = StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd"));
     }
 
+    @Override
+    public String getId() {
+        return idBfPeople;
+    }
+
 }

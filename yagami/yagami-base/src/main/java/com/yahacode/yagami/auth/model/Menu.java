@@ -15,110 +15,127 @@ import com.yahacode.yagami.base.BaseModel;
 
 /**
  * 菜单模型
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
+ * @copyright THINKEQUIP
  * @date 2017年3月19日
  */
 @Entity
 @Table(name = "bf_menu")
 public class Menu extends BaseModel {
 
-	private static final long serialVersionUID = 8163772024398615538L;
+    private static final long serialVersionUID = 8163772024398615538L;
 
-	public static final String ROOT_NAME = "root";
+    public static final String ROOT_NAME = "root";
 
-	public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_NAME = "name";
 
-	public static final String COLUMN_PARENT_MENU_ID = "parentMenuId";
+    public static final String COLUMN_PARENT_MENU_ID = "parentMenuId";
 
-	public static final String COLUMN_ORDERS = "orders";
+    public static final String COLUMN_ORDERS = "orders";
 
-	/** 主键 */
-	@Id
-	@Column(name = "id_bf_menu")
-	@GenericGenerator(name = "uuid", strategy = "uuid")
-	@GeneratedValue(generator = "uuid")
-	private String idBfMenu;
+    /**
+     * 主键
+     */
+    @Id
+    @Column(name = "id_bf_menu")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GeneratedValue(generator = "uuid")
+    private String idBfMenu;
 
-	/** 菜单名称 */
-	@Column(name = "name")
-	private String name;
+    /**
+     * 菜单名称
+     */
+    @Column(name = "name")
+    private String name;
 
-	/** 菜单跳转url */
-	@Column(name = "url")
-	private String url;
+    /**
+     * 菜单跳转url
+     */
+    @Column(name = "url")
+    private String url;
 
-	/** 菜单顺序 */
-	@Column(name = "orders")
-	private String orders;
+    /**
+     * 菜单顺序
+     */
+    @Column(name = "orders")
+    private String orders;
 
-	/** 父菜单id */
-	@Column(name = "parent_menu_id")
-	private String parentMenuId;
+    /**
+     * 父菜单id
+     */
+    @Column(name = "parent_menu_id")
+    private String parentMenuId;
 
-	/** 子菜单列表 */
-	@Transient
-	private List<Menu> childList;
+    /**
+     * 子菜单列表
+     */
+    @Transient
+    private List<Menu> childList;
 
-	public Menu(String peopleCode, String name, String url, String orders, String parentMenuId) {
-		super(peopleCode);
-		this.name = name;
-		this.url = url;
-		this.orders = orders;
-		this.parentMenuId = parentMenuId;
-	}
+    public Menu(String peopleCode, String name, String url, String orders, String parentMenuId) {
+        super(peopleCode);
+        this.name = name;
+        this.url = url;
+        this.orders = orders;
+        this.parentMenuId = parentMenuId;
+    }
 
-	public Menu() {
-		super();
-	}
+    public Menu() {
+        super();
+    }
 
-	public String getIdBfMenu() {
-		return idBfMenu;
-	}
+    @Override
+    public String getId() {
+        return idBfMenu;
+    }
 
-	public void setIdBfMenu(String idBfMenu) {
-		this.idBfMenu = idBfMenu;
-	}
+    public String getIdBfMenu() {
+        return idBfMenu;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setIdBfMenu(String idBfMenu) {
+        this.idBfMenu = idBfMenu;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	public String getOrders() {
-		return orders;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	public void setOrders(String orders) {
-		this.orders = orders;
-	}
+    public String getOrders() {
+        return orders;
+    }
 
-	public String getParentMenuId() {
-		return parentMenuId;
-	}
+    public void setOrders(String orders) {
+        this.orders = orders;
+    }
 
-	public void setParentMenuId(String parentMenuId) {
-		this.parentMenuId = parentMenuId;
-	}
+    public String getParentMenuId() {
+        return parentMenuId;
+    }
 
-	public List<Menu> getChildList() {
-		return childList;
-	}
+    public void setParentMenuId(String parentMenuId) {
+        this.parentMenuId = parentMenuId;
+    }
 
-	public void setChildList(List<Menu> childList) {
-		this.childList = childList;
-	}
+    public List<Menu> getChildList() {
+        return childList;
+    }
+
+    public void setChildList(List<Menu> childList) {
+        this.childList = childList;
+    }
 
 }

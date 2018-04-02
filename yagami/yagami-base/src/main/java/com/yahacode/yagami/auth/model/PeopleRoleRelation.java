@@ -59,4 +59,8 @@ public class PeopleRoleRelation extends BaseModel {
         this.roleId = roleId;
     }
 
+    @Override
+    public String getId() {
+        return idBfPeopleRoleRel;
+    }
 }

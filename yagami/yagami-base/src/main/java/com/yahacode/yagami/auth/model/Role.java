@@ -1,18 +1,16 @@
 package com.yahacode.yagami.auth.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
+import com.yahacode.yagami.base.BaseModel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.yahacode.yagami.base.BaseModel;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * model of role
@@ -57,4 +55,8 @@ public class Role extends BaseModel {
         this.description = desc;
     }
 
+    @Override
+    public String getId() {
+        return idBfRole;
+    }
 }
