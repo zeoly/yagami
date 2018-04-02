@@ -1,7 +1,6 @@
 package com.yahacode.yagami.auth.repository;
 
 import com.yahacode.yagami.auth.model.Menu;
-import com.yahacode.yagami.base.BaseRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

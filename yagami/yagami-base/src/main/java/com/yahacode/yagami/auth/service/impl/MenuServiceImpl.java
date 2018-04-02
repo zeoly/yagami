@@ -1,27 +1,24 @@
 package com.yahacode.yagami.auth.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.yahacode.yagami.auth.repository.MenuRepository;
-import com.yahacode.yagami.base.BaseRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.yahacode.yagami.auth.dao.MenuDao;
 import com.yahacode.yagami.auth.dao.RoleMenuRelationDao;
 import com.yahacode.yagami.auth.model.Menu;
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.model.RoleMenuRelation;
+import com.yahacode.yagami.auth.repository.MenuRepository;
 import com.yahacode.yagami.auth.service.MenuService;
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 菜单服务实现类

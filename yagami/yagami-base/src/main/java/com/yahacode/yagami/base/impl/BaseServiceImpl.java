@@ -1,62 +1,44 @@
 package com.yahacode.yagami.base.impl;
 
-import java.util.List;
-
-import com.yahacode.yagami.base.common.ListUtils;
-import com.yahacode.yagami.base.common.ServletContextHolder;
-import com.yahacode.yagami.base.consts.SessionKeyConsts;
-import com.yahacode.yagami.pd.model.People;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.common.ServletContextHolder;
+import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
+import com.yahacode.yagami.base.consts.SessionKeyConsts;
+import com.yahacode.yagami.pd.model.People;
 
-@Transactional
+import java.util.List;
+
 public abstract class BaseServiceImpl<T extends BaseModel> implements BaseService<T> {
-
-    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
     public List<T> list() {
-        return getBaseDao().list();
+        return getBaseRepository().findAll();
     }
 
     @Override
-    public String save(T t) {
-        return getBaseDao().save(t);
+    public T save(T t) {
+        return getBaseRepository().save(t);
     }
 
     @Override
     public void delete(String id) {
-        getBaseDao().delete(id);
+        getBaseRepository().delete(id);
     }
 
     @Override
-    public void update(T t) {
-        getBaseDao().update(t);
+    public void update(T t) throws BizfwServiceException {
+        if (StringUtils.isEmpty(t.getId())) {
+            throw new BizfwServiceException(ErrorCode.UPDATE_ERROR);
+        }
+        getBaseRepository().save(t);
     }
 
     @Override
     public T queryById(String id) {
-        return getBaseDao().queryById(id);
-    }
-
-    @Override
-    public List<T> queryByFieldAndValue(String field, Object value) {
-        return getBaseDao().queryByFieldAndValue(field, value);
-    }
-
-    @Override
-    public T queryUniqueByFieldAndValue(String field, Object value) {
-        List<T> list = queryByFieldAndValue(field, value);
-        if (ListUtils.isEmpty(list)) {
-            return null;
-        }
-        return list.get(0);
+        return getBaseRepository().getOne(id);
     }
 
     @Override

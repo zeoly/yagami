@@ -8,11 +8,12 @@ import com.yahacode.yagami.base.impl.BaseDaoImpl;
 
 /**
  * 人员角色关联关系dao实现
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
+ * @copyright THINKEQUIP
  * @date 2017年3月19日
  */
+@Deprecated
 @Repository("peopleRoleRelDao")
 public class PeopleRoleRelDaoImpl extends BaseDaoImpl<PeopleRoleRelation> implements PeopleRoleRelDao {
 

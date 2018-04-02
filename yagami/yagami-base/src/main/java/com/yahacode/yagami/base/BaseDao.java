@@ -11,6 +11,7 @@ import org.hibernate.Session;
  * @param <T>
  *         model which extends BaseModel
  */
+@Deprecated
 public interface BaseDao<T extends BaseModel> {
 
     Class<T> getClazz();

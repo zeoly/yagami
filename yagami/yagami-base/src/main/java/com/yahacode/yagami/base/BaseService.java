@@ -1,6 +1,7 @@
 package com.yahacode.yagami.base;
 
 import com.yahacode.yagami.pd.model.People;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public interface BaseService<T extends BaseModel> {
      *         entity
      * @return primary key
      */
-    String save(T t);
+    T save(T t);
 
     /**
      * delete the record by primary key
@@ -42,8 +43,10 @@ public interface BaseService<T extends BaseModel> {
      *
      * @param t
      *         entity
+     * @throws if
+     *         entity's pk is null
      */
-    void update(T t);
+    void update(T t) throws BizfwServiceException;
 
     /**
      * get the record by primary key
@@ -53,28 +56,6 @@ public interface BaseService<T extends BaseModel> {
      * @return entity
      */
     T queryById(String id);
-
-    /**
-     * query with equal condition
-     *
-     * @param field
-     *         field name
-     * @param value
-     *         target value
-     * @return the list of entity that match the condition
-     */
-    List<T> queryByFieldAndValue(String field, Object value);
-
-    /**
-     * query unique result with equal condition, if contain multiple, return the first
-     *
-     * @param field
-     *         field name
-     * @param value
-     *         target value
-     * @return unique result
-     */
-    T queryUniqueByFieldAndValue(String field, Object value);
 
     /**
      * make sure the object is not null, otherwise throw a exception with message - "target is null，operation fail"
@@ -118,9 +99,9 @@ public interface BaseService<T extends BaseModel> {
 //	public T queryByIdWithCache(String id);
 
     /**
-     * get the DAO object
+     * get the BaseRepository object
      *
-     * @return DAO object
+     * @return BaseRepository
      */
-    BaseDao<T> getBaseDao();
+    JpaRepository<T, String> getBaseRepository();
 }

@@ -1,22 +1,16 @@
 package com.yahacode.yagami.pd.service.impl;
 
-import com.yahacode.yagami.base.BaseDao;
-import com.yahacode.yagami.base.BaseRepository;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.consts.SystemConsts;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
-import com.yahacode.yagami.pd.dao.DepartmentDao;
-import com.yahacode.yagami.pd.dao.DepartmentRelationDao;
 import com.yahacode.yagami.pd.model.Department;
 import com.yahacode.yagami.pd.model.DepartmentRelation;
 import com.yahacode.yagami.pd.repository.DepartmentRelationRepository;
 import com.yahacode.yagami.pd.repository.DepartmentRepository;
 import com.yahacode.yagami.pd.service.DepartmentService;
 import com.yahacode.yagami.pd.service.PeopleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;

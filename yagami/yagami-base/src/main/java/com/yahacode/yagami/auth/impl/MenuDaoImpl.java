@@ -12,21 +12,22 @@ import com.yahacode.yagami.base.impl.BaseDaoImpl;
 
 /**
  * 菜单dao实现
- * 
- * @copyright THINKEQUIP
+ *
  * @author zengyongli
+ * @copyright THINKEQUIP
  * @date 2017年3月19日
  */
+@Deprecated
 @Repository("menuDao")
 public class MenuDaoImpl extends BaseDaoImpl<Menu> implements MenuDao {
 
-	@Override
-	public Menu getRootMenu() throws BizfwServiceException {
-		List<Menu> list = queryByFieldAndValue(Menu.COLUMN_NAME, Menu.ROOT_NAME);
-		if (ListUtils.isNotEmpty(list)) {
-			return list.get(0);
-		}
-		return null;
-	}
+    @Override
+    public Menu getRootMenu() throws BizfwServiceException {
+        List<Menu> list = queryByFieldAndValue(Menu.COLUMN_NAME, Menu.ROOT_NAME);
+        if (ListUtils.isNotEmpty(list)) {
+            return list.get(0);
+        }
+        return null;
+    }
 
 }
