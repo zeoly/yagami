@@ -19,6 +19,8 @@ public class ErrorCode {
 
     public static final String NEED_LOGIN = "000002";
 
+    public static final String UPDATE_MISS_PK = "000003";
+
     public static final String TEST = "999999";
 
     /**

@@ -1,5 +1,7 @@
-package com.yahacode.yagami.base;
+package com.yahacode.yagami.base.mvc;
 
+import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.YagamiResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;

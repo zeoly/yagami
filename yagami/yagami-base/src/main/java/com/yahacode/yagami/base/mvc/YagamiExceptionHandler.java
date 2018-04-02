@@ -1,5 +1,7 @@
-package com.yahacode.yagami.base;
+package com.yahacode.yagami.base.mvc;
 
+import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.YagamiResponse;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;

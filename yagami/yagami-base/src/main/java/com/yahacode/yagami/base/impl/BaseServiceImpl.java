@@ -31,14 +31,14 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
     @Override
     public void update(T t) throws BizfwServiceException {
         if (StringUtils.isEmpty(t.getId())) {
-            throw new BizfwServiceException(ErrorCode.UPDATE_ERROR);
+            throw new BizfwServiceException(ErrorCode.UPDATE_MISS_PK);
         }
         getBaseRepository().save(t);
     }
 
     @Override
     public T queryById(String id) {
-        return getBaseRepository().getOne(id);
+        return getBaseRepository().findOne(id);
     }
 
     @Override
