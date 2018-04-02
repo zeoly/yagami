@@ -184,11 +184,6 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     }
 
     @Override
-    public BaseDao<Menu> getBaseDao() {
-        return menuDao;
-    }
-
-    @Override
     public JpaRepository<Menu, String> getBaseRepository() {
         return menuRepository;
     }

@@ -1,18 +1,15 @@
 package com.yahacode.yagami.auth.service.impl;
 
-import com.yahacode.yagami.auth.dao.PeopleRoleRelDao;
-import com.yahacode.yagami.auth.dao.RoleDao;
 import com.yahacode.yagami.auth.model.PeopleRoleRelation;
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.repository.RoleRepository;
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseDao;
-import com.yahacode.yagami.base.BaseRepository;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -34,9 +31,7 @@ import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.SET_RO
 @Service
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
 
-    private RoleDao roleDao;
-
-    private PeopleRoleRelDao peopleRoleRelDao;
+    private PeopleRoleRelRepository peopleRoleRelRepository;
 
     private RoleRepository roleRepository;
 
@@ -92,15 +87,14 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
             }
             PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(getLoginPeople().getCode(), people
                     .getIdBfPeople(), role.getIdBfRole());
-            peopleRoleRelDao.save(peopleRoleRelation);
+            peopleRoleRelRepository.save(peopleRoleRelation);
         }
     }
 
     @Override
     public List<Role> getRoleListByPeople(String peopleId) throws BizfwServiceException {
         List<Role> roleList = new ArrayList<>();
-        List<PeopleRoleRelation> relationList = peopleRoleRelDao.queryByFieldAndValue(PeopleRoleRelation
-                .COLUMN_PEOPLE_ID, peopleId);
+        List<PeopleRoleRelation> relationList = peopleRoleRelRepository.findByPeopleId(peopleId);
         for (PeopleRoleRelation relation : relationList) {
             Role role = queryById(relation.getRoleId());
             roleList.add(role);
@@ -110,7 +104,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Override
     public long countPeopleByRole(Role role) throws BizfwServiceException {
-        return peopleRoleRelDao.getCountByFieldAndValue(PeopleRoleRelation.COLUMN_ROLE_ID, role.getIdBfRole());
+        return peopleRoleRelRepository.countByRoleId(role.getIdBfRole());
     }
 
     /**
@@ -122,7 +116,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
      *         framework exception
      */
     private void deletePeopleRoleRelation(People people) throws BizfwServiceException {
-        peopleRoleRelDao.deleteByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, people.getIdBfPeople());
+        peopleRoleRelRepository.deleteByPeopleId(people.getIdBfPeople());
     }
 
     /**
@@ -141,23 +135,13 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     @Override
-    public BaseDao<Role> getBaseDao() {
-        return roleDao;
-    }
-
-    @Override
     public JpaRepository<Role, String> getBaseRepository() {
         return roleRepository;
     }
 
     @Autowired
-    public void setRoleDao(RoleDao roleDao) {
-        this.roleDao = roleDao;
-    }
-
-    @Autowired
-    public void setPeopleRoleRelDao(PeopleRoleRelDao peopleRoleRelDao) {
-        this.peopleRoleRelDao = peopleRoleRelDao;
+    public void setPeopleRoleRelRepository(PeopleRoleRelRepository peopleRoleRelRepository) {
+        this.peopleRoleRelRepository = peopleRoleRelRepository;
     }
 
     @Autowired

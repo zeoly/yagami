@@ -1,6 +1,7 @@
-package com.yahacode.yagami.pd.impl;
+package com.yahacode.yagami.pd.service.impl;
 
 import com.yahacode.yagami.base.BaseDao;
+import com.yahacode.yagami.base.BaseRepository;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.common.LogUtils;
@@ -10,11 +11,14 @@ import com.yahacode.yagami.pd.dao.DepartmentDao;
 import com.yahacode.yagami.pd.dao.DepartmentRelationDao;
 import com.yahacode.yagami.pd.model.Department;
 import com.yahacode.yagami.pd.model.DepartmentRelation;
+import com.yahacode.yagami.pd.repository.DepartmentRelationRepository;
+import com.yahacode.yagami.pd.repository.DepartmentRepository;
 import com.yahacode.yagami.pd.service.DepartmentService;
 import com.yahacode.yagami.pd.service.PeopleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,9 +38,9 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
 
     private PeopleService peopleService;
 
-    private DepartmentDao departmentDao;
+    private DepartmentRepository departmentRepository;
 
-    private DepartmentRelationDao departmentRelationDao;
+    private DepartmentRelationRepository departmentRelationRepository;
 
     @Transactional
     @Override
@@ -72,28 +76,24 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
 
     @Override
     public Department queryByCode(String code) throws BizfwServiceException {
-        List<Department> list = queryByFieldAndValue(Department.COLUMN_CODE, code);
-        if (ListUtils.isEmpty(list)) {
-            return null;
-        }
-        return list.get(0);
+        return departmentRepository.findByCode(code);
     }
 
     @Override
     public Department getParentDepartment(Department department) throws BizfwServiceException {
-        DepartmentRelation parentDepartmentRel = departmentRelationDao.getParentDepartmentRel(department);
+        DepartmentRelation parentDepartmentRel = departmentRelationRepository.findByChildDepartmentIdAndParentLevel
+                (department.getIdBfDepartment(), department.getLevel() - 1);
         return queryById(parentDepartmentRel.getParentDepartmentId());
     }
 
     @Override
     public List<Department> getChildDepartmentList(String departmentId) throws BizfwServiceException {
-        return departmentDao.queryByFieldAndValue(Department.COLUMN_PARENT_DEPT_ID, departmentId);
+        return departmentRepository.findByParentDepartmentId(departmentId);
     }
 
     @Override
     public boolean hasChildDepartment(Department department) throws BizfwServiceException {
-        long count = departmentDao.getCountByFieldAndValue(Department.COLUMN_PARENT_DEPT_ID, department
-                .getIdBfDepartment());
+        long count = departmentRepository.countByParentDepartmentId(department.getIdBfDepartment());
         return count > 0;
     }
 
@@ -134,7 +134,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
             relation.setChildDepartmentId(department.getIdBfDepartment());
             relation.setParentDepartmentId(dept.getIdBfDepartment());
             relation.setParentLevel(dept.getLevel());
-            departmentRelationDao.save(relation);
+            departmentRelationRepository.save(relation);
         }
     }
 
@@ -168,8 +168,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
      *         framework exception
      */
     private void deleteUpperDepartmentRelation(Department department) throws BizfwServiceException {
-        departmentRelationDao.deleteByFieldAndValue(DepartmentRelation.COLUMN_CHILD_DEPARTMENT_ID, department
-                .getIdBfDepartment());
+        departmentRelationRepository.deleteByChildDepartmentId(department.getIdBfDepartment());
     }
 
 
@@ -184,8 +183,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
      */
     private List<Department> getAllParentDeptList(String departmentId) throws BizfwServiceException {
         List<Department> deptList = new ArrayList<>();
-        List<DepartmentRelation> relationList = departmentRelationDao.queryByFieldAndValue(DepartmentRelation
-                .COLUMN_CHILD_DEPARTMENT_ID, departmentId);
+        List<DepartmentRelation> relationList = departmentRelationRepository.findByChildDepartmentId(departmentId);
         for (DepartmentRelation relation : relationList) {
             Department parentDepartment = queryById(relation.getParentDepartmentId());
             deptList.add(parentDepartment);
@@ -194,8 +192,8 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     }
 
     @Override
-    public BaseDao<Department> getBaseDao() {
-        return departmentDao;
+    public JpaRepository<Department, String> getBaseRepository() {
+        return departmentRepository;
     }
 
     @Autowired
@@ -204,12 +202,13 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     }
 
     @Autowired
-    public void setDepartmentDao(DepartmentDao departmentDao) {
-        this.departmentDao = departmentDao;
+    public void setDepartmentRepository(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
     }
 
     @Autowired
-    public void setDepartmentRelationDao(DepartmentRelationDao departmentRelationDao) {
-        this.departmentRelationDao = departmentRelationDao;
+    public void setDepartmentRelationRepository(DepartmentRelationRepository departmentRelationRepository) {
+        this.departmentRelationRepository = departmentRelationRepository;
     }
+
 }

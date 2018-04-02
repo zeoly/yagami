@@ -1,22 +1,19 @@
-package com.yahacode.yagami.pd.impl;
+package com.yahacode.yagami.pd.service.impl;
 
-import com.yahacode.yagami.auth.dao.PeopleRoleRelDao;
-import com.yahacode.yagami.auth.model.PeopleRoleRelation;
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
-import com.yahacode.yagami.pd.dao.PeopleDao;
 import com.yahacode.yagami.pd.model.Department;
 import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.repository.PeopleRepository;
+import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import com.yahacode.yagami.pd.service.DepartmentService;
 import com.yahacode.yagami.pd.service.PeopleService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +22,6 @@ import java.util.List;
 import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.ADD_FAIL_EXISTED;
 import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.ADD_FAIL_WITHOUT_DEPT;
 import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.DEL_FAIL_SELF;
-import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.QUERY_FAIL_DUPLICATED;
 import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.UNLOCK_FAIL_STATUS_ERR;
 import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.UPDATE_FAIL_PWD_ERR;
 
@@ -41,9 +37,9 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 
     private RoleService roleService;
 
-    private PeopleDao peopleDao;
+    private PeopleRepository peopleRepository;
 
-    private PeopleRoleRelDao peopleRoleRelDao;
+    private PeopleRoleRelRepository peopleRoleRelRepository;
 
     private static final int COUNTER_ZERO = 0;
 
@@ -67,7 +63,7 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
         people.setStatus(People.STATUS_NORMAL);
         people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(PropertiesUtils
                 .getSysConfig("default.pwd"))));
-        String id = save(people);
+        String id = save(people).getDepartmentId();
         roleService.setRoleOfPeople(people);
         return id;
     }
@@ -94,31 +90,24 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
             throw new BizfwServiceException(DEL_FAIL_SELF);
         }
         delete(peopleId);
-        peopleRoleRelDao.deleteByFieldAndValue(PeopleRoleRelation.COLUMN_PEOPLE_ID, peopleId);
+        peopleRoleRelRepository.deleteByPeopleId(peopleId);
         LogUtils.info("{}删除人员{}操作完成", operator.getCode(), target.getCode());
     }
 
     @Transactional
     @Override
     public People getByCode(String code) throws BizfwServiceException {
-        List<People> peopleInfoList = queryByFieldAndValue(People.COLUMN_CODE, code);
-        if (peopleInfoList.isEmpty()) {
-            return null;
-        }
-        if (peopleInfoList.size() > 1) {
-            throw new BizfwServiceException(QUERY_FAIL_DUPLICATED);
-        }
-        return peopleInfoList.get(0);
+        return peopleRepository.findByCode(code);
     }
 
     @Override
     public long getPeopleCountByDepartment(Department department) throws BizfwServiceException {
-        return peopleDao.getCountByFieldAndValue(People.COLUMN_DEPARTMENT_ID, department.getIdBfDepartment());
+        return peopleRepository.countByDepartmentId(department.getIdBfDepartment());
     }
 
     @Override
     public List<People> getPeopleListByDepartment(String departmentId) throws BizfwServiceException {
-        return queryByFieldAndValue(People.COLUMN_DEPARTMENT_ID, departmentId);
+        return peopleRepository.findByDepartmentId(departmentId);
     }
 
     @Override
@@ -161,8 +150,8 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     }
 
     @Override
-    public BaseDao<People> getBaseDao() {
-        return peopleDao;
+    public JpaRepository<People, String> getBaseRepository() {
+        return peopleRepository;
     }
 
     @Autowired
@@ -176,12 +165,13 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     }
 
     @Autowired
-    public void setPeopleDao(PeopleDao peopleDao) {
-        this.peopleDao = peopleDao;
+    public void setPeopleRepository(PeopleRepository peopleRepository) {
+        this.peopleRepository = peopleRepository;
     }
 
     @Autowired
-    public void setPeopleRoleRelDao(PeopleRoleRelDao peopleRoleRelDao) {
-        this.peopleRoleRelDao = peopleRoleRelDao;
+    public void setPeopleRoleRelRepository(PeopleRoleRelRepository peopleRoleRelRepository) {
+        this.peopleRoleRelRepository = peopleRoleRelRepository;
     }
+
 }
