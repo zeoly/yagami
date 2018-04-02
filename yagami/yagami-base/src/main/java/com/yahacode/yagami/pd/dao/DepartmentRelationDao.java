@@ -11,6 +11,7 @@ import com.yahacode.yagami.pd.model.DepartmentRelation;
  *
  * @author zengyongli
  */
+@Deprecated
 public interface DepartmentRelationDao extends BaseDao<DepartmentRelation> {
 
     /**

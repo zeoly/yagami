@@ -8,6 +8,7 @@ import com.yahacode.yagami.base.BaseDao;
  *
  * @author zengyongli
  */
+@Deprecated
 public interface RoleDao extends BaseDao<Role> {
 
 }

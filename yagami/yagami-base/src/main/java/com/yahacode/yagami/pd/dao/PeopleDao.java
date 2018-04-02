@@ -8,6 +8,7 @@ import com.yahacode.yagami.pd.model.People;
  *
  * @author zengyongli
  */
+@Deprecated
 public interface PeopleDao extends BaseDao<People> {
 
 }

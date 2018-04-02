@@ -11,6 +11,7 @@ import com.yahacode.yagami.base.impl.BaseDaoImpl;
  *
  * @author zengyongli
  */
+@Deprecated
 @Repository
 public class RoleDaoImpl extends BaseDaoImpl<Role> implements RoleDao {
 

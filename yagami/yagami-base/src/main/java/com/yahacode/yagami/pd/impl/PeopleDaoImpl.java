@@ -11,6 +11,7 @@ import com.yahacode.yagami.pd.model.People;
  *
  * @author zengyongli
  */
+@Deprecated
 @Repository
 public class PeopleDaoImpl extends BaseDaoImpl<People> implements PeopleDao {
 

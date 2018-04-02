@@ -16,6 +16,7 @@ import com.yahacode.yagami.pd.model.DepartmentRelation;
  *
  * @author zengyongli
  */
+@Deprecated
 @Repository
 public class DepartmentRelationDaoImpl extends BaseDaoImpl<DepartmentRelation> implements DepartmentRelationDao {
 

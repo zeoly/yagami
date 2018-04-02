@@ -8,6 +8,7 @@ import com.yahacode.yagami.pd.model.Department;
  *
  * @author zengyongli
  */
+@Deprecated
 public interface DepartmentDao extends BaseDao<Department> {
 
 }
