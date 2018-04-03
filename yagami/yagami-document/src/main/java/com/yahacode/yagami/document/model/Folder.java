@@ -77,4 +77,9 @@ public class Folder extends BaseModel {
         super(peopleCode);
     }
 
+    @Override
+    public String getId() {
+        return idBfFolder;
+    }
+
 }

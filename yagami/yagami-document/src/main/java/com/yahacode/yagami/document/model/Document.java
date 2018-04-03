@@ -102,4 +102,9 @@ public class Document extends BaseModel {
         super(peopleCode);
     }
 
+    @Override
+    public String getId() {
+        return idBfDocument;
+    }
+
 }

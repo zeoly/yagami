@@ -71,4 +71,9 @@ public class DocumentChain extends BaseModel {
         super(peopleCode);
     }
 
+    @Override
+    public String getId() {
+        return idBfDocumentChain;
+    }
+
 }

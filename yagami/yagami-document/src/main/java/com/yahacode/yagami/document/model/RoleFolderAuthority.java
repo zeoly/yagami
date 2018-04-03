@@ -66,6 +66,11 @@ public class RoleFolderAuthority extends BaseModel {
         super(peopleCode);
     }
 
+    @Override
+    public String getId() {
+        return idBfRoleFolderAuth;
+    }
+
     public RoleFolderAuthority(String peopleCode, String roleId, String folderId) {
         super(peopleCode);
         this.roleId = roleId;

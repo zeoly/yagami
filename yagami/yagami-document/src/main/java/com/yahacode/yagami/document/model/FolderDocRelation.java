@@ -54,6 +54,11 @@ public class FolderDocRelation extends BaseModel {
         super(peopleCode);
     }
 
+    @Override
+    public String getId() {
+        return idBfFolderDocRel;
+    }
+
     public FolderDocRelation(String peopleCode, String folderId, String documentId) {
         super(peopleCode);
         this.folderId = folderId;
