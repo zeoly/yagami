@@ -6,5 +6,6 @@ import com.yahacode.yagami.document.model.DocumentGroup;
 /**
  * @author zengyongli
  */
+@Deprecated
 public interface DocumentGroupDao extends BaseDao<DocumentGroup> {
 }

@@ -1,4 +1,4 @@
-package com.yahacode.yagami.document.impl;
+package com.yahacode.yagami.document.dao.impl;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import com.yahacode.yagami.document.model.RoleFolderAuthority;
  *
  * @author zengyongli
  */
+@Deprecated
 @Repository
 public class RoleFolderAuthorityDaoImpl extends BaseDaoImpl<RoleFolderAuthority> implements RoleFolderAuthorityDao {
 

@@ -1,4 +1,4 @@
-package com.yahacode.yagami.document.impl;
+package com.yahacode.yagami.document.dao.impl;
 
 import com.yahacode.yagami.base.impl.BaseDaoImpl;
 import com.yahacode.yagami.document.dao.FolderDocRelDao;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
  *
  * @author zengyongli
  */
+@Deprecated
 @Repository
 public class FolderDocRelDaoImpl extends BaseDaoImpl<FolderDocRelation> implements FolderDocRelDao {
 }

@@ -10,6 +10,7 @@ import java.util.List;
  *
  * @author zengyongli
  */
+@Deprecated
 public interface FolderDao extends BaseDao<Folder> {
 
     /**

@@ -8,6 +8,7 @@ import com.yahacode.yagami.document.model.RoleFolderAuthority;
  *
  * @author zengyongli
  */
+@Deprecated
 public interface RoleFolderAuthorityDao extends BaseDao<RoleFolderAuthority> {
 
     /**

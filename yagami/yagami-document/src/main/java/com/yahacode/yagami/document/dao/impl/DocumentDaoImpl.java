@@ -1,4 +1,4 @@
-package com.yahacode.yagami.document.impl;
+package com.yahacode.yagami.document.dao.impl;
 
 import com.yahacode.yagami.base.impl.BaseDaoImpl;
 import com.yahacode.yagami.document.dao.DocumentDao;
@@ -14,6 +14,7 @@ import java.util.List;
  *
  * @author zengyongli
  */
+@Deprecated
 @Repository
 public class DocumentDaoImpl extends BaseDaoImpl<Document> implements DocumentDao {
 

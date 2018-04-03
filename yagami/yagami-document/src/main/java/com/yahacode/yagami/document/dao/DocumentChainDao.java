@@ -6,6 +6,7 @@ import com.yahacode.yagami.document.model.DocumentChain;
 /**
  * @author zengyongli
  */
+@Deprecated
 public interface DocumentChainDao extends BaseDao<DocumentChain> {
 
     /**

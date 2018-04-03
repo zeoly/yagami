@@ -1,4 +1,4 @@
-package com.yahacode.yagami.document.impl;
+package com.yahacode.yagami.document.dao.impl;
 
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.impl.BaseDaoImpl;
@@ -15,6 +15,7 @@ import java.util.List;
  *
  * @author zengyongli
  */
+@Deprecated
 @Repository
 public class FolderDaoImpl extends BaseDaoImpl<Folder> implements FolderDao {
 
@@ -46,7 +47,8 @@ public class FolderDaoImpl extends BaseDaoImpl<Folder> implements FolderDao {
     public List<Folder> getAuthorizedFolderByRole(String roleId) {
         String authTable = RoleFolderAuthority.class.getSimpleName();
         String hql = "select f from " + getTableName() + " f, " + authTable + " a where a." + RoleFolderAuthority
-                .COLUMN_ROLE_ID + " = :" + RoleFolderAuthority.COLUMN_ROLE_ID + " and f." + Folder.COLUMN_ID + " = a"
+                .COLUMN_ROLE_ID + " = :"
+                + RoleFolderAuthority.COLUMN_ROLE_ID + " and f." + Folder.COLUMN_ID + " = a"
                 + "." + RoleFolderAuthority.COLUMN_FOLDER_ID;
         Query query = createQuery(hql);
         query.setParameter(RoleFolderAuthority.COLUMN_ROLE_ID, roleId);

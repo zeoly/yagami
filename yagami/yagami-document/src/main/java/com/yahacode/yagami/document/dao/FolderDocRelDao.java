@@ -8,5 +8,6 @@ import com.yahacode.yagami.document.model.FolderDocRelation;
  *
  * @author zengyongli
  */
+@Deprecated
 public interface FolderDocRelDao extends BaseDao<FolderDocRelation> {
 }

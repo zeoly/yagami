@@ -1,4 +1,4 @@
-package com.yahacode.yagami.document.impl;
+package com.yahacode.yagami.document.dao.impl;
 
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.impl.BaseDaoImpl;
@@ -12,6 +12,7 @@ import java.util.List;
 /**
  * @author zengyongli
  */
+@Deprecated
 @Repository
 public class DocumentChainDaoImpl extends BaseDaoImpl<DocumentChain> implements DocumentChainDao {
 
