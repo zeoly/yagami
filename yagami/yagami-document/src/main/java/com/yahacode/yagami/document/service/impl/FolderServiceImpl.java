@@ -1,4 +1,4 @@
-package com.yahacode.yagami.document.impl;
+package com.yahacode.yagami.document.service.impl;
 
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.service.RoleService;
@@ -15,10 +15,14 @@ import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
 import com.yahacode.yagami.document.model.FolderDocRelation;
 import com.yahacode.yagami.document.model.RoleFolderAuthority;
+import com.yahacode.yagami.document.repository.FolderDocRelationRepository;
+import com.yahacode.yagami.document.repository.FolderRepository;
+import com.yahacode.yagami.document.repository.RoleFolderAuthorityRepository;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.service.FolderService;
 import com.yahacode.yagami.pd.model.People;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,28 +38,26 @@ import java.util.List;
 @Service
 public class FolderServiceImpl extends BaseServiceImpl<Folder> implements FolderService {
 
-    private FolderDao folderDao;
+    private FolderRepository folderRepository;
 
-    private FolderDocRelDao folderDocRelDao;
+    private FolderDocRelationRepository folderDocRelationRepository;
+
+    private RoleFolderAuthorityRepository roleFolderAuthorityRepository;
 
     private DocumentService documentService;
-
-    private RoleFolderAuthorityDao roleFolderAuthorityDao;
 
     private RoleService roleService;
 
     @Override
     public Folder getAllFolderTree() throws BizfwServiceException {
-        List<Folder> folderList = folderDao.getAllFolder();
-        ListUtils.sort(folderList, Folder.COLUMN_NAME);
-        Folder rootFolder = folderDao.getRootFolder();
+        List<Folder> folderList = folderRepository.findAll();
+        Folder rootFolder = folderRepository.findByName(Folder.ROOT_NAME);
         return convertListToTree(folderList, rootFolder);
     }
 
     @Override
     public List<Document> getDocsOfFolder(Folder folder) throws BizfwServiceException {
-        List<FolderDocRelation> relations = folderDocRelDao.queryByFieldAndValue(FolderDocRelation.COLUMN_FOLDER_ID,
-                folder.getIdBfFolder());
+        List<FolderDocRelation> relations = folderDocRelationRepository.findByFolderId(folder.getIdBfFolder());
         List<Document> documents = new ArrayList<>();
         for (FolderDocRelation relation : relations) {
             Document document = documentService.queryById(relation.getDocumentId());
@@ -66,7 +68,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
 
     @Override
     public Folder getContentOfFolder(Folder folder) throws BizfwServiceException {
-        List<Folder> folders = folderDao.getChildFolderList(folder);
+        List<Folder> folders = folderRepository.findAllByParentIdOrderByName(folder.getIdBfFolder());
         List<Document> documents = getDocsOfFolder(folder);
         folder.setChildFolderList(folders);
         folder.setDocumentList(documents);
@@ -103,7 +105,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         Document document = documentService.saveDocument(file);
         FolderDocRelation folderDocRelation = new FolderDocRelation(loginPeople.getCode(), folderId, document
                 .getIdBfDocument());
-        folderDocRelDao.save(folderDocRelation);
+        folderDocRelationRepository.save(folderDocRelation);
         return document.getIdBfDocument();
     }
 
@@ -114,24 +116,23 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         document.update(getLoginPeople().getCode());
         documentService.deleteDocument(document);
 
-        folderDocRelDao.deleteByFieldAndValue(FolderDocRelation.COLUMN_DOCUMENT_ID, documentId);
+        folderDocRelationRepository.deleteByDocumentId(documentId);
     }
 
     @Transactional
     @Override
     public void setFolderAuthority(String folderId, List<String> roleIdList) throws BizfwServiceException {
-        roleFolderAuthorityDao.deleteByFolder(folderId);
+        roleFolderAuthorityRepository.deleteByFolderId(folderId);
         for (String roleId : roleIdList) {
             RoleFolderAuthority roleFolderAuthority = new RoleFolderAuthority(getLoginPeople().getCode(), roleId,
                     folderId);
-            roleFolderAuthorityDao.save(roleFolderAuthority);
+            roleFolderAuthorityRepository.save(roleFolderAuthority);
         }
     }
 
     @Override
     public List<Role> getFolderAuthority(String folderId) throws BizfwServiceException {
-        List<RoleFolderAuthority> list = roleFolderAuthorityDao.queryByFieldAndValue(RoleFolderAuthority
-                .COLUMN_FOLDER_ID, folderId);
+        List<RoleFolderAuthority> list = roleFolderAuthorityRepository.findAllByFolderId(folderId);
         List<Role> roles = new ArrayList<>();
         for (RoleFolderAuthority authority : list) {
             Role role = roleService.queryById(authority.getRoleId());
@@ -145,7 +146,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         List<Folder> folders = getAuthorizedFolderList(people.getIdBfPeople());
         replenishAuthFolderList(folders);
         ListUtils.sort(folders, Folder.COLUMN_NAME);
-        Folder rootFolder = folderDao.getRootFolder();
+        Folder rootFolder = folderRepository.findByName(Folder.ROOT_NAME);
         return convertListToTree(folders, rootFolder);
     }
 
@@ -183,12 +184,11 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
      *         if contain any document;
      */
     private void checkCanDeleteFolder(Folder folder) throws BizfwServiceException {
-        long childFolderCount = folderDao.getChildFolderCount(folder);
+        long childFolderCount = folderRepository.countByParentId(folder.getIdBfFolder());
         if (childFolderCount > 0) {
             throw new BizfwServiceException(ErrorCode.Doc.Folder.DEL_FAIL_WITH_CHILD_FOLDER);
         }
-        long childDocumentCount = folderDocRelDao.getCountByFieldAndValue(FolderDocRelation.COLUMN_FOLDER_ID, folder
-                .getIdBfFolder());
+        long childDocumentCount = folderDocRelationRepository.countByFolderId(folder.getIdBfFolder());
         if (childDocumentCount > 0) {
             throw new BizfwServiceException(ErrorCode.Doc.Folder.DEL_FAIL_WITH_CHILD_DOC);
         }
@@ -207,7 +207,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         List<Folder> authorizedFolders = new ArrayList<>();
         List<Role> roles = roleService.getRoleListByPeople(peopleId);
         for (Role role : roles) {
-            List<Folder> folders = folderDao.getAuthorizedFolderByRole(role.getIdBfRole());
+            List<Folder> folders = folderRepository.findAllAuthorizedFolderByRoleId(role.getIdBfRole());
             for (Folder folder : folders) {
                 if (!authorizedFolders.contains(folder)) {
                     authorizedFolders.add(folder);
@@ -257,19 +257,19 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
         return parentFolderList;
     }
 
-    @Override
-    public BaseDao<Folder> getBaseDao() {
-        return folderDao;
+    @Autowired
+    public void setFolderRepository(FolderRepository folderRepository) {
+        this.folderRepository = folderRepository;
     }
 
     @Autowired
-    public void setFolderDao(FolderDao folderDao) {
-        this.folderDao = folderDao;
+    public void setFolderDocRelationRepository(FolderDocRelationRepository folderDocRelationRepository) {
+        this.folderDocRelationRepository = folderDocRelationRepository;
     }
 
     @Autowired
-    public void setFolderDocRelDao(FolderDocRelDao folderDocRelDao) {
-        this.folderDocRelDao = folderDocRelDao;
+    public void setRoleFolderAuthorityRepository(RoleFolderAuthorityRepository roleFolderAuthorityRepository) {
+        this.roleFolderAuthorityRepository = roleFolderAuthorityRepository;
     }
 
     @Autowired
@@ -278,12 +278,12 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     }
 
     @Autowired
-    public void setRoleFolderAuthorityDao(RoleFolderAuthorityDao roleFolderAuthorityDao) {
-        this.roleFolderAuthorityDao = roleFolderAuthorityDao;
-    }
-
-    @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
+    }
+
+    @Override
+    public JpaRepository<Folder, String> getBaseRepository() {
+        return folderRepository;
     }
 }

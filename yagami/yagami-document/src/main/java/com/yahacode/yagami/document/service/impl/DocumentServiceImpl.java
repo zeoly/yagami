@@ -1,22 +1,21 @@
-package com.yahacode.yagami.document.impl;
+package com.yahacode.yagami.document.service.impl;
 
-import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
-import com.yahacode.yagami.document.dao.DocumentChainDao;
-import com.yahacode.yagami.document.dao.DocumentDao;
-import com.yahacode.yagami.document.dao.DocumentGroupDao;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.DocumentChain;
 import com.yahacode.yagami.document.model.DocumentGroup;
+import com.yahacode.yagami.document.repository.DocumentChainRepository;
+import com.yahacode.yagami.document.repository.DocumentGroupRepository;
+import com.yahacode.yagami.document.repository.DocumentRepository;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.utils.FileUtils;
 import com.yahacode.yagami.pd.model.People;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,13 +32,11 @@ import java.util.List;
 @Service
 public class DocumentServiceImpl extends BaseServiceImpl<Document> implements DocumentService {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private DocumentRepository documentRepository;
 
-    private DocumentDao documentDao;
+    private DocumentGroupRepository documentGroupRepository;
 
-    private DocumentChainDao documentChainDao;
-
-    private DocumentGroupDao documentGroupDao;
+    private DocumentChainRepository documentChainRepository;
 
     private FileUtils fileUtils;
 
@@ -78,7 +75,7 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
             save(document);
             return document;
         } catch (IllegalStateException | IOException e) {
-            logger.error("保存文件失败", e);
+            LogUtils.error("保存文件失败", e);
             throw new BizfwServiceException(ErrorCode.Doc.File.SAVE_FILE_ERROR, e);
         }
     }
@@ -92,7 +89,7 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
             Document document = saveDocument(file);
             DocumentGroup documentGroup = new DocumentGroup(operator.getCode(), documentGroupNo, document
                     .getIdBfDocument());
-            documentGroupDao.save(documentGroup);
+            documentGroupRepository.save(documentGroup);
         }
         return documentGroupNo;
     }
@@ -121,7 +118,7 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
 
     @Override
     public void updateDocument(Document newDocument, String documentId) throws BizfwServiceException {
-        DocumentChain documentChain = documentChainDao.getLatestChain(documentId);
+        DocumentChain documentChain = documentChainRepository.findByDocumentId(documentId);
         DocumentChain newChain = new DocumentChain(newDocument.getUpdateBy());
         newChain.setChainNo(documentChain.getChainNo());
         newChain.setDocumentId(newDocument.getIdBfDocument());
@@ -130,36 +127,36 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
         } else {
             newChain.setRevision(DocumentChain.REVISION_FIRST);
         }
-        documentChainDao.save(newChain);
+        documentChainRepository.save(newChain);
     }
 
     @Override
     public Document getByMD5(String md5) throws BizfwServiceException {
-        return queryUniqueByFieldAndValue(Document.COLUMN_MD5, md5);
-    }
-
-    @Override
-    public BaseDao<Document> getBaseDao() {
-        return documentDao;
+        return documentRepository.findByMd5(md5);
     }
 
     @Autowired
-    public void setDocumentDao(DocumentDao documentDao) {
-        this.documentDao = documentDao;
+    public void setDocumentRepository(DocumentRepository documentRepository) {
+        this.documentRepository = documentRepository;
     }
 
     @Autowired
-    public void setDocumentChainDao(DocumentChainDao documentChainDao) {
-        this.documentChainDao = documentChainDao;
+    public void setDocumentGroupRepository(DocumentGroupRepository documentGroupRepository) {
+        this.documentGroupRepository = documentGroupRepository;
     }
 
     @Autowired
-    public void setDocumentGroupDao(DocumentGroupDao documentGroupDao) {
-        this.documentGroupDao = documentGroupDao;
+    public void setDocumentChainRepository(DocumentChainRepository documentChainRepository) {
+        this.documentChainRepository = documentChainRepository;
     }
 
     @Autowired
     public void setFileUtils(FileUtils fileUtils) {
         this.fileUtils = fileUtils;
+    }
+
+    @Override
+    public JpaRepository<Document, String> getBaseRepository() {
+        return documentRepository;
     }
 }
