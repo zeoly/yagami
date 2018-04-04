@@ -6,6 +6,7 @@ import com.yahacode.yagami.claim.model.Claim;
 /**
  * @author zengyongli
  */
+@Deprecated
 public interface ClaimDao extends BaseDao<Claim> {
 
 }

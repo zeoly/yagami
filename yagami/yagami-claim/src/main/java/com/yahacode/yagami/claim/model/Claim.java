@@ -79,4 +79,9 @@ public class Claim extends BaseModel {
         super(peopleCode);
     }
 
+    @Override
+    public String getId() {
+        return idBfClaim;
+    }
+
 }
