@@ -5,6 +5,7 @@ import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
+import com.yahacode.yagami.document.config.DocumentProperties;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.DocumentChain;
 import com.yahacode.yagami.document.model.DocumentGroup;
@@ -38,7 +39,7 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
 
     private DocumentChainRepository documentChainRepository;
 
-    private FileUtils fileUtils;
+    private DocumentProperties documentProperties;
 
     @Override
     public String addDocument(Document document) throws BizfwServiceException {
@@ -66,9 +67,9 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
             if (dbDocument != null) {
                 document.setUrl(dbDocument.getUrl());
             } else {
-                String url = fileUtils.getStorageUrl(fileName, md5);
+                String url = FileUtils.getStorageUrl(fileName, md5);
                 document.setUrl(url);
-                String filePath = fileUtils.getLocalStorage() + url;
+                String filePath = documentProperties.getLocalStorage() + url;
                 File newFile = new File(filePath);
                 file.transferTo(newFile);
             }
@@ -151,8 +152,8 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
     }
 
     @Autowired
-    public void setFileUtils(FileUtils fileUtils) {
-        this.fileUtils = fileUtils;
+    public void setDocumentProperties(DocumentProperties documentProperties) {
+        this.documentProperties = documentProperties;
     }
 
     @Override

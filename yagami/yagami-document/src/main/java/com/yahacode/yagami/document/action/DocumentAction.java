@@ -2,15 +2,13 @@ package com.yahacode.yagami.document.action;
 
 import com.yahacode.yagami.base.BaseAction;
 import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.document.config.DocumentProperties;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.service.DocumentGroupService;
 import com.yahacode.yagami.document.service.DocumentService;
-import com.yahacode.yagami.document.utils.FileUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -38,7 +36,7 @@ public class DocumentAction extends BaseAction {
 
     private DocumentGroupService documentGroupService;
 
-    private FileUtils fileUtils;
+    private DocumentProperties documentProperties;
 
     @ApiOperation(value = "修改文件")
     @ApiImplicitParam(name = "document", value = "文件", required = true, dataTypeClass = Document.class)
@@ -65,7 +63,7 @@ public class DocumentAction extends BaseAction {
             ("documentId") String documentId) throws BizfwServiceException, IOException {
         try {
             Document document = documentService.queryById(documentId);
-            String name = fileUtils.getLocalStorage() + document.getUrl();
+            String name = documentProperties.getLocalStorage() + document.getUrl();
 
             File file = new File(name);
             response.setContentType("application/x-msdownload;");
@@ -113,7 +111,7 @@ public class DocumentAction extends BaseAction {
     }
 
     @Autowired
-    public void setFileUtils(FileUtils fileUtils) {
-        this.fileUtils = fileUtils;
+    public void setDocumentProperties(DocumentProperties documentProperties) {
+        this.documentProperties = documentProperties;
     }
 }
