@@ -10,7 +10,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.spring-boot>2.0.0.RELEASE</version.spring-boot>
+    <version.spring-boot>1.5.10.RELEASE</version.spring-boot>
     <version.spring-cloud>Edgware.SR2</version.spring-cloud>
     <version.hibernate>5.2.8.Final</version.hibernate>
     <version.activiti>5.17.0</version.activiti>
@@ -26,10 +26,10 @@
     <module>yagami-app-bootstrap</module>
 
     <module>yagami-bpm</module>
-    <module>yagami-eureka</module>
     <module>yagami-ribbon</module>
-    <module>anochat-consumer</module>
-    <module>anochat-base</module>
+    <module>yagami-service</module>
+    <!--<module>anochat-consumer</module>-->
+    <!--<module>anochat-base</module>-->
   </modules>
 
   <dependencyManagement>
