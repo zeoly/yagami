@@ -13,6 +13,7 @@
   <artifactId>yagami-service</artifactId>
 
   <modules>
-    <module>yagami-eureka</module>
+    <module>yagami-service-eureka</module>
+    <module>yagami-service-bpm</module>
   </modules>
 </project>
