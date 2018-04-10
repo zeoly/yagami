@@ -70,6 +70,7 @@ public class LoginAction extends BaseAction {
 
             String token = TokenUtils.generateToken();
             setSessionItem(SessionKeyConsts.AUTHORIZATION, token);
+            LogUtils.info("{} login success, token {}", username, token);
             return new SessionVO(peopleInfo, token);
         }
         throw new BizfwServiceException(ErrorCode.DEFAULT_ERROR);
