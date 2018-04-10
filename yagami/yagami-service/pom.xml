@@ -15,5 +15,7 @@
   <modules>
     <module>yagami-service-eureka</module>
     <module>yagami-service-bpm</module>
+    <module>anochat-base</module>
+    <module>anochat-consumer</module>
   </modules>
 </project>

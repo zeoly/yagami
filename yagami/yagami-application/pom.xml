@@ -10,10 +10,10 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>pom</packaging>
 
-  <artifactId>yagami-modules</artifactId>
+  <artifactId>yagami-application</artifactId>
 
   <modules>
-    <module>yagami-document</module>
-    <module>yagami-claim</module>
+    <module>yagami-app-facade</module>
   </modules>
+
 </project>
