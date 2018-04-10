@@ -20,14 +20,12 @@
 
   <modules>
     <module>yagami-base</module>
-    <module>yagami-document</module>
-    <module>yagami-claim</module>
-    <module>yagami-app-facade</module>
     <module>yagami-app-bootstrap</module>
 
-    <module>yagami-bpm</module>
     <module>yagami-ribbon</module>
     <module>yagami-service</module>
+    <module>yagami-application</module>
+    <module>yagami-modules</module>
     <!--<module>anochat-consumer</module>-->
     <!--<module>anochat-base</module>-->
   </modules>
