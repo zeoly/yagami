@@ -1,4 +1,4 @@
-package com.yahacode.yagami.auth.impl;
+package com.yahacode.yagami.auth.dao.impl;
 
 import java.util.List;
 
