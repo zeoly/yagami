@@ -14,6 +14,7 @@
 
   <modules>
     <module>yagami-app-facade</module>
+    <module>yagami-app-bootstrap</module>
   </modules>
 
 </project>
