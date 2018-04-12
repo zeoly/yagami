@@ -10,12 +10,12 @@
   <modelVersion>4.0.0</modelVersion>
   <packaging>pom</packaging>
 
-  <artifactId>yagami-service</artifactId>
+  <artifactId>yagami-services</artifactId>
 
   <modules>
     <module>yagami-service-eureka</module>
     <module>yagami-service-bpm</module>
-    <module>anochat-base</module>
-    <module>anochat-consumer</module>
+    <!--<module>anochat-base</module>-->
+    <!--<module>anochat-consumer</module>-->
   </modules>
 </project>
