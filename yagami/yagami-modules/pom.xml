@@ -13,6 +13,7 @@
   <artifactId>yagami-modules</artifactId>
 
   <modules>
+    <module>yagami-base</module>
     <module>yagami-document</module>
     <module>yagami-claim</module>
   </modules>
