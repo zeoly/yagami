@@ -19,13 +19,9 @@
   </properties>
 
   <modules>
-    <module>yagami-base</module>
-    <module>yagami-app-bootstrap</module>
-
-    <module>yagami-ribbon</module>
-    <module>yagami-service</module>
-    <module>yagami-application</module>
     <module>yagami-modules</module>
+    <module>yagami-application</module>
+    <module>yagami-services</module>
   </modules>
 
   <dependencyManagement>
