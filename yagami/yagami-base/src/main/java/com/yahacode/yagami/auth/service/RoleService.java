@@ -86,4 +86,15 @@ public interface RoleService extends BaseService<Role> {
      */
     long countPeopleByRole(Role role) throws BizfwServiceException;
 
+    /**
+     * get the role by role name.
+     *
+     * @param name
+     *         role name
+     * @return role entity
+     * @throws BizfwServiceException
+     *         framework exception
+     */
+    Role getByName(String name) throws BizfwServiceException;
+
 }

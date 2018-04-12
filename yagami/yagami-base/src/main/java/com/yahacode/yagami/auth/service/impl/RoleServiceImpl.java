@@ -2,14 +2,13 @@ package com.yahacode.yagami.auth.service.impl;
 
 import com.yahacode.yagami.auth.model.PeopleRoleRelation;
 import com.yahacode.yagami.auth.model.Role;
+import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import com.yahacode.yagami.auth.repository.RoleRepository;
 import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.model.People;
-import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -43,20 +42,20 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     @Transactional
     @Override
     public String addRole(Role role) throws BizfwServiceException {
-        List<Role> tmpRole = roleRepository.findByName(role.getName());
-        if (ListUtils.isNotEmpty(tmpRole)) {
+        Role tmpRole = getByName(role.getName());
+        if (null != tmpRole) {
             throw new BizfwServiceException(ADD_FAIL_EXISTED);
         }
         role.init(getLoginPeople().getCode());
         LogUtils.info("{}新增角色{}", role.getUpdateBy(), role.getName());
-        return save(role).getIdBfRole();
+        return save(role);
     }
 
     @Transactional
     @Override
     public void modify(Role role) throws BizfwServiceException {
-        List<Role> tmpRole = roleRepository.findByName(role.getName());
-        if (ListUtils.isNotEmpty(tmpRole) && !role.getIdBfRole().equals(tmpRole.get(0).getIdBfRole())) {
+        Role tmpRole = getByName(role.getName());
+        if (null != tmpRole) {
             throw new BizfwServiceException(MOD_FAIL_EXISTED);
         }
         LogUtils.info("{}修改角色{}", role.getUpdateBy(), role.getName());
@@ -105,6 +104,11 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     @Override
     public long countPeopleByRole(Role role) throws BizfwServiceException {
         return peopleRoleRelRepository.countByRoleId(role.getIdBfRole());
+    }
+
+    @Override
+    public Role getByName(String name) throws BizfwServiceException {
+        return roleRepository.findByName(name);
     }
 
     /**

@@ -28,7 +28,7 @@ public interface BaseService<T extends BaseModel> {
      *         entity
      * @return primary key
      */
-    T save(T t);
+    String save(T t);
 
     /**
      * delete the record by primary key

@@ -63,7 +63,7 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
         people.setStatus(People.STATUS_NORMAL);
         people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(PropertiesUtils
                 .getSysConfig("default.pwd"))));
-        String id = save(people).getDepartmentId();
+        String id = save(people);
         roleService.setRoleOfPeople(people);
         return id;
     }

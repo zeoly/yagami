@@ -19,8 +19,8 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
     }
 
     @Override
-    public T save(T t) {
-        return getBaseRepository().save(t);
+    public String save(T t) {
+        return getBaseRepository().save(t).getId();
     }
 
     @Override
