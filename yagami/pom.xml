@@ -26,8 +26,6 @@
     <module>yagami-service</module>
     <module>yagami-application</module>
     <module>yagami-modules</module>
-    <!--<module>anochat-consumer</module>-->
-    <!--<module>anochat-base</module>-->
   </modules>
 
   <dependencyManagement>
