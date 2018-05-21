@@ -58,6 +58,6 @@ public class DocumentGroupServiceImpl extends BaseServiceImpl<DocumentGroup> imp
 
     @Override
     public JpaRepository<DocumentGroup, String> getBaseRepository() {
-        return null;
+        return documentGroupRepository;
     }
 }
