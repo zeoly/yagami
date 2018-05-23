@@ -8,6 +8,7 @@
   - yagami-app-facade: application controller
   - yagami-app-bootstrap: spring boot package
 - yagami-services
+  - yagami-service-config: Centralized config server
   - yagami-service-eureka: HA Eureka server(s)
   - yagami-service-bpm: Activiti BPM server
   - yagami-ribbon: test server
@@ -20,4 +21,5 @@
 8090|ribbon client
 8070|ribbon target consumer
 8081|yagami app
+9000|config server
 
