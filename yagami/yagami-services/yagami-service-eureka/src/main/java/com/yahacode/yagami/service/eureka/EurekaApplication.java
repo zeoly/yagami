@@ -1,15 +1,15 @@
-package com.thinkequip.anochat.eureka;
+package com.yahacode.yagami.service.eureka;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
-@SpringBootApplication
 @EnableEurekaServer
-public class Application {
+@SpringBootApplication
+public class EurekaApplication {
 
-	public static void main(String[] args) throws Exception {
-		SpringApplication.run(Application.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaApplication.class, args);
+    }
 
 }
