@@ -14,6 +14,7 @@
 
   <modules>
     <module>yagami-service-client</module>
+    <module>yagami-service-client2</module>
     <module>yagami-service-config</module>
     <module>yagami-service-eureka</module>
     <module>yagami-service-bpm</module>

@@ -18,10 +18,11 @@
 
 端口|用途
 -|-
-8081,8082,8083|eureka
+9981,9982|eureka
 8090|ribbon client
 8070|ribbon target consumer
 8081|yagami app
-9999|client server
+9991|client server
+9992|client server 2
 9000|config server
 
