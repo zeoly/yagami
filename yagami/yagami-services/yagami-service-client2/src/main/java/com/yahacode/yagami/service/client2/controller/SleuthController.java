@@ -16,6 +16,6 @@ public class SleuthController {
     @GetMapping("/sleuth")
     public String sleuth() {
         logger.info("sleuth client 2");
-        return "sleuth result";
+        return "sleuth result from client 2";
     }
 }

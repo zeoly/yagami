@@ -10,7 +10,8 @@
 - yagami-services
   - yagami-service-client: Client server for test
   - yagami-service-client2: Client server for client to invoke
-  - yagami-service-config: Centralized config server
+  - yagami-service-config: Centralized configuration server
+  - yagami-service-zipkin: Zipkin server for log trace
   - yagami-service-eureka: HA Eureka server(s)
   - yagami-service-bpm: Activiti BPM server
   - yagami-ribbon: test server
@@ -26,4 +27,5 @@
 9991|client server
 9992|client server 2
 9000|config server
+9010|zipkin server
 
