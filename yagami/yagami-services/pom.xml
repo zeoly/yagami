@@ -17,6 +17,7 @@
     <module>yagami-service-client2</module>
     <module>yagami-service-config</module>
     <module>yagami-service-eureka</module>
+    <module>yagami-service-zipkin</module>
     <module>yagami-service-bpm</module>
     <module>yagami-ribbon</module>
     <!--<module>anochat-base</module>-->
