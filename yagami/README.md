@@ -9,6 +9,7 @@
   - yagami-app-bootstrap: spring boot package
 - yagami-services
   - yagami-service-client: Client server for test
+  - yagami-service-client2: Client server for client to invoke
   - yagami-service-config: Centralized config server
   - yagami-service-eureka: HA Eureka server(s)
   - yagami-service-bpm: Activiti BPM server
