@@ -33,13 +33,17 @@ public class Division extends BaseModel {
     @GeneratedValue(generator = "uuid")
     private String idBfDivision;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "code")
     private String code;
 
+    @Column(name = "parent")
     private String parentCode;
 
-    private int level;
+    @Column(name = "level")
+    private String level;
 
     @Override
     public String getId() {
