@@ -11,17 +11,18 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.10.RELEASE</version>
+    <version>2.0.5.RELEASE</version>
   </parent>
 
   <properties>
     <jdk.version>1.8</jdk.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.spring-boot>1.5.10.RELEASE</version.spring-boot>
-    <version.spring-cloud>Edgware.SR2</version.spring-cloud>
+    <version.spring-boot>2.0.5.RELEASE</version.spring-boot>
+    <version.spring-cloud>Finchley.SR1</version.spring-cloud>
     <version.hibernate>5.2.8.Final</version.hibernate>
     <version.activiti>5.17.0</version.activiti>
     <version.swagger>2.7.0</version.swagger>
+    <version.zipkin>2.4.1</version.zipkin>
     <version.yagami>1.0</version.yagami>
   </properties>
 

@@ -23,9 +23,4 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    @Bean
-    public HibernateJpaSessionFactoryBean sessionFactory(EntityManagerFactory emf) {
-        return new HibernateJpaSessionFactoryBean();
-    }
-
 }
