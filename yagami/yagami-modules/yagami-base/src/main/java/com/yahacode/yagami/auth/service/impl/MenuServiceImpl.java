@@ -1,11 +1,10 @@
 package com.yahacode.yagami.auth.service.impl;
 
-import com.yahacode.yagami.auth.dao.MenuDao;
-import com.yahacode.yagami.auth.dao.RoleMenuRelationDao;
 import com.yahacode.yagami.auth.model.Menu;
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.model.RoleMenuRelation;
 import com.yahacode.yagami.auth.repository.MenuRepository;
+import com.yahacode.yagami.auth.repository.RoleMenuRelRepository;
 import com.yahacode.yagami.auth.service.MenuService;
 import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BizfwServiceException;
@@ -33,20 +32,17 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     @Autowired
     private RoleService roleService;
 
+    @Autowired
     private MenuRepository menuRepository;
 
     @Autowired
-    private MenuDao menuDao;
-
-    @Autowired
-    private RoleMenuRelationDao roleMenuRelationDao;
+    private RoleMenuRelRepository roleMenuRelRepository;
 
     @Override
     public Menu getAllMenuTree() throws BizfwServiceException {
-        List<Menu> list = menuDao.list();
+        List<Menu> list = list();
         ListUtils.sort(list, Menu.COLUMN_ORDERS);
-        Menu rootMenu = menuDao.getRootMenu();
-        Menu menu = convertListToTree(list, rootMenu);
+        Menu menu = convertListToTree(list, getRootMenu());
         return menu;
     }
 
@@ -91,7 +87,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
             }
             RoleMenuRelation roleMenuRelation = new RoleMenuRelation(role.getUpdateBy(), role.getIdBfRole(), menu
                     .getIdBfMenu());
-            roleMenuRelationDao.save(roleMenuRelation);
+            roleMenuRelRepository.save(roleMenuRelation);
         }
     }
 
@@ -104,8 +100,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     @Override
     public List<Menu> getMenuListByRole(Role role) throws BizfwServiceException {
         List<Menu> menuList = new ArrayList<Menu>();
-        List<RoleMenuRelation> relationList = roleMenuRelationDao.queryByFieldAndValue(RoleMenuRelation
-                .COLUMN_ROLE_ID, role.getIdBfRole());
+        List<RoleMenuRelation> relationList = roleMenuRelRepository.findByRoleId(role.getIdBfRole());
         for (RoleMenuRelation relation : relationList) {
             Menu menu = queryById(relation.getMenuId());
             menuList.add(menu);
@@ -126,8 +121,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
             }
         }
         ListUtils.sort(resultMenuList, Menu.COLUMN_ORDERS);
-        Menu rootMenu = menuDao.getRootMenu();
-        Menu menu = convertListToTree(resultMenuList, rootMenu);
+        Menu menu = convertListToTree(resultMenuList, getRootMenu());
         return menu;
     }
 
@@ -146,13 +140,16 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
 
     @Override
     public long countChildMenu(Menu menu) throws BizfwServiceException {
-        long count = menuDao.getCountByFieldAndValue(Menu.COLUMN_PARENT_MENU_ID, menu.getIdBfMenu());
-        return count;
+        return menuRepository.countByParentMenuId(menu.getIdBfMenu());
     }
 
     @Override
     public void deleteRoleMenuRelationByMenu(String menuId) throws BizfwServiceException {
-        roleMenuRelationDao.deleteByFieldAndValue(RoleMenuRelation.COLUMN_MENU_ID, menuId);
+        roleMenuRelRepository.deleteByMenuId(menuId);
+    }
+
+    private Menu getRootMenu(){
+        return menuRepository.findByName(Menu.ROOT_NAME);
     }
 
     /**
@@ -163,7 +160,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
      * @throws BizfwServiceException
      */
     private void deleteRoleMenuRelationByRole(String roleId) throws BizfwServiceException {
-        roleMenuRelationDao.deleteByFieldAndValue(RoleMenuRelation.COLUMN_ROLE_ID, roleId);
+        roleMenuRelRepository.deleteByRoleId(roleId);
     }
 
     /**

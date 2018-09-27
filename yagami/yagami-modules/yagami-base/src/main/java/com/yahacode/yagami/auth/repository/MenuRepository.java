@@ -11,4 +11,8 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<Menu, String> {
 
     List<Menu> findByParentMenuId(String id);
+
+    Menu findByName(String menuName);
+
+    long countByParentMenuId(String parentMenuId);
 }

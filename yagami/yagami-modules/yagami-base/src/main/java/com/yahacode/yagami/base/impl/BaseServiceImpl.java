@@ -25,7 +25,7 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
 
     @Override
     public void delete(String id) {
-        getBaseRepository().delete(id);
+        getBaseRepository().deleteById(id);
     }
 
     @Override
@@ -38,7 +38,7 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
 
     @Override
     public T queryById(String id) {
-        return getBaseRepository().findOne(id);
+        return getBaseRepository().getOne(id);
     }
 
     @Override
