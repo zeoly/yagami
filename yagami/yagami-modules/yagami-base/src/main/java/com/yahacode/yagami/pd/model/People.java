@@ -51,7 +51,7 @@ public class People extends BaseModel {
      */
     @Id
     @Column(name = "id_bf_people")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
     private String idBfPeople;
 
