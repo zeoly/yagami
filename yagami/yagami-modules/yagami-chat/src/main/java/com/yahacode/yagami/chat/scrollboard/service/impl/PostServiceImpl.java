@@ -21,12 +21,12 @@ public class PostServiceImpl extends BaseServiceImpl<Post> implements PostServic
 
     @Override
     public List<Post> findAllPosts() {
-        return postRepository.findAllByOrOrderByUpdateDateDesc();
+        return postRepository.findAllByOrderByUpdateDateDesc();
     }
 
     @Override
     public JpaRepository<Post, String> getBaseRepository() {
-        return null;
+        return postRepository;
     }
 
 }

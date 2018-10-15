@@ -10,5 +10,5 @@ import java.util.List;
  */
 public interface ReplyRepository extends JpaRepository<Reply, String> {
 
-    List<Reply> findAllByPostIdByOrderByUpdateDateDesc(String postId);
+    List<Reply> findAllByPostIdOrderByUpdateDate(String postId);
 }

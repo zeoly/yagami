@@ -1,7 +1,10 @@
 package com.yahacode.yagami.chat.scrollboard.model;
 
 import com.yahacode.yagami.base.BaseModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -14,6 +17,9 @@ import javax.persistence.Table;
  * @author zengyongli 2018-09-16
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "bf_post")
 public class Post extends BaseModel {
@@ -27,7 +33,7 @@ public class Post extends BaseModel {
     @Column(name = "title")
     private String title;
 
-    @Column
+    @Column(name = "content")
     private String content;
 
     @Override

@@ -21,7 +21,7 @@ public class ReplyServiceImpl extends BaseServiceImpl<Reply> implements ReplySer
 
     @Override
     public List<Reply> getAllReplies(String postId) {
-        return replyRepository.findAllByPostIdByOrderByUpdateDateDesc(postId);
+        return replyRepository.findAllByPostIdOrderByUpdateDate(postId);
     }
 
     @Override
