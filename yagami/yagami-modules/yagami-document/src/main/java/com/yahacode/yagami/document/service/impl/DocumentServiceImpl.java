@@ -55,7 +55,7 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
             String fileName = file.getOriginalFilename();
             String md5 = FileUtils.getMD5(file);
 
-            Document document = new Document(getLoginPeople().getCode());
+            Document document = new Document();
             document.setName(fileName);
             document.setExtension(FileUtils.getExtension(document.getName()));
             document.setDownloadCount(0);
@@ -120,7 +120,8 @@ public class DocumentServiceImpl extends BaseServiceImpl<Document> implements Do
     @Override
     public void updateDocument(Document newDocument, String documentId) throws BizfwServiceException {
         DocumentChain documentChain = documentChainRepository.findByDocumentId(documentId);
-        DocumentChain newChain = new DocumentChain(newDocument.getUpdateBy());
+        DocumentChain newChain = new DocumentChain();
+        newChain.init(getLoginPeople().getCode());
         newChain.setChainNo(documentChain.getChainNo());
         newChain.setDocumentId(newDocument.getIdBfDocument());
         if (documentChain != null) {

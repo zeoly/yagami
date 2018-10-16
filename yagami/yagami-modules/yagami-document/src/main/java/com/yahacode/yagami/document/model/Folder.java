@@ -73,10 +73,6 @@ public class Folder extends BaseModel {
     @Transient
     private List<Document> documentList;
 
-    public Folder(String peopleCode) {
-        super(peopleCode);
-    }
-
     @Override
     public String getId() {
         return idBfFolder;

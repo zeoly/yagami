@@ -62,10 +62,6 @@ public class RoleFolderAuthority extends BaseModel {
     @Column(name = "authority")
     private String authority;
 
-    public RoleFolderAuthority(String peopleCode) {
-        super(peopleCode);
-    }
-
     @Override
     public String getId() {
         return idBfRoleFolderAuth;

@@ -67,10 +67,6 @@ public class DocumentChain extends BaseModel {
     @Column(name = "memo")
     private String memo;
 
-    public DocumentChain(String peopleCode) {
-        super(peopleCode);
-    }
-
     @Override
     public String getId() {
         return idBfDocumentChain;

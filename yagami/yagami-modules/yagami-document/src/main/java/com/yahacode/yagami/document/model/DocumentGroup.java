@@ -1,7 +1,6 @@
 package com.yahacode.yagami.document.model;
 
 import com.yahacode.yagami.base.BaseModel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,10 +48,6 @@ public class DocumentGroup extends BaseModel {
      */
     @Column(name = "id_bf_document")
     private String documentId;
-
-    public DocumentGroup(String peopleCode) {
-        super(peopleCode);
-    }
 
     @Override
     public String getId() {

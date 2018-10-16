@@ -98,10 +98,6 @@ public class Document extends BaseModel {
      */
     private String status;
 
-    public Document(String peopleCode) {
-        super(peopleCode);
-    }
-
     @Override
     public String getId() {
         return idBfDocument;

@@ -2,15 +2,11 @@ package com.yahacode.yagami.document.service.impl;
 
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseDao;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
-import com.yahacode.yagami.document.dao.FolderDao;
-import com.yahacode.yagami.document.dao.FolderDocRelDao;
-import com.yahacode.yagami.document.dao.RoleFolderAuthorityDao;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
 import com.yahacode.yagami.document.model.FolderDocRelation;
