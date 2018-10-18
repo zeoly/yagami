@@ -1,7 +1,7 @@
 package com.yahacode.yagami.document.repository;
 
+import com.yahacode.yagami.base.BaseRepository;
 import com.yahacode.yagami.document.model.Folder;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author zengyongli 2018-04-02
  */
-public interface FolderRepository extends JpaRepository<Folder, String> {
+public interface FolderRepository extends BaseRepository<Folder, String> {
 
     Folder findByName(String name);
 
