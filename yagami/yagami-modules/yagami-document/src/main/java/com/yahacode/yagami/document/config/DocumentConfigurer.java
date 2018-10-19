@@ -1,11 +1,9 @@
 package com.yahacode.yagami.document.config;
 
-import com.yahacode.yagami.document.utils.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
 /**
  * download path proxy
@@ -13,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @author zengyongli
  */
 @Configuration
-public class DocumentConfigurer extends WebMvcConfigurerAdapter {
+public class DocumentConfigurer extends WebMvcConfigurationSupport {
 
     @Value("${local.storage")
     private String localStorage;
