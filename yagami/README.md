@@ -29,3 +29,19 @@
 9000|config server
 9010|zipkin server
 
+```plantuml
+actor 用户 as user
+cloud 其他渠道 as other
+component gateway
+component eureka{
+    component eureka1
+    component eureka2
+    eureka1 -> eureka2
+    eureka2 -> eureka1
+}
+component config
+user -> gateway
+other -> gateway
+
+gateway -> eureka
+```
