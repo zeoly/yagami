@@ -39,18 +39,27 @@ component eureka{
     eureka1 -> eureka2
     eureka2 -> eureka1
 }
-component config
-component auth
-component service
-user -> gateway
-other -> gateway
 
-database redis
+rectangle services {
+    component gateway
+    component config
+    database git
+    user --> gateway
+    other --> gateway
+    config -> git
 
-gateway -> eureka
-gateway -> auth
-auth -> redis
-gateway -> service
-service -> redis
+    component base
+    component document
+    component bpm
+    component facade
+
+    gateway --> facade
+    facade --> base
+    facade --> document
+    facade --> bpm
+}
+
+services --> eureka
+
 
 ```
