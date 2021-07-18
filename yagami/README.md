@@ -40,8 +40,17 @@ component eureka{
     eureka2 -> eureka1
 }
 component config
+component auth
+component service
 user -> gateway
 other -> gateway
 
+database redis
+
 gateway -> eureka
+gateway -> auth
+auth -> redis
+gateway -> service
+service -> redis
+
 ```

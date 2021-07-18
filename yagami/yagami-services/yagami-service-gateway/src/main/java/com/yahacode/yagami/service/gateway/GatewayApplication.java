@@ -2,12 +2,12 @@ package com.yahacode.yagami.service.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.netflix.zuul.EnableZuulServer;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 
 /**
  * @author zengyongli 2019-07-01
  */
-@EnableZuulServer
+@EnableOAuth2Sso
 @SpringBootApplication
 public class GatewayApplication {
 

@@ -1,18 +1,18 @@
 package com.yahacode.yagami.pd.model;
 
+import com.yahacode.yagami.base.BaseModel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-
-import com.yahacode.yagami.base.BaseModel;
 
 /**
  * model of department relation, including cross level
@@ -23,6 +23,7 @@ import com.yahacode.yagami.base.BaseModel;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "bf_department_rel")
 public class DepartmentRelation extends BaseModel {
@@ -61,10 +62,6 @@ public class DepartmentRelation extends BaseModel {
      */
     @Column(name = "parent_level")
     private int parentLevel;
-
-    public DepartmentRelation(String peopleCode) {
-        super(peopleCode);
-    }
 
     @Override
     public String getId() {

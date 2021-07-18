@@ -4,6 +4,7 @@ import com.yahacode.yagami.base.BaseModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -22,6 +23,7 @@ import javax.persistence.Table;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "bf_document")
 public class Document extends BaseModel {
@@ -96,6 +98,7 @@ public class Document extends BaseModel {
     /**
      * the status of document
      */
+    @Column(name = "status")
     private String status;
 
     @Override

@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
  */
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String[] excludedUrls = "/session".split(",");
+    private static final String[] excludedUrls = "/session,/boom".split(",");
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws

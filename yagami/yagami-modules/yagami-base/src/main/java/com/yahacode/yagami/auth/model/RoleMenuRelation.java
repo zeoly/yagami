@@ -1,8 +1,10 @@
 package com.yahacode.yagami.auth.model;
 
 import com.yahacode.yagami.base.BaseModel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,6 +22,8 @@ import javax.persistence.Table;
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "bf_role_menu_rel")
 public class RoleMenuRelation extends BaseModel {
@@ -50,12 +54,6 @@ public class RoleMenuRelation extends BaseModel {
      */
     @Column(name = "id_bf_menu")
     private String menuId;
-
-    public RoleMenuRelation(String peopleCode, String roleId, String menuId) {
-        super(peopleCode);
-        this.roleId = roleId;
-        this.menuId = menuId;
-    }
 
     @Override
     public String getId() {

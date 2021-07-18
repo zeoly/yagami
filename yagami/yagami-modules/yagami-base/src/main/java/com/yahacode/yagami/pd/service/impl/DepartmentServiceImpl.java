@@ -75,8 +75,9 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
 
     @Override
     public Department getParentDepartment(Department department) throws BizfwServiceException {
-        DepartmentRelation parentDepartmentRel = departmentRelationRepository.findByChildDepartmentIdAndParentLevel
-                (department.getIdBfDepartment(), department.getLevel() - 1);
+        DepartmentRelation parentDepartmentRel =
+                departmentRelationRepository.findByChildDepartmentIdAndParentLevel(department.getIdBfDepartment(),
+                        department.getLevel() - 1);
         return queryById(parentDepartmentRel.getParentDepartmentId());
     }
 
@@ -119,15 +120,13 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
      * @throws BizfwServiceException
      *         业务异常
      */
-    private void saveDepartmentRelation(Department department, Department parentDepartment) throws
-            BizfwServiceException {
+    private void saveDepartmentRelation(Department department, Department parentDepartment) throws BizfwServiceException {
         List<Department> parentDeptList = getAllParentDeptList(parentDepartment.getIdBfDepartment());
         parentDeptList.add(parentDepartment);
         for (Department dept : parentDeptList) {
-            DepartmentRelation relation = new DepartmentRelation(SystemConsts.SYSTEM);
-            relation.setChildDepartmentId(department.getIdBfDepartment());
-            relation.setParentDepartmentId(dept.getIdBfDepartment());
-            relation.setParentLevel(dept.getLevel());
+            DepartmentRelation relation =
+                    DepartmentRelation.builder().childDepartmentId(department.getIdBfDepartment()).parentDepartmentId(dept.getIdBfDepartment()).parentLevel(dept.getLevel()).build();
+            relation.init(SystemConsts.SYSTEM);
             departmentRelationRepository.save(relation);
         }
     }

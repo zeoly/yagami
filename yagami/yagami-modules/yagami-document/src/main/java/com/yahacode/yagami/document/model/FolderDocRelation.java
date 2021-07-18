@@ -3,6 +3,7 @@ package com.yahacode.yagami.document.model;
 import com.yahacode.yagami.base.BaseModel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,6 +21,7 @@ import javax.persistence.Table;
 @Data
 @Builder
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "bf_folder_doc_rel")
 public class FolderDocRelation extends BaseModel {

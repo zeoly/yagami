@@ -20,6 +20,7 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
 
     @Override
     public String save(T t) {
+        t.init(getLoginPeople().getCode());
         return getBaseRepository().save(t).getId();
     }
 
@@ -33,6 +34,7 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
         if (StringUtils.isEmpty(t.getId())) {
             throw new BizfwServiceException(ErrorCode.UPDATE_MISS_PK);
         }
+        t.update(getLoginPeople().getCode());
         getBaseRepository().save(t);
     }
 

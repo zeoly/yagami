@@ -4,6 +4,7 @@ import com.yahacode.yagami.base.BaseModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -24,6 +25,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "bf_department")
 public class Department extends BaseModel {
@@ -74,10 +76,6 @@ public class Department extends BaseModel {
      */
     @Transient
     private List<Department> childDepartmentList;
-
-    public Department(String peopleCode) {
-        super(peopleCode);
-    }
 
     @Override
     public String getId() {

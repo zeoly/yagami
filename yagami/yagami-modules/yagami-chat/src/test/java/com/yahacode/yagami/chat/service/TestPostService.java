@@ -1,6 +1,5 @@
 package com.yahacode.yagami.chat.service;
 
-import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.base.common.ServletContextHolder;
 import com.yahacode.yagami.base.consts.SessionKeyConsts;
 import com.yahacode.yagami.chat.BaseTest;

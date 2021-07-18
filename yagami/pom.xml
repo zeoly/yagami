@@ -21,7 +21,6 @@
     <version.spring-cloud>Finchley.SR2</version.spring-cloud>
     <version.hibernate>5.2.8.Final</version.hibernate>
     <version.activiti>5.17.0</version.activiti>
-    <version.swagger>2.7.0</version.swagger>
     <version.zipkin>2.4.1</version.zipkin>
     <version.yagami>1.0</version.yagami>
   </properties>
@@ -57,17 +56,6 @@
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
         <version>2.9.0</version>
-      </dependency>
-
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger2</artifactId>
-        <version>${version.swagger}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger-ui</artifactId>
-        <version>${version.swagger}</version>
       </dependency>
 
       <dependency>
