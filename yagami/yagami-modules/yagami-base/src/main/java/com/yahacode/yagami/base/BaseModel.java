@@ -46,11 +46,11 @@ public abstract class BaseModel implements Serializable {
     @Column(name = "update_by")
     private String updateBy;
 
-    public BaseModel(String peopleCode) {
+    public BaseModel(String personCode) {
         this.createDate = LocalDateTime.now();
         this.updateDate = LocalDateTime.now();
-        this.createBy = peopleCode;
-        this.updateBy = peopleCode;
+        this.createBy = personCode;
+        this.updateBy = personCode;
     }
 
     public BaseModel() {
