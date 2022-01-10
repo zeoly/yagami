@@ -2,12 +2,12 @@ package com.yahacode.yagami.base.impl;
 
 import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.BaseService;
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.common.ServletContextHolder;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.consts.SessionKeyConsts;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 
 import java.util.List;
 
@@ -19,40 +19,40 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
     }
 
     @Override
-    public String save(T t) {
-        t.init(getLoginPeople().getCode());
+    public String initAndSave(T t) {
+        t.init(getLoginPerson().getCode());
         return getBaseRepository().save(t).getId();
     }
 
     @Override
-    public void delete(String id) {
+    public void deleteById(String id) {
         getBaseRepository().deleteById(id);
     }
 
     @Override
-    public void update(T t) throws BizfwServiceException {
+    public void updateById(T t) throws ServiceException {
         if (StringUtils.isEmpty(t.getId())) {
-            throw new BizfwServiceException(ErrorCode.UPDATE_MISS_PK);
+            throw new ServiceException(ErrorCode.UPDATE_MISS_PK);
         }
-        t.update(getLoginPeople().getCode());
+        t.update(getLoginPerson().getCode());
         getBaseRepository().save(t);
     }
 
     @Override
-    public T queryById(String id) {
+    public T findById(String id) {
         return getBaseRepository().getOne(id);
     }
 
     @Override
-    public void checkObjectNotNull(Object object, String target, String operation) throws BizfwServiceException {
+    public void checkObjectNotNull(Object object, String target, String operation) throws ServiceException {
         if (object == null) {
-            throw new BizfwServiceException(ErrorCode.NULL_PARAM, target, operation);
+            throw new ServiceException(ErrorCode.NULL_PARAM, target, operation);
         }
     }
 
     @Override
-    public People getLoginPeople() {
-        return (People) ServletContextHolder.getSession().getAttribute(SessionKeyConsts.LOGIN_PEOPLE);
+    public Person getLoginPerson() {
+        return (Person) ServletContextHolder.getSession().getAttribute(SessionKeyConsts.LOGIN_PEOPLE);
     }
 
 //	@Override

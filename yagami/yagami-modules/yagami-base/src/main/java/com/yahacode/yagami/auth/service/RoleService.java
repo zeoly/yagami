@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.base.BaseService;
-import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.base.ServiceException;
+import com.yahacode.yagami.pd.model.Person;
 
 /**
  * Role service
@@ -18,41 +18,41 @@ public interface RoleService extends BaseService<Role> {
      * get the list of all role
      *
      * @return list of all role
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    List<Role> getAllRoleList() throws BizfwServiceException;
+    List<Role> getAllRoleList() throws ServiceException;
 
     /**
      * add a role
      *
      * @param role
      *         entity
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    String addRole(Role role) throws BizfwServiceException;
+    String addRole(Role role) throws ServiceException;
 
     /**
      * modify role's name and description
      *
      * @param role
      *         entity
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the same role name is exists
      */
-    void modify(Role role) throws BizfwServiceException;
+    void modify(Role role) throws ServiceException;
 
     /**
      * delete role by primary key
      *
      * @param roleId
      *         primary key
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the role is not exists;
      *         if the role has relation with any people;
      */
-    void deleteRole(String roleId) throws BizfwServiceException;
+    void deleteRole(String roleId) throws ServiceException;
 
     /**
      * get the role list of a people
@@ -60,20 +60,20 @@ public interface RoleService extends BaseService<Role> {
      * @param peopleId
      *         people pk
      * @return role list
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    List<Role> getRoleListByPeople(String peopleId) throws BizfwServiceException;
+    List<Role> getRoleListByPeople(String peopleId) throws ServiceException;
 
     /**
      * set the role list of a people, use the roleIdList list.
      *
      * @param people
      *         entity
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the role is not exists
      */
-    void setRoleOfPeople(People people) throws BizfwServiceException;
+    void setRoleOfPeople(Person people) throws ServiceException;
 
     /**
      * count how many people have the role
@@ -81,10 +81,10 @@ public interface RoleService extends BaseService<Role> {
      * @param role
      *         entity
      * @return the people count
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    long countPeopleByRole(Role role) throws BizfwServiceException;
+    long countPeopleByRole(Role role) throws ServiceException;
 
     /**
      * get the role by role name.
@@ -92,9 +92,9 @@ public interface RoleService extends BaseService<Role> {
      * @param name
      *         role name
      * @return role entity
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    Role getByName(String name) throws BizfwServiceException;
+    Role getByName(String name) throws ServiceException;
 
 }

@@ -1,11 +1,7 @@
 package com.yahacode.yagami.pd.model;
 
 import com.yahacode.yagami.base.BaseModel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.yahacode.yagami.base.consts.SystemConstants;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -17,24 +13,16 @@ import javax.persistence.Transient;
 import java.util.List;
 
 /**
- * model of department
+ * model of a department or a division
  *
  * @author zengyongli
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "bf_department")
+@Table(name = SystemConstants.TABLE_PREFIX + "department")
+@GenericGenerator(name = "my_uuid", strategy = "uuid")
 public class Department extends BaseModel {
 
     private static final long serialVersionUID = -8679405946033789045L;
-
-    public static final String COLUMN_CODE = "code";
-
-    public static final String COLUMN_PARENT_DEPT_ID = "parentDepartmentId";
 
     public static final int LEVEL_ROOT = 0;
 
@@ -42,44 +30,78 @@ public class Department extends BaseModel {
      * primary key
      */
     @Id
-    @Column(name = "id_bf_department")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @GeneratedValue(generator = "uuid")
-    private String idBfDepartment;
+    @GeneratedValue(generator = "my_uuid")
+    private String id;
 
     /**
      * department code
      */
-    @Column(name = "code")
     private String code;
 
     /**
      * department name, recommend in Chinese
      */
-    @Column(name = "name")
     private String name;
 
     /**
      * department level, the level of root department is 0, the offspring's level increase 1
      */
-    @Column(name = "level")
     private Integer level;
 
     /**
-     * parent department pk
+     * parent department code
      */
-    @Column(name = "parent_dept_id")
-    private String parentDepartmentId;
+    @Column(name = "parent_code")
+    private String parentCode;
 
     /**
      * list of child department
      */
     @Transient
-    private List<Department> childDepartmentList;
+    private List<Department> children;
 
     @Override
     public String getId() {
-        return idBfDepartment;
+        return id;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public String getParentCode() {
+        return parentCode;
+    }
+
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    public List<Department> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Department> children) {
+        this.children = children;
+    }
 }

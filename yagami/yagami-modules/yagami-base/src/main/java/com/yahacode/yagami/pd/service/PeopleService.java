@@ -1,18 +1,18 @@
 package com.yahacode.yagami.pd.service;
 
-import java.util.List;
-
 import com.yahacode.yagami.base.BaseService;
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.pd.model.Department;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
+
+import java.util.List;
 
 /**
  * people service
  *
  * @author zengyongli
  */
-public interface PeopleService extends BaseService<People> {
+public interface PeopleService extends BaseService<Person> {
 
     /**
      * add a new people
@@ -20,31 +20,31 @@ public interface PeopleService extends BaseService<People> {
      * @param people
      *         entity
      * @return pk
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the same name people is exists;
      *         if the people's department is not exists;
      */
-    String addPeople(People people) throws BizfwServiceException;
+    String addPeople(Person people) throws ServiceException;
 
     /**
      * modify people's roles
      *
      * @param people
      *         entity
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    void modifyPeople(People people) throws BizfwServiceException;
+    void modifyPeople(Person people) throws ServiceException;
 
     /**
      * delete people by pk
      *
      * @param peopleId
      *         pk
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the target people is the operator
      */
-    void deletePeople(String peopleId) throws BizfwServiceException;
+    void deletePeople(String peopleId) throws ServiceException;
 
     /**
      * get people by code
@@ -52,10 +52,10 @@ public interface PeopleService extends BaseService<People> {
      * @param code
      *         people code
      * @return entity
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    People getByCode(String code) throws BizfwServiceException;
+    Person getByCode(String code) throws ServiceException;
 
     /**
      * count how many people in a department
@@ -63,10 +63,10 @@ public interface PeopleService extends BaseService<People> {
      * @param department
      *         target department
      * @return the people count
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    long getPeopleCountByDepartment(Department department) throws BizfwServiceException;
+    long getPeopleCountByDepartment(Department department) throws ServiceException;
 
     /**
      * get the people list in a department
@@ -74,30 +74,30 @@ public interface PeopleService extends BaseService<People> {
      * @param departmentId
      *         target department pk
      * @return the list of people
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    List<People> getPeopleListByDepartment(String departmentId) throws BizfwServiceException;
+    List<Person> getPeopleListByDepartment(String departmentId) throws ServiceException;
 
     /**
      * reset target people's password
      *
      * @param peopleId
      *         pk
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    void resetPassword(String peopleId) throws BizfwServiceException;
+    void resetPassword(String peopleId) throws ServiceException;
 
     /**
      * unlock a people's account
      *
      * @param peopleId
      *         pk
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the status of people is not locked
      */
-    void unlock(String peopleId) throws BizfwServiceException;
+    void unlock(String peopleId) throws ServiceException;
 
     /**
      * modify people's login password
@@ -108,8 +108,8 @@ public interface PeopleService extends BaseService<People> {
      *         old password
      * @param newPwd
      *         new password
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the old password is not correct
      */
-    void modifyPassword(People people, String oldPwd, String newPwd) throws BizfwServiceException;
+    void modifyPassword(Person people, String oldPwd, String newPwd) throws ServiceException;
 }

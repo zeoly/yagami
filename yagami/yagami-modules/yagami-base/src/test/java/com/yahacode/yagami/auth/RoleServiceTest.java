@@ -11,8 +11,8 @@ import org.springframework.test.annotation.Rollback;
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseTest;
-import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.base.ServiceException;
+import com.yahacode.yagami.pd.model.Person;
 import com.yahacode.yagami.pd.service.PeopleService;
 
 public class RoleServiceTest extends BaseTest {
@@ -37,7 +37,7 @@ public class RoleServiceTest extends BaseTest {
             role = roleService.getByName("测试角色1");
             System.out.println(role.getName());
             roleService.deleteRole(role.getIdBfRole());
-        } catch (BizfwServiceException e) {
+        } catch (ServiceException e) {
             System.out.println(e.getErrorMsg());
         }
     }
@@ -46,7 +46,7 @@ public class RoleServiceTest extends BaseTest {
     @Rollback(false)
     public void testBindRole() {
         try {
-            People people = peopleService.getByCode("rrrr");
+            Person people = peopleService.getByCode("rrrr");
             List<String> roleList = new ArrayList<String>();
             roleList.add("8a8080875825fe41015825fe6ad40000");
             roleList.add("8a8080875825fe41015825ff02d60002");
@@ -56,7 +56,7 @@ public class RoleServiceTest extends BaseTest {
             for (Role role : list) {
                 System.out.println(role.getName());
             }
-        } catch (BizfwServiceException e) {
+        } catch (ServiceException e) {
             System.out.println(e.getErrorMsg());
         }
     }
@@ -65,18 +65,18 @@ public class RoleServiceTest extends BaseTest {
     @Rollback(false)
     public void testGetRoleListByPeople() {
         try {
-            People people = peopleService.getByCode("rrrr");
+            Person people = peopleService.getByCode("rrrr");
             List<Role> list = roleService.getRoleListByPeople(people.getIdBfPeople());
             for (Role role : list) {
                 System.out.println(role.getName());
             }
-        } catch (BizfwServiceException e) {
+        } catch (ServiceException e) {
             System.out.println(e.getErrorMsg());
         }
     }
 
     @Test
-    public void testGetRoleList() throws BizfwServiceException {
+    public void testGetRoleList() throws ServiceException {
         List<Role> list = roleService.getAllRoleList();
         Assert.assertNotNull(list);
     }

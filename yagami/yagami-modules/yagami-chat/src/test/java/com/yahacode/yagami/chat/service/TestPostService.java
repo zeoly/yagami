@@ -7,7 +7,7 @@ import com.yahacode.yagami.chat.scrollboard.model.Post;
 import com.yahacode.yagami.chat.scrollboard.model.Reply;
 import com.yahacode.yagami.chat.scrollboard.service.PostService;
 import com.yahacode.yagami.chat.scrollboard.service.ReplyService;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -31,7 +31,7 @@ public class TestPostService extends BaseTest {
 
     @Before
     public void before() {
-        People people = People.builder().code("test").name("测试用户").build();
+        Person people = Person.builder().code("test").name("测试用户").build();
         ServletContextHolder.getSession().setAttribute(SessionKeyConsts.LOGIN_PEOPLE, people);
     }
 

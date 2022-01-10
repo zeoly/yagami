@@ -1,10 +1,10 @@
 package com.yahacode.yagami.pd.service;
 
-import java.util.List;
-
 import com.yahacode.yagami.base.BaseService;
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.pd.model.Department;
+
+import java.util.List;
 
 /**
  * department service
@@ -14,100 +14,63 @@ import com.yahacode.yagami.pd.model.Department;
 public interface DepartmentService extends BaseService<Department> {
 
     /**
+     * find department by department code
+     *
+     * @param code department code
+     * @return department
+     */
+    Department findByCode(String code);
+
+    /**
      * add a new department
      *
-     * @param department
-     *         entity
-     * @throws BizfwServiceException
-     *         framework exception
+     * @param department entity
+     * @throws ServiceException framework exception
      */
-    void addDepartment(Department department) throws BizfwServiceException;
+    void addDepartment(Department department) throws ServiceException;
 
     /**
      * modify department's name and code
      *
-     * @param department
-     *         target department
-     * @throws BizfwServiceException
-     *         framework exception
+     * @param department target department
+     * @throws ServiceException framework exception
      */
-    void modifyDepartment(Department department) throws BizfwServiceException;
+    void modifyDepartment(Department department) throws ServiceException;
 
     /**
-     * delete department by pk
+     * delete department by code
      *
-     * @param department
-     *         target department
-     * @throws BizfwServiceException
-     *         if the department is not exists;
-     *         if the department contain any child department or people;
+     * @param code department code
+     * @throws ServiceException if the department is not exists;
+     *                          if the department contain any child department or people;
      */
-    void deleteDepartment(Department department) throws BizfwServiceException;
-
-    /**
-     * get department by code
-     *
-     * @param code
-     *         department code
-     * @return entity
-     * @throws BizfwServiceException
-     *         framework exception
-     */
-    Department queryByCode(String code) throws BizfwServiceException;
+    void deleteDepartment(String code) throws ServiceException;
 
     /**
      * if department has any child department
      *
-     * @param department
-     *         target department
-     * @return boolean
-     * @throws BizfwServiceException
-     *         framework exception
+     * @param code department code
+     * @return whether exists children
+     * @throws ServiceException framework exception
      */
-    boolean hasChildDepartment(Department department) throws BizfwServiceException;
+    boolean hasChild(String code);
 
     /**
-     * if department contain any people
+     * if department contain any person
      *
-     * @param department
-     *         target department
-     * @return boolean
-     * @throws BizfwServiceException
-     *         framework exception
+     * @param code department code
+     * @return whether contain person
+     * @throws ServiceException framework exception
      */
-    boolean hasPeople(Department department) throws BizfwServiceException;
-
-    /**
-     * get the parent department
-     *
-     * @param department
-     *         target department
-     * @return parent department
-     * @throws BizfwServiceException
-     *         framework exception
-     */
-    Department getParentDepartment(Department department) throws BizfwServiceException;
+    boolean hasPerson(String code) throws ServiceException;
 
     /**
      * get the child department list
      *
-     * @param departmentId
-     *         department pk
+     * @param code department code
      * @return list of child departments
-     * @throws BizfwServiceException
-     *         framework exception
+     * @throws ServiceException framework exception
      */
-    List<Department> getChildDepartmentList(String departmentId) throws BizfwServiceException;
-
-    /**
-     * get the tree structure of target department and its child departments
-     *
-     * @param departmentId
-     *         primary key
-     * @return target department of tree structure
-     * @throws BizfwServiceException
-     *         framework exception
-     */
-    Department getDepartmentTreeByDepartmentId(String departmentId) throws BizfwServiceException;
+    List<Department> findChildren(String code) throws ServiceException;
 
 }

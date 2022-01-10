@@ -1,6 +1,6 @@
 package com.yahacode.yagami.base;
 
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public interface BaseService<T extends BaseModel> {
      *         entity
      * @return primary key
      */
-    String save(T t);
+    String initAndSave(T t);
 
     /**
      * delete the record by primary key
@@ -36,7 +36,7 @@ public interface BaseService<T extends BaseModel> {
      * @param id
      *         primary key
      */
-    void delete(String id);
+    void deleteById(String id);
 
     /**
      * update the entity's all fields by primary key
@@ -46,7 +46,7 @@ public interface BaseService<T extends BaseModel> {
      * @throws if
      *         entity's pk is null
      */
-    void update(T t) throws BizfwServiceException;
+    void updateById(T t) throws ServiceException;
 
     /**
      * get the record by primary key
@@ -55,7 +55,7 @@ public interface BaseService<T extends BaseModel> {
      *         primary key
      * @return entity
      */
-    T queryById(String id);
+    T findById(String id);
 
     /**
      * make sure the object is not null, otherwise throw a exception with message - "target is null，operation fail"
@@ -66,19 +66,19 @@ public interface BaseService<T extends BaseModel> {
      *         exception message of target
      * @param operation
      *         exception message of operation
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the object is null
      */
-    void checkObjectNotNull(Object object, String target, String operation) throws BizfwServiceException;
+    void checkObjectNotNull(Object object, String target, String operation) throws ServiceException;
 
     /**
-     * get the login people
+     * get the current log in person
      *
-     * @return login people
-     * @throws BizfwServiceException
+     * @return login person
+     * @throws ServiceException
      *         framework exception
      */
-    People getLoginPeople() throws BizfwServiceException;
+    Person getLoginPerson() throws ServiceException;
 
     /**
      * 保存并放入cache

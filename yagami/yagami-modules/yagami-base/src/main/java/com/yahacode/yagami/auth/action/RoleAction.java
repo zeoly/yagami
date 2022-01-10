@@ -2,8 +2,8 @@ package com.yahacode.yagami.auth.action;
 
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseAction;
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.BaseController;
+import com.yahacode.yagami.base.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/role")
-public class RoleAction extends BaseAction {
+public class RoleAction extends BaseController {
 
     private RoleService roleService;
 
@@ -30,7 +30,7 @@ public class RoleAction extends BaseAction {
      * @return 角色列表
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<Role> getRoleList() throws BizfwServiceException {
+    public List<Role> getRoleList() throws ServiceException {
         return roleService.getAllRoleList();
     }
 
@@ -38,10 +38,10 @@ public class RoleAction extends BaseAction {
      * 新增角色
      *
      * @param role 角色模型
-     * @throws BizfwServiceException
+     * @throws ServiceException
      */
     @RequestMapping(method = RequestMethod.POST)
-    public void addRole(@RequestBody Role role) throws BizfwServiceException {
+    public void addRole(@RequestBody Role role) throws ServiceException {
         roleService.addRole(role);
     }
 
@@ -49,10 +49,10 @@ public class RoleAction extends BaseAction {
      * 更新角色
      *
      * @param role 角色模型
-     * @throws BizfwServiceException
+     * @throws ServiceException
      */
     @RequestMapping(method = RequestMethod.PATCH)
-    public void modifyRole(@RequestBody Role role) throws BizfwServiceException {
+    public void modifyRole(@RequestBody Role role) throws ServiceException {
         roleService.modify(role);
     }
 
@@ -60,10 +60,10 @@ public class RoleAction extends BaseAction {
      * 删除角色
      *
      * @param roleId 角色id
-     * @throws BizfwServiceException
+     * @throws ServiceException
      */
     @RequestMapping(method = RequestMethod.DELETE, value = "{id}")
-    public void deleteRole(@PathVariable("id") String roleId) throws BizfwServiceException {
+    public void deleteRole(@PathVariable("id") String roleId) throws ServiceException {
         roleService.deleteRole(roleId);
     }
 

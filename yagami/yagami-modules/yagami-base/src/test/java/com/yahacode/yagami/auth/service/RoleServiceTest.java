@@ -4,7 +4,7 @@ import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.base.BaseTest;
 import com.yahacode.yagami.base.common.ServletContextHolder;
 import com.yahacode.yagami.base.consts.SessionKeyConsts;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -20,7 +20,7 @@ public class RoleServiceTest extends BaseTest {
 
     @Before
     public void beforeTest() {
-        People loginPeople = new People();
+        Person loginPeople = new Person();
         loginPeople.setCode("unitTest");
         loginPeople.setName("单元测试");
         ServletContextHolder.getSession().setAttribute(SessionKeyConsts.LOGIN_PEOPLE, loginPeople);

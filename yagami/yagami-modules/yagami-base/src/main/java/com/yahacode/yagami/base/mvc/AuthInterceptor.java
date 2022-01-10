@@ -1,6 +1,6 @@
 package com.yahacode.yagami.base.mvc;
 
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.common.ServletContextHolder;
 import com.yahacode.yagami.base.common.StringUtils;
@@ -35,7 +35,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
                     .AUTHORIZATION);
             LogUtils.info("url [{}], session token [{}]", request.getRequestURI(), sessionToken);
             if (StringUtils.isEmpty(authorization) || !authorization.equals(sessionToken)) {
-                throw new BizfwServiceException(ErrorCode.NEED_LOGIN);
+                throw new ServiceException(ErrorCode.NEED_LOGIN);
             }
         }
         return true;

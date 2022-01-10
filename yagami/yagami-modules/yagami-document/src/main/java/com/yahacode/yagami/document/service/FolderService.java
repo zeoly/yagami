@@ -5,8 +5,7 @@ import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
-import com.yahacode.yagami.document.model.RoleFolderAuthority;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -136,5 +135,5 @@ public interface FolderService extends BaseService<Folder> {
      * @throws BizfwServiceException
      *         framework exception
      */
-    Folder getAuthorizedFolderTree(People people) throws BizfwServiceException;
+    Folder getAuthorizedFolderTree(Person people) throws BizfwServiceException;
 }

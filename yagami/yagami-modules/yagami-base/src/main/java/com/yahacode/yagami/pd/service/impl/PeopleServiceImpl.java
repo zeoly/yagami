@@ -1,14 +1,14 @@
 package com.yahacode.yagami.pd.service.impl;
 
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.model.Department;
-import com.yahacode.yagami.pd.model.People;
-import com.yahacode.yagami.pd.repository.PeopleRepository;
+import com.yahacode.yagami.pd.model.Person;
+import com.yahacode.yagami.pd.repository.PersonRepository;
 import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import com.yahacode.yagami.pd.service.DepartmentService;
 import com.yahacode.yagami.pd.service.PeopleService;
@@ -31,13 +31,13 @@ import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.UPDATE
  * @author zengyongli
  */
 @Service
-public class PeopleServiceImpl extends BaseServiceImpl<People> implements PeopleService {
+public class PeopleServiceImpl extends BaseServiceImpl<Person> implements PeopleService {
 
     private DepartmentService departmentService;
 
     private RoleService roleService;
 
-    private PeopleRepository peopleRepository;
+    private PersonRepository peopleRepository;
 
     private PeopleRoleRelRepository peopleRoleRelRepository;
 
@@ -45,22 +45,22 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 
     @Transactional
     @Override
-    public String addPeople(People people) throws BizfwServiceException {
-        People operator = getLoginPeople();
+    public String addPeople(Person people) throws ServiceException {
+        Person operator = getLoginPeople();
         LogUtils.info("{}新增人员{}", operator.getCode(), people.getCode());
-        People tmpPeople = getByCode(people.getCode());
+        Person tmpPeople = getByCode(people.getCode());
         if (tmpPeople != null) {
             LogUtils.error("{}新增人员{}失败，人员已存在", operator.getCode(), people.getCode());
-            throw new BizfwServiceException(ADD_FAIL_EXISTED, people.getCode());
+            throw new ServiceException(ADD_FAIL_EXISTED, people.getCode());
         }
         Department department = departmentService.queryById(people.getDepartmentId());
         if (department == null) {
             LogUtils.error("{}新增人员{}失败，机构{}为空", operator.getCode(), people.getCode(), people.getDepartmentId());
-            throw new BizfwServiceException(ADD_FAIL_WITHOUT_DEPT);
+            throw new ServiceException(ADD_FAIL_WITHOUT_DEPT);
         }
         people.init(operator.getCode());
         people.setErrorCount(COUNTER_ZERO);
-        people.setStatus(People.STATUS_NORMAL);
+        people.setStatus(Person.STATUS_NORMAL);
         people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(PropertiesUtils
                 .getSysConfig("default.pwd"))));
         String id = save(people);
@@ -70,8 +70,8 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 
     @Transactional
     @Override
-    public void modifyPeople(People people) throws BizfwServiceException {
-        People operator = getLoginPeople();
+    public void modifyPeople(Person people) throws ServiceException {
+        Person operator = getLoginPeople();
         LogUtils.info("{}修改人员{}操作开始", operator.getCode(), people.getCode());
         people.update(operator.getCode());
         roleService.setRoleOfPeople(people);
@@ -81,13 +81,13 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 
     @Transactional
     @Override
-    public void deletePeople(String peopleId) throws BizfwServiceException {
-        People operator = getLoginPeople();
-        People target = queryById(peopleId);
+    public void deletePeople(String peopleId) throws ServiceException {
+        Person operator = getLoginPeople();
+        Person target = queryById(peopleId);
         LogUtils.info("{}删除人员{}操作开始", operator.getCode(), target.getCode());
         if (target.getCode().equals(operator.getCode())) {
             LogUtils.error("{}删除自己，失败", operator.getCode());
-            throw new BizfwServiceException(DEL_FAIL_SELF);
+            throw new ServiceException(DEL_FAIL_SELF);
         }
         delete(peopleId);
         peopleRoleRelRepository.deleteByPeopleId(peopleId);
@@ -96,24 +96,24 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
 
     @Transactional
     @Override
-    public People getByCode(String code) throws BizfwServiceException {
+    public Person getByCode(String code) throws ServiceException {
         return peopleRepository.findByCode(code);
     }
 
     @Override
-    public long getPeopleCountByDepartment(Department department) throws BizfwServiceException {
+    public long getPeopleCountByDepartment(Department department) throws ServiceException {
         return peopleRepository.countByDepartmentId(department.getIdBfDepartment());
     }
 
     @Override
-    public List<People> getPeopleListByDepartment(String departmentId) throws BizfwServiceException {
+    public List<Person> getPeopleListByDepartment(String departmentId) throws ServiceException {
         return peopleRepository.findByDepartmentId(departmentId);
     }
 
     @Override
-    public void resetPassword(String peopleId) throws BizfwServiceException {
-        People people = queryById(peopleId);
-        People operator = getLoginPeople();
+    public void resetPassword(String peopleId) throws ServiceException {
+        Person people = queryById(peopleId);
+        Person operator = getLoginPeople();
         LogUtils.info("{}重置密码{}操作开始", operator.getCode(), people.getCode());
         people.update(operator.getCode());
         people.setPassword(StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd")));
@@ -123,26 +123,26 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     }
 
     @Override
-    public void unlock(String peopleId) throws BizfwServiceException {
-        People people = queryById(peopleId);
-        People operator = getLoginPeople();
+    public void unlock(String peopleId) throws ServiceException {
+        Person people = queryById(peopleId);
+        Person operator = getLoginPeople();
         LogUtils.info("{}解锁人员{}操作开始", operator.getCode(), people.getCode());
-        if (!People.STATUS_LOCKED.equals(people.getStatus())) {
+        if (!Person.STATUS_LOCKED.equals(people.getStatus())) {
             LogUtils.error("{}解锁人员{}操作失败, 人员状态为{}", operator.getCode(), people.getCode(), people.getStatus());
-            throw new BizfwServiceException(UNLOCK_FAIL_STATUS_ERR);
+            throw new ServiceException(UNLOCK_FAIL_STATUS_ERR);
         }
         people.update(operator.getCode());
-        people.setStatus(People.STATUS_NORMAL);
+        people.setStatus(Person.STATUS_NORMAL);
         people.setErrorCount(COUNTER_ZERO);
         update(people);
         LogUtils.info("{}解锁人员{}操作结束", operator.getCode(), people.getCode());
     }
 
     @Override
-    public void modifyPassword(People people, String oldPwd, String newPwd) throws BizfwServiceException {
+    public void modifyPassword(Person people, String oldPwd, String newPwd) throws ServiceException {
         LogUtils.info("{}修改密码操作开始", people.getCode());
         if (!oldPwd.equals(people.getPassword())) {
-            throw new BizfwServiceException(UPDATE_FAIL_PWD_ERR);
+            throw new ServiceException(UPDATE_FAIL_PWD_ERR);
         }
         people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(newPwd)));
         update(people);
@@ -150,7 +150,7 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     }
 
     @Override
-    public JpaRepository<People, String> getBaseRepository() {
+    public JpaRepository<Person, String> getBaseRepository() {
         return peopleRepository;
     }
 
@@ -165,7 +165,7 @@ public class PeopleServiceImpl extends BaseServiceImpl<People> implements People
     }
 
     @Autowired
-    public void setPeopleRepository(PeopleRepository peopleRepository) {
+    public void setPeopleRepository(PersonRepository peopleRepository) {
         this.peopleRepository = peopleRepository;
     }
 

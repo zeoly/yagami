@@ -1,6 +1,6 @@
 package com.yahacode.yagami.base.mvc;
 
-import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BaseController;
 import com.yahacode.yagami.base.YagamiResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -31,7 +31,7 @@ public class YagamiResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse
 			response) {
         try {
-            boolean isYagamiHandler = BaseAction.class.isAssignableFrom(returnType.getMethod().getDeclaringClass());
+            boolean isYagamiHandler = BaseController.class.isAssignableFrom(returnType.getMethod().getDeclaringClass());
             boolean isYagamiResponse = body instanceof YagamiResponse;
             if (isYagamiHandler && !isYagamiResponse) {
                 if (body instanceof String) {

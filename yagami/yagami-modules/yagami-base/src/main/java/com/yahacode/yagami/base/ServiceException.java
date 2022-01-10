@@ -1,15 +1,15 @@
 package com.yahacode.yagami.base;
 
-import java.text.MessageFormat;
-
 import com.yahacode.yagami.base.common.PropertiesUtils;
+
+import java.text.MessageFormat;
 
 /**
  * framework exception for business service. if throw this exception, an advice will convert it to YagamiResponse
  *
  * @author zengyongli
  */
-public class BizfwServiceException extends Exception {
+public class ServiceException extends Exception {
 
     private static final long serialVersionUID = -3233376165570816079L;
 
@@ -23,13 +23,13 @@ public class BizfwServiceException extends Exception {
      */
     private String errorMsg;
 
-    public BizfwServiceException(String errorCode) {
+    public ServiceException(String errorCode) {
         super(errorCode);
         this.errorCode = errorCode;
         this.errorMsg = PropertiesUtils.getErrorMsg(errorCode);
     }
 
-    public BizfwServiceException(String errorCode, Object... param) {
+    public ServiceException(String errorCode, Object... param) {
         super(errorCode);
         this.errorCode = errorCode;
         String msg = PropertiesUtils.getErrorMsg(errorCode);

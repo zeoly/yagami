@@ -1,6 +1,6 @@
 package com.yahacode.yagami.chat.scrollboard.action;
 
-import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BaseController;
 import com.yahacode.yagami.chat.scrollboard.model.Post;
 import com.yahacode.yagami.chat.scrollboard.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/post")
-public class PostController extends BaseAction {
+public class PostController extends BaseController {
 
     private PostService postService;
 

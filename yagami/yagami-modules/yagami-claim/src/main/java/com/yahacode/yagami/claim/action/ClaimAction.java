@@ -1,10 +1,10 @@
 package com.yahacode.yagami.claim.action;
 
-import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BaseController;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.claim.model.Claim;
 import com.yahacode.yagami.claim.service.ClaimService;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/claim")
-public class ClaimAction extends BaseAction {
+public class ClaimAction extends BaseController {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -40,7 +40,7 @@ public class ClaimAction extends BaseAction {
     public void addClaim(HttpServletRequest request) throws BizfwServiceException {
         MultipartHttpServletRequest params = ((MultipartHttpServletRequest) request);
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-        People loginPeople = getLoginPeople();
+        Person loginPeople = getLoginPeople();
         logger.info("claim in");
     }
 

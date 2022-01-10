@@ -1,6 +1,6 @@
 package com.yahacode.yagami.base.mvc;
 
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.YagamiResponse;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.common.PropertiesUtils;
@@ -25,8 +25,8 @@ public class YagamiExceptionHandler {
     @ResponseBody
     public ResponseEntity<YagamiResponse> jsonErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         YagamiResponse response = new YagamiResponse();
-        if (e instanceof BizfwServiceException) {
-            BizfwServiceException serviceException = (BizfwServiceException) e;
+        if (e instanceof ServiceException) {
+            ServiceException serviceException = (ServiceException) e;
             response.setCode(serviceException.getErrorCode());
             response.setMsg(serviceException.getErrorMsg());
         } else {

@@ -1,6 +1,6 @@
 package com.yahacode.yagami.document.action;
 
-import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BaseController;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.config.DocumentProperties;
 import com.yahacode.yagami.document.model.Document;
@@ -30,7 +30,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/document")
-public class DocumentAction extends BaseAction {
+public class DocumentAction extends BaseController {
 
     private DocumentService documentService;
 

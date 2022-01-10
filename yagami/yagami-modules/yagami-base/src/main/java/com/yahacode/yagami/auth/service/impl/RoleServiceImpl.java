@@ -5,10 +5,10 @@ import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import com.yahacode.yagami.auth.repository.RoleRepository;
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -35,16 +35,16 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     private RoleRepository roleRepository;
 
     @Override
-    public List<Role> getAllRoleList() throws BizfwServiceException {
+    public List<Role> getAllRoleList() throws ServiceException {
         return roleRepository.findAll();
     }
 
     @Transactional
     @Override
-    public String addRole(Role role) throws BizfwServiceException {
+    public String addRole(Role role) throws ServiceException {
         Role tmpRole = getByName(role.getName());
         if (null != tmpRole) {
-            throw new BizfwServiceException(ADD_FAIL_EXISTED);
+            throw new ServiceException(ADD_FAIL_EXISTED);
         }
         role.init(getLoginPeople().getCode());
         LogUtils.info("{}新增角色{}", role.getUpdateBy(), role.getName());
@@ -53,10 +53,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Transactional
     @Override
-    public void modify(Role role) throws BizfwServiceException {
+    public void modify(Role role) throws ServiceException {
         Role tmpRole = getByName(role.getName());
         if (null != tmpRole) {
-            throw new BizfwServiceException(MOD_FAIL_EXISTED);
+            throw new ServiceException(MOD_FAIL_EXISTED);
         }
         LogUtils.info("{}修改角色{}", role.getUpdateBy(), role.getName());
         Role dbRole = queryById(role.getIdBfRole());
@@ -68,7 +68,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Transactional
     @Override
-    public void deleteRole(String roleId) throws BizfwServiceException {
+    public void deleteRole(String roleId) throws ServiceException {
         Role role = queryById(roleId);
         checkObjectNotNull(role, "角色[" + roleId + "]", "删除角色");
         checkCanDeleteRole(role);
@@ -77,12 +77,12 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Transactional
     @Override
-    public void setRoleOfPeople(People people) throws BizfwServiceException {
+    public void setRoleOfPeople(Person people) throws ServiceException {
         deletePeopleRoleRelation(people);
         for (String id : people.getRoleIdList()) {
             Role role = queryById(id);
             if (role == null) {
-                throw new BizfwServiceException(SET_ROLE_REL_FAIL_NOT_FOUND, id);
+                throw new ServiceException(SET_ROLE_REL_FAIL_NOT_FOUND, id);
             }
             PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(getLoginPeople().getCode(), people
                     .getIdBfPeople(), role.getIdBfRole());
@@ -91,7 +91,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     @Override
-    public List<Role> getRoleListByPeople(String peopleId) throws BizfwServiceException {
+    public List<Role> getRoleListByPeople(String peopleId) throws ServiceException {
         List<Role> roleList = new ArrayList<>();
         List<PeopleRoleRelation> relationList = peopleRoleRelRepository.findByPeopleId(peopleId);
         for (PeopleRoleRelation relation : relationList) {
@@ -102,12 +102,12 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     @Override
-    public long countPeopleByRole(Role role) throws BizfwServiceException {
+    public long countPeopleByRole(Role role) throws ServiceException {
         return peopleRoleRelRepository.countByRoleId(role.getIdBfRole());
     }
 
     @Override
-    public Role getByName(String name) throws BizfwServiceException {
+    public Role getByName(String name) throws ServiceException {
         return roleRepository.findByName(name);
     }
 
@@ -116,10 +116,10 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
      *
      * @param people
      *         entity
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         framework exception
      */
-    private void deletePeopleRoleRelation(People people) throws BizfwServiceException {
+    private void deletePeopleRoleRelation(Person people) throws ServiceException {
         peopleRoleRelRepository.deleteByPeopleId(people.getIdBfPeople());
     }
 
@@ -128,13 +128,13 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
      *
      * @param role
      *         entity
-     * @throws BizfwServiceException
+     * @throws ServiceException
      *         if the role has any relation with people
      */
-    private void checkCanDeleteRole(Role role) throws BizfwServiceException {
+    private void checkCanDeleteRole(Role role) throws ServiceException {
         long peopleCount = countPeopleByRole(role);
         if (peopleCount > 0) {
-            throw new BizfwServiceException(DEL_FAIL_WITH_PEOPLE);
+            throw new ServiceException(DEL_FAIL_WITH_PEOPLE);
         }
     }
 

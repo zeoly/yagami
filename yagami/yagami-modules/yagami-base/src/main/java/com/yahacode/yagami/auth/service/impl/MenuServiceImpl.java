@@ -7,7 +7,7 @@ import com.yahacode.yagami.auth.repository.MenuRepository;
 import com.yahacode.yagami.auth.repository.RoleMenuRelRepository;
 import com.yahacode.yagami.auth.service.MenuService;
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.common.ListUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
@@ -39,7 +39,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     private RoleMenuRelRepository roleMenuRelRepository;
 
     @Override
-    public Menu getAllMenuTree() throws BizfwServiceException {
+    public Menu getAllMenuTree() throws ServiceException {
         List<Menu> list = list();
         ListUtils.sort(list, Menu.COLUMN_ORDERS);
         Menu menu = convertListToTree(list, getRootMenu());
@@ -48,17 +48,17 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
 
     @Transactional
     @Override
-    public void addMenu(Menu menu) throws BizfwServiceException {
+    public void addMenu(Menu menu) throws ServiceException {
         Menu parentMenu = queryById(menu.getParentMenuId());
         if (parentMenu == null) {
-            throw new BizfwServiceException(ErrorCode.Auth.Menu.ADD_FAIL_WITHOUT_PARENT);
+            throw new ServiceException(ErrorCode.Auth.Menu.ADD_FAIL_WITHOUT_PARENT);
         }
         save(menu);
     }
 
     @Transactional
     @Override
-    public void modifyMenu(Menu menu) throws BizfwServiceException {
+    public void modifyMenu(Menu menu) throws ServiceException {
         Menu dbMenu = queryById(menu.getIdBfMenu());
         dbMenu.setName(menu.getName());
         dbMenu.setUrl(menu.getUrl());
@@ -69,7 +69,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
 
     @Transactional
     @Override
-    public void deleteMenu(String menuId) throws BizfwServiceException {
+    public void deleteMenu(String menuId) throws ServiceException {
         Menu menu = queryById(menuId);
         checkCanDeleteMenu(menu);
         delete(menuId);
@@ -78,12 +78,12 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
 
     @Transactional
     @Override
-    public void setMenuOfRole(Role role, List<String> menuIdList) throws BizfwServiceException {
+    public void setMenuOfRole(Role role, List<String> menuIdList) throws ServiceException {
         deleteRoleMenuRelationByRole(role.getIdBfRole());
         for (String menuId : menuIdList) {
             Menu menu = queryById(menuId);
             if (menu == null) {
-                throw new BizfwServiceException(ErrorCode.Auth.Role.SET_MENU_REL_FAIL_MENU_NOT_FOUND, menuId);
+                throw new ServiceException(ErrorCode.Auth.Role.SET_MENU_REL_FAIL_MENU_NOT_FOUND, menuId);
             }
             RoleMenuRelation roleMenuRelation = new RoleMenuRelation(role.getUpdateBy(), role.getIdBfRole(), menu
                     .getIdBfMenu());
@@ -92,13 +92,13 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     }
 
     @Override
-    public List<Menu> getChildMenuList(Menu menu) throws BizfwServiceException {
+    public List<Menu> getChildMenuList(Menu menu) throws ServiceException {
         List<Menu> menuList = menuRepository.findByParentMenuId(menu.getIdBfMenu());
         return menuList;
     }
 
     @Override
-    public List<Menu> getMenuListByRole(Role role) throws BizfwServiceException {
+    public List<Menu> getMenuListByRole(Role role) throws ServiceException {
         List<Menu> menuList = new ArrayList<Menu>();
         List<RoleMenuRelation> relationList = roleMenuRelRepository.findByRoleId(role.getIdBfRole());
         for (RoleMenuRelation relation : relationList) {
@@ -109,7 +109,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     }
 
     @Override
-    public Menu getMenuTreeByPeople(String peopleId) throws BizfwServiceException {
+    public Menu getMenuTreeByPeople(String peopleId) throws ServiceException {
         List<Menu> resultMenuList = new ArrayList<Menu>();
         List<Role> roleList = roleService.getRoleListByPeople(peopleId);
         for (Role role : roleList) {
@@ -126,7 +126,7 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     }
 
     @Override
-    public Menu convertListToTree(List<Menu> list, Menu rootMenu) throws BizfwServiceException {
+    public Menu convertListToTree(List<Menu> list, Menu rootMenu) throws ServiceException {
         List<Menu> childList = new ArrayList<Menu>();
         for (Menu menu : list) {
             if (rootMenu.getIdBfMenu().equals(menu.getParentMenuId())) {
@@ -139,12 +139,12 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
     }
 
     @Override
-    public long countChildMenu(Menu menu) throws BizfwServiceException {
+    public long countChildMenu(Menu menu) throws ServiceException {
         return menuRepository.countByParentMenuId(menu.getIdBfMenu());
     }
 
     @Override
-    public void deleteRoleMenuRelationByMenu(String menuId) throws BizfwServiceException {
+    public void deleteRoleMenuRelationByMenu(String menuId) throws ServiceException {
         roleMenuRelRepository.deleteByMenuId(menuId);
     }
 
@@ -157,9 +157,9 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
      *
      * @param roleId
      *         角色id
-     * @throws BizfwServiceException
+     * @throws ServiceException
      */
-    private void deleteRoleMenuRelationByRole(String roleId) throws BizfwServiceException {
+    private void deleteRoleMenuRelationByRole(String roleId) throws ServiceException {
         roleMenuRelRepository.deleteByRoleId(roleId);
     }
 
@@ -168,12 +168,12 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
      *
      * @param menu
      *         菜单
-     * @throws BizfwServiceException
+     * @throws ServiceException
      */
-    private void checkCanDeleteMenu(Menu menu) throws BizfwServiceException {
+    private void checkCanDeleteMenu(Menu menu) throws ServiceException {
         long childCount = countChildMenu(menu);
         if (childCount > 0) {
-            throw new BizfwServiceException(ErrorCode.Auth.Menu.DEL_FAIL_WITH_CHILD);
+            throw new ServiceException(ErrorCode.Auth.Menu.DEL_FAIL_WITH_CHILD);
         }
     }
 

@@ -14,9 +14,9 @@
 
   <modules>
     <module>yagami-base</module>
-    <module>yagami-document</module>
-    <module>yagami-claim</module>
-    <module>yagami-chat</module>
+<!--    <module>yagami-document</module>-->
+<!--    <module>yagami-claim</module>-->
+<!--    <module>yagami-chat</module>-->
   </modules>
 
   <build>

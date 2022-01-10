@@ -1,11 +1,11 @@
 package com.yahacode.yagami.document.action;
 
 import com.yahacode.yagami.auth.model.Role;
-import com.yahacode.yagami.base.BaseAction;
+import com.yahacode.yagami.base.BaseController;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.model.Folder;
 import com.yahacode.yagami.document.service.FolderService;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/folder")
-public class FolderAction extends BaseAction {
+public class FolderAction extends BaseController {
 
     private FolderService folderService;
 
@@ -33,7 +32,7 @@ public class FolderAction extends BaseAction {
     @ApiImplicitParam(name = "folder", value = "文件夹模型", required = true, dataTypeClass = Folder.class)
     @PostMapping
     public void addFolder(@RequestBody Folder folder) throws BizfwServiceException {
-        People people = getLoginPeople();
+        Person people = getLoginPeople();
         folder.init(people.getCode());
         folderService.addFolder(folder);
     }
@@ -45,7 +44,7 @@ public class FolderAction extends BaseAction {
     @PatchMapping("/{folderId}")
     public void modifyFolder(@PathVariable("folderId") String folderId, @RequestBody Folder folder) throws
             BizfwServiceException {
-        People people = getLoginPeople();
+        Person people = getLoginPeople();
         folder.update(people.getCode());
         folder.setIdBfFolder(folderId);
         folderService.modifyFolder(folder);
@@ -68,7 +67,7 @@ public class FolderAction extends BaseAction {
     @ApiImplicitParam(name = "folderId", value = "文件夹id", required = true, dataTypeClass = String.class)
     @GetMapping("{folderId}")
     public Folder getContentOfFolder(@PathVariable("folderId") String folderId) throws BizfwServiceException {
-        People people = getLoginPeople();
+        Person people = getLoginPeople();
         Folder folder = folderService.queryById(folderId);
         folder.update(people.getCode());
         return folderService.getContentOfFolder(folder);

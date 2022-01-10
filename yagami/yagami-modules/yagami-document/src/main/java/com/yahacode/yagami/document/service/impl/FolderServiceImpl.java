@@ -16,7 +16,7 @@ import com.yahacode.yagami.document.repository.FolderRepository;
 import com.yahacode.yagami.document.repository.RoleFolderAuthorityRepository;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.service.FolderService;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -97,7 +97,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     @Transactional
     @Override
     public String addDocument(MultipartFile file, String folderId) throws BizfwServiceException {
-        People loginPeople = getLoginPeople();
+        Person loginPeople = getLoginPeople();
         Document document = documentService.saveDocument(file);
         FolderDocRelation folderDocRelation = new FolderDocRelation(loginPeople.getCode(), folderId, document
                 .getIdBfDocument());
@@ -138,7 +138,7 @@ public class FolderServiceImpl extends BaseServiceImpl<Folder> implements Folder
     }
 
     @Override
-    public Folder getAuthorizedFolderTree(People people) throws BizfwServiceException {
+    public Folder getAuthorizedFolderTree(Person people) throws BizfwServiceException {
         List<Folder> folders = getAuthorizedFolderList(people.getIdBfPeople());
         replenishAuthFolderList(folders);
         ListUtils.sort(folders, Folder.COLUMN_NAME);

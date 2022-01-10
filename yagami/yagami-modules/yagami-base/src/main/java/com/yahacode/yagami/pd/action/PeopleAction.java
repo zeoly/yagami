@@ -2,9 +2,9 @@ package com.yahacode.yagami.pd.action;
 
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.service.RoleService;
-import com.yahacode.yagami.base.BaseAction;
-import com.yahacode.yagami.base.BizfwServiceException;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.base.BaseController;
+import com.yahacode.yagami.base.ServiceException;
+import com.yahacode.yagami.pd.model.Person;
 import com.yahacode.yagami.pd.service.PeopleService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,37 +29,37 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/people")
-public class PeopleAction extends BaseAction {
+public class PeopleAction extends BaseController {
 
     private PeopleService peopleService;
 
     private RoleService roleService;
 
     @ApiOperation(value = "新增人员信息")
-    @ApiImplicitParam(name = "people", value = "人员表单信息", required = true, dataTypeClass = People.class)
+    @ApiImplicitParam(name = "people", value = "人员表单信息", required = true, dataTypeClass = Person.class)
     @PostMapping
-    public void addPeople(@RequestBody People people) throws BizfwServiceException {
+    public void addPeople(@RequestBody Person people) throws ServiceException {
         peopleService.addPeople(people);
     }
 
     @ApiOperation(value = "修改人员信息")
-    @ApiImplicitParam(name = "people", value = "人员表单信息", required = true, dataTypeClass = People.class)
+    @ApiImplicitParam(name = "people", value = "人员表单信息", required = true, dataTypeClass = Person.class)
     @PatchMapping
-    public void modifyPeople(@RequestBody People people) throws BizfwServiceException {
+    public void modifyPeople(@RequestBody Person people) throws ServiceException {
         peopleService.modifyPeople(people);
     }
 
     @ApiOperation(value = "删除人员")
     @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
     @DeleteMapping(value = "{id}")
-    public void deletePeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
+    public void deletePeople(@PathVariable("id") String peopleId) throws ServiceException {
         peopleService.deletePeople(peopleId);
     }
 
     @ApiOperation(value = "解锁人员")
     @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
     @PutMapping(value = "{id}/unlock")
-    public void unlockPeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
+    public void unlockPeople(@PathVariable("id") String peopleId) throws ServiceException {
         peopleService.unlock(peopleId);
     }
 
@@ -68,14 +68,14 @@ public class PeopleAction extends BaseAction {
             , @ApiImplicitParam(name = "new", value = "新密码", required = true, dataTypeClass = String.class)})
     @PatchMapping(value = "/password/{old}/{new}")
     public void modifyPassword(@PathVariable("old") String oldPassword, @PathVariable("new") String newPassword)
-            throws BizfwServiceException {
+            throws ServiceException {
         peopleService.modifyPassword(getLoginPeople(), oldPassword, newPassword);
     }
 
     @ApiOperation(value = "获取人员所有角色")
     @ApiImplicitParam(name = "id", value = "人员id", required = true, dataTypeClass = String.class)
     @GetMapping(value = "/{id}/role")
-    public List<Role> getRoleOfPeople(@PathVariable("id") String peopleId) throws BizfwServiceException {
+    public List<Role> getRoleOfPeople(@PathVariable("id") String peopleId) throws ServiceException {
         return roleService.getRoleListByPeople(peopleId);
     }
 

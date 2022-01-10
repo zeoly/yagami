@@ -1,9 +1,9 @@
 package com.yahacode.yagami.pd.action;
 
-import com.yahacode.yagami.base.BaseAction;
-import com.yahacode.yagami.base.BizfwServiceException;
+import com.yahacode.yagami.base.BaseController;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.pd.model.Department;
-import com.yahacode.yagami.pd.model.People;
+import com.yahacode.yagami.pd.model.Person;
 import com.yahacode.yagami.pd.service.DepartmentService;
 import com.yahacode.yagami.pd.service.PeopleService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/department")
-public class DepartmentAction extends BaseAction {
+public class DepartmentAction extends BaseController {
 
     private DepartmentService departmentService;
 
@@ -36,8 +36,8 @@ public class DepartmentAction extends BaseAction {
     @ApiOperation(value = "新增机构")
     @ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
     @PostMapping
-    public void addDepartment(@RequestBody Department department) throws BizfwServiceException {
-        People people = getLoginPeople();
+    public void addDepartment(@RequestBody Department department) throws ServiceException {
+        Person people = getLoginPeople();
         department.init(people.getCode());
         departmentService.addDepartment(department);
     }
@@ -45,8 +45,8 @@ public class DepartmentAction extends BaseAction {
     @ApiOperation(value = "修改机构信息")
     @ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
     @PatchMapping
-    public void modifyDepartment(@RequestBody Department department) throws BizfwServiceException {
-        People people = getLoginPeople();
+    public void modifyDepartment(@RequestBody Department department) throws ServiceException {
+        Person people = getLoginPeople();
         department.update(people.getCode());
         departmentService.modifyDepartment(department);
     }
@@ -54,8 +54,8 @@ public class DepartmentAction extends BaseAction {
     @ApiOperation(value = "删除机构")
     @ApiImplicitParam(name = "id", value = "机构id", required = true, dataTypeClass = String.class)
     @DeleteMapping(value = "{id}")
-    public void deleteDepartment(@PathVariable("id") String departmentId) throws BizfwServiceException {
-        People people = getLoginPeople();
+    public void deleteDepartment(@PathVariable("id") String departmentId) throws ServiceException {
+        Person people = getLoginPeople();
         Department department = departmentService.queryById(departmentId);
         department.update(people.getCode());
         departmentService.deleteDepartment(department);
@@ -63,8 +63,8 @@ public class DepartmentAction extends BaseAction {
 
     @ApiOperation(value = "获取登录人员机构树")
     @GetMapping
-    public Department getDepartmentTree() throws BizfwServiceException {
-        People people = getLoginPeople();
+    public Department getDepartmentTree() throws ServiceException {
+        Person people = getLoginPeople();
         Department loginDepartment = departmentService.queryById(people.getDepartmentId());
         return departmentService.getDepartmentTreeByDepartmentId(loginDepartment.getIdBfDepartment());
     }
@@ -72,8 +72,7 @@ public class DepartmentAction extends BaseAction {
     @ApiOperation(value = "获取机构下属所有人员")
     @ApiImplicitParam(name = "id", value = "机构id", required = true, dataTypeClass = String.class)
     @GetMapping(value = "{id}/people")
-    public List<People> getPeopleListByDepartment(@PathVariable("id") String departmentId) throws
-            BizfwServiceException {
+    public List<Person> getPeopleListByDepartment(@PathVariable("id") String departmentId) throws ServiceException {
         return peopleService.getPeopleListByDepartment(departmentId);
     }
 
