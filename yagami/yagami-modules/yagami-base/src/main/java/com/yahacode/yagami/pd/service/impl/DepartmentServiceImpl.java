@@ -7,7 +7,7 @@ import com.yahacode.yagami.pd.model.Person;
 import com.yahacode.yagami.pd.repository.DepartmentRelationRepository;
 import com.yahacode.yagami.pd.repository.DepartmentRepository;
 import com.yahacode.yagami.pd.service.DepartmentService;
-import com.yahacode.yagami.pd.service.PeopleService;
+import com.yahacode.yagami.pd.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     private static final Logger log = LoggerFactory.getLogger(DepartmentServiceImpl.class);
 
     @Autowired
-    private PeopleService peopleService;
+    private PersonService peopleService;
 
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -70,7 +70,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
         Person person = getLoginPerson();
         log.info("{} delete department {} start", person.getCode(), code);
         Department department = findByCode(code);
-        checkCanDelete(department);
+        checkCanDelete(code);
         deleteById(department.getId());
         log.info("{} delete department {} end", person.getCode(), code);
     }
@@ -88,24 +88,23 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
 
     @Override
     public boolean hasPerson(String code) throws ServiceException {
-        long count = peopleService.getPeopleCountByDepartment(department);
+        long count = peopleService.countPersonByDepartment(code);
         return count > 0;
     }
 
     /**
-     * 检查机构是否可删除
+     * check whether a department can be deleted
      *
-     * @param department 机构
-     * @throws ServiceException 业务异常
+     * @param code department code
+     * @throws ServiceException with child department or contain person
      */
-    private void checkCanDelete(Department department) throws ServiceException {
-        if (hasChild(department.getCode())) {
-            log.warn("delete department fail with children, {}", department.getCode());
+    private void checkCanDelete(String code) throws ServiceException {
+        if (hasChild(code)) {
+            log.warn("delete department fail with children, {}", code);
             throw new ServiceException(DEL_FAIL_WITH_CHILD);
         }
-        boolean hasPeople = hasPeople(department);
-        if (hasPeople) {
-            LogUtils.error("{}删除机构{}操作失败，存在人员", department.getUpdateBy(), department.getCode());
+        if (hasPerson(code)) {
+            log.warn("delete department fail with person, {}", code);
             throw new ServiceException(DEL_FAIL_WITH_PEOPLE);
         }
     }

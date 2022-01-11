@@ -19,7 +19,7 @@ public interface BaseService<T extends BaseModel> {
      *
      * @return the list of all.
      */
-    List<T> list();
+    List<T> findAll();
 
     /**
      * save the record.

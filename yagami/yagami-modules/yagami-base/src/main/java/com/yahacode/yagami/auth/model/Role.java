@@ -1,11 +1,7 @@
 package com.yahacode.yagami.auth.model;
 
 import com.yahacode.yagami.base.BaseModel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.yahacode.yagami.base.consts.SystemConstants;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -19,42 +15,49 @@ import javax.persistence.Table;
  *
  * @author zengyongli
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "bf_role")
+@Table(name = SystemConstants.TABLE_PREFIX + "role")
+@GenericGenerator(name = "my_uuid", strategy = "uuid")
 public class Role extends BaseModel {
 
     private static final long serialVersionUID = -8526551139465233349L;
-
-    public static final String COLUMN_NAME = "name";
 
     /**
      * primary key
      */
     @Id
-    @Column(name = "id_bf_role")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
-    @GeneratedValue(generator = "uuid")
-    private String idBfRole;
+    @GeneratedValue(generator = "my_uuid")
+    private String id;
 
     /**
      * role name
      */
-    @Column(name = "name")
     private String name;
 
     /**
      * description of role
      */
-    @Column(name = "description")
+    @Column(name = "desc")
     private String description;
 
     @Override
     public String getId() {
-        return idBfRole;
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

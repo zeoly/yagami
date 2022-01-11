@@ -1,18 +1,21 @@
 package com.yahacode.yagami.auth.repository;
 
-import com.yahacode.yagami.auth.model.PeopleRoleRelation;
+import com.yahacode.yagami.auth.model.PersonRoleRelation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 /**
- * @author zengyongli 2018-03-30
+ * person role relation repository
+ *
+ * @author zengyongli
+ * @since 2018-03-30
  */
-public interface PeopleRoleRelRepository extends JpaRepository<PeopleRoleRelation, String> {
+public interface PeopleRoleRelRepository extends JpaRepository<PersonRoleRelation, String> {
 
-    List<PeopleRoleRelation> findByPeopleId(String peopleId);
+    List<PersonRoleRelation> findByPersonCode(String personCode);
 
     long countByRoleId(String roleId);
 
-    void deleteByPeopleId(String peopleId);
+    void deleteByPersonCode(String personCode);
 }

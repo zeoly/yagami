@@ -50,6 +50,11 @@ public class Person extends BaseModel {
     private String name;
 
     /**
+     * person’s department
+     */
+    private String departmentCode;
+
+    /**
      * login password, storage in md5
      */
     private String password;
@@ -79,6 +84,14 @@ public class Person extends BaseModel {
     }
 
     @Override
+    public void init(String personCode) {
+        super.init(personCode);
+        this.errorCount = 0;
+        this.status = STATUS_NORMAL;
+        this.password = StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd"));
+    }
+
+    @Override
     public String getId() {
         return id;
     }
@@ -97,6 +110,14 @@ public class Person extends BaseModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
     public String getPassword() {

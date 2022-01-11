@@ -5,7 +5,7 @@ import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseController;
 import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.pd.model.Person;
-import com.yahacode.yagami.pd.service.PeopleService;
+import com.yahacode.yagami.pd.service.PersonService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +31,7 @@ import java.util.List;
 @RequestMapping("/people")
 public class PeopleAction extends BaseController {
 
-    private PeopleService peopleService;
+    private PersonService peopleService;
 
     private RoleService roleService;
 
@@ -80,7 +80,7 @@ public class PeopleAction extends BaseController {
     }
 
     @Autowired
-    public void setPeopleService(PeopleService peopleService) {
+    public void setPeopleService(PersonService peopleService) {
         this.peopleService = peopleService;
     }
 

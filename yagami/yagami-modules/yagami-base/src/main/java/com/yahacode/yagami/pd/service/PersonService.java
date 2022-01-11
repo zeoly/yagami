@@ -2,17 +2,16 @@ package com.yahacode.yagami.pd.service;
 
 import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.ServiceException;
-import com.yahacode.yagami.pd.model.Department;
 import com.yahacode.yagami.pd.model.Person;
 
 import java.util.List;
 
 /**
- * people service
+ * person service
  *
  * @author zengyongli
  */
-public interface PeopleService extends BaseService<Person> {
+public interface PersonService extends BaseService<Person> {
 
     /**
      * add a new people
@@ -66,7 +65,7 @@ public interface PeopleService extends BaseService<Person> {
      * @throws ServiceException
      *         framework exception
      */
-    long getPeopleCountByDepartment(Department department) throws ServiceException;
+    long countPersonByDepartment(String departmentCode) throws ServiceException;
 
     /**
      * get the people list in a department

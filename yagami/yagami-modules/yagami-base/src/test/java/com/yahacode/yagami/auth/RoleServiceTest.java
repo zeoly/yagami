@@ -13,13 +13,13 @@ import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.BaseTest;
 import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.pd.model.Person;
-import com.yahacode.yagami.pd.service.PeopleService;
+import com.yahacode.yagami.pd.service.PersonService;
 
 public class RoleServiceTest extends BaseTest {
 
     private RoleService roleService;
 
-    private PeopleService peopleService;
+    private PersonService peopleService;
 
 
     //    @Test
@@ -87,7 +87,7 @@ public class RoleServiceTest extends BaseTest {
     }
 
     @Autowired
-    public void setPeopleService(PeopleService peopleService) {
+    public void setPeopleService(PersonService peopleService) {
         this.peopleService = peopleService;
     }
 }

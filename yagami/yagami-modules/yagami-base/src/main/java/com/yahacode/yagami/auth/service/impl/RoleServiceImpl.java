@@ -1,14 +1,15 @@
 package com.yahacode.yagami.auth.service.impl;
 
-import com.yahacode.yagami.auth.model.PeopleRoleRelation;
+import com.yahacode.yagami.auth.model.PersonRoleRelation;
 import com.yahacode.yagami.auth.model.Role;
 import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import com.yahacode.yagami.auth.repository.RoleRepository;
 import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.ServiceException;
-import com.yahacode.yagami.base.common.LogUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.model.Person;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -30,106 +31,105 @@ import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.SET_RO
 @Service
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
 
-    private PeopleRoleRelRepository peopleRoleRelRepository;
+    private static final Logger log = LoggerFactory.getLogger(RoleServiceImpl.class);
 
+    @Autowired
     private RoleRepository roleRepository;
 
-    @Override
-    public List<Role> getAllRoleList() throws ServiceException {
-        return roleRepository.findAll();
-    }
+    @Autowired
+    private PeopleRoleRelRepository peopleRoleRelRepository;
 
-    @Transactional
     @Override
     public String addRole(Role role) throws ServiceException {
-        Role tmpRole = getByName(role.getName());
+        Person person = getLoginPerson();
+        log.info("{} add role {} start", person.getCode(), role.getName());
+        Role tmpRole = findByName(role.getName());
         if (null != tmpRole) {
+            log.warn("{} add role fail: {} already exists", person.getCode(), role.getName());
             throw new ServiceException(ADD_FAIL_EXISTED);
         }
-        role.init(getLoginPeople().getCode());
-        LogUtils.info("{}新增角色{}", role.getUpdateBy(), role.getName());
-        return save(role);
+        String id = initAndSave(role);
+        log.info("{} add role {} end", person.getCode(), role.getName());
+        return id;
     }
 
-    @Transactional
     @Override
     public void modify(Role role) throws ServiceException {
-        Role tmpRole = getByName(role.getName());
+        Person person = getLoginPerson();
+        Role oldRole = findById(role.getId());
+        log.info("{} modify role {} to {} start", person.getCode(), oldRole.getName(), role.getName());
+        Role tmpRole = findByName(role.getName());
         if (null != tmpRole) {
+            log.warn("{} modify role fail: {} already exists", person.getCode(), role.getName());
             throw new ServiceException(MOD_FAIL_EXISTED);
         }
-        LogUtils.info("{}修改角色{}", role.getUpdateBy(), role.getName());
-        Role dbRole = queryById(role.getIdBfRole());
-        dbRole.setName(role.getName());
-        dbRole.setDescription(role.getDescription());
-        dbRole.update(getLoginPeople().getCode());
-        update(dbRole);
+        updateById(role);
+        log.info("{} modify role {} to {} end", person.getCode(), oldRole.getName(), role.getName())
     }
 
-    @Transactional
     @Override
     public void deleteRole(String roleId) throws ServiceException {
-        Role role = queryById(roleId);
-        checkObjectNotNull(role, "角色[" + roleId + "]", "删除角色");
+        Person person = getLoginPerson();
+        Role role = findById(roleId);
+        if (role == null) {
+            return;
+        }
+        log.info("{} delete role {} start", person.getCode(), role.getName());
         checkCanDeleteRole(role);
-        delete(role.getIdBfRole());
+        deleteById(roleId);
+        log.info("{} delete role {} end", person.getCode(), role.getName());
     }
 
     @Transactional
     @Override
-    public void setRoleOfPeople(Person people) throws ServiceException {
-        deletePeopleRoleRelation(people);
-        for (String id : people.getRoleIdList()) {
-            Role role = queryById(id);
+    public void saveRoleOfPerson(String personCode, List<String> roleIds) throws ServiceException {
+        Person operator = getLoginPerson();
+        deleteAllRoleByPersonCode(personCode);
+        for (String id : roleIds) {
+            Role role = findById(id);
             if (role == null) {
                 throw new ServiceException(SET_ROLE_REL_FAIL_NOT_FOUND, id);
             }
-            PeopleRoleRelation peopleRoleRelation = new PeopleRoleRelation(getLoginPeople().getCode(), people
-                    .getIdBfPeople(), role.getIdBfRole());
+            PersonRoleRelation peopleRoleRelation = new PersonRoleRelation(operator.getCode(), personCode, id);
             peopleRoleRelRepository.save(peopleRoleRelation);
         }
     }
 
     @Override
-    public List<Role> getRoleListByPeople(String peopleId) throws ServiceException {
+    public List<Role> getRoleListByPeople(String personCode) {
         List<Role> roleList = new ArrayList<>();
-        List<PeopleRoleRelation> relationList = peopleRoleRelRepository.findByPeopleId(peopleId);
-        for (PeopleRoleRelation relation : relationList) {
-            Role role = queryById(relation.getRoleId());
+        List<PersonRoleRelation> relationList = peopleRoleRelRepository.findByPersonCode(personCode);
+        for (PersonRoleRelation relation : relationList) {
+            Role role = findById(relation.getRoleId());
             roleList.add(role);
         }
         return roleList;
     }
 
     @Override
-    public long countPeopleByRole(Role role) throws ServiceException {
-        return peopleRoleRelRepository.countByRoleId(role.getIdBfRole());
+    public long countPersonByRoleId(String roleId) {
+        return peopleRoleRelRepository.countByRoleId(roleId);
     }
 
     @Override
-    public Role getByName(String name) throws ServiceException {
+    public Role findByName(String name) {
         return roleRepository.findByName(name);
     }
 
     /**
-     * delete all PeopleRoleRelation of a people
+     * delete all roles of a person
      *
-     * @param people
-     *         entity
-     * @throws ServiceException
-     *         framework exception
+     * @param personCode person code
      */
-    private void deletePeopleRoleRelation(Person people) throws ServiceException {
-        peopleRoleRelRepository.deleteByPeopleId(people.getIdBfPeople());
+    private void deleteAllRoleByPersonCode(String personCode) {
+        peopleRoleRelRepository.deleteByPersonCode(personCode);
     }
 
     /**
      * check if the role can be deleted, will throw an exception if not
      *
-     * @param role
-     *         entity
-     * @throws ServiceException
-     *         if the role has any relation with people
+     * @param role entity
+     * @throws ServiceException if the role has any relation with people
      */
     private void checkCanDeleteRole(Role role) throws ServiceException {
         long peopleCount = countPeopleByRole(role);
@@ -143,13 +143,4 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         return roleRepository;
     }
 
-    @Autowired
-    public void setPeopleRoleRelRepository(PeopleRoleRelRepository peopleRoleRelRepository) {
-        this.peopleRoleRelRepository = peopleRoleRelRepository;
-    }
-
-    @Autowired
-    public void setRoleRepository(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
 }

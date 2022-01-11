@@ -5,7 +5,7 @@ import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.pd.model.Department;
 import com.yahacode.yagami.pd.model.Person;
 import com.yahacode.yagami.pd.service.DepartmentService;
-import com.yahacode.yagami.pd.service.PeopleService;
+import com.yahacode.yagami.pd.service.PersonService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class DepartmentAction extends BaseController {
 
     private DepartmentService departmentService;
 
-    private PeopleService peopleService;
+    private PersonService peopleService;
 
     @ApiOperation(value = "新增机构")
     @ApiImplicitParam(name = "department", value = "机构模型", required = true, dataTypeClass = Department.class)
@@ -82,7 +82,7 @@ public class DepartmentAction extends BaseController {
     }
 
     @Autowired
-    public void setPeopleService(PeopleService peopleService) {
+    public void setPeopleService(PersonService peopleService) {
         this.peopleService = peopleService;
     }
 }

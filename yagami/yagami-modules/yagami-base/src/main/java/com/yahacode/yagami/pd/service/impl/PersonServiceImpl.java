@@ -1,5 +1,6 @@
 package com.yahacode.yagami.pd.service.impl;
 
+import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import com.yahacode.yagami.auth.service.RoleService;
 import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.common.LogUtils;
@@ -9,9 +10,10 @@ import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.pd.model.Department;
 import com.yahacode.yagami.pd.model.Person;
 import com.yahacode.yagami.pd.repository.PersonRepository;
-import com.yahacode.yagami.auth.repository.PeopleRoleRelRepository;
 import com.yahacode.yagami.pd.service.DepartmentService;
-import com.yahacode.yagami.pd.service.PeopleService;
+import com.yahacode.yagami.pd.service.PersonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -31,39 +33,38 @@ import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.UPDATE
  * @author zengyongli
  */
 @Service
-public class PeopleServiceImpl extends BaseServiceImpl<Person> implements PeopleService {
+public class PersonServiceImpl extends BaseServiceImpl<Person> implements PersonService {
+
+    private static final Logger log = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     private DepartmentService departmentService;
 
     private RoleService roleService;
 
+    @Autowired
     private PersonRepository peopleRepository;
 
+    @Autowired
     private PeopleRoleRelRepository peopleRoleRelRepository;
 
     private static final int COUNTER_ZERO = 0;
 
     @Transactional
     @Override
-    public String addPeople(Person people) throws ServiceException {
-        Person operator = getLoginPeople();
-        LogUtils.info("{}新增人员{}", operator.getCode(), people.getCode());
-        Person tmpPeople = getByCode(people.getCode());
+    public String addPeople(Person person) throws ServiceException {
+        Person operator = getLoginPerson();
+        log.info("{} add person {} start", operator.getCode(), person.getCode());
+        Person tmpPeople = getByCode(person.getCode());
         if (tmpPeople != null) {
-            LogUtils.error("{}新增人员{}失败，人员已存在", operator.getCode(), people.getCode());
-            throw new ServiceException(ADD_FAIL_EXISTED, people.getCode());
+            log.warn("add person fail: {} already exists", person.getCode());
+            throw new ServiceException(ADD_FAIL_EXISTED, person.getCode());
         }
-        Department department = departmentService.queryById(people.getDepartmentId());
+        Department department = departmentService.findByCode(person.getDepartmentCode());
         if (department == null) {
-            LogUtils.error("{}新增人员{}失败，机构{}为空", operator.getCode(), people.getCode(), people.getDepartmentId());
+            log.warn("add person fail: department not exists. code {}", person.getDepartmentCode());
             throw new ServiceException(ADD_FAIL_WITHOUT_DEPT);
         }
-        people.init(operator.getCode());
-        people.setErrorCount(COUNTER_ZERO);
-        people.setStatus(Person.STATUS_NORMAL);
-        people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(PropertiesUtils
-                .getSysConfig("default.pwd"))));
-        String id = save(people);
+        String id = initAndSave(person);
         roleService.setRoleOfPeople(people);
         return id;
     }
@@ -162,11 +163,6 @@ public class PeopleServiceImpl extends BaseServiceImpl<Person> implements People
     @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
-    }
-
-    @Autowired
-    public void setPeopleRepository(PersonRepository peopleRepository) {
-        this.peopleRepository = peopleRepository;
     }
 
     @Autowired

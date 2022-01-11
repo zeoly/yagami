@@ -14,7 +14,7 @@ import java.util.List;
 public abstract class BaseServiceImpl<T extends BaseModel> implements BaseService<T> {
 
     @Override
-    public List<T> list() {
+    public List<T> findAll() {
         return getBaseRepository().findAll();
     }
 

@@ -4,7 +4,10 @@ import com.yahacode.yagami.auth.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
- * @author zengyongli 2018-03-27
+ * role repository
+ *
+ * @author zengyongli
+ * @since 2018-03-27
  */
 public interface RoleRepository extends JpaRepository<Role, String> {
 
