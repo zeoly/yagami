@@ -2,7 +2,7 @@ package com.yahacode.yagami.base;
 
 import com.yahacode.yagami.base.common.ServletContextHolder;
 import com.yahacode.yagami.base.consts.SessionKeyConsts;
-import com.yahacode.yagami.pd.model.Person;
+import com.yahacode.yagami.core.model.Person;
 
 import javax.servlet.http.HttpSession;
 

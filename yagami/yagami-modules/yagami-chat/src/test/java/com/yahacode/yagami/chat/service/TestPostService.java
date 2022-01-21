@@ -7,7 +7,7 @@ import com.yahacode.yagami.chat.scrollboard.model.Post;
 import com.yahacode.yagami.chat.scrollboard.model.Reply;
 import com.yahacode.yagami.chat.scrollboard.service.PostService;
 import com.yahacode.yagami.chat.scrollboard.service.ReplyService;
-import com.yahacode.yagami.pd.model.Person;
+import com.yahacode.yagami.core.model.Person;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;

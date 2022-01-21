@@ -7,7 +7,7 @@ import com.yahacode.yagami.base.common.ServletContextHolder;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.base.consts.SessionKeyConsts;
-import com.yahacode.yagami.pd.model.Person;
+import com.yahacode.yagami.core.model.Person;
 
 import java.util.List;
 

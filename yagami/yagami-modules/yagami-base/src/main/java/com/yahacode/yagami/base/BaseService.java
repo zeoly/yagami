@@ -1,6 +1,6 @@
 package com.yahacode.yagami.base;
 
-import com.yahacode.yagami.pd.model.Person;
+import com.yahacode.yagami.core.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

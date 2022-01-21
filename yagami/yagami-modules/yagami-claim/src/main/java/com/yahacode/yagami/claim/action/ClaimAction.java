@@ -4,7 +4,7 @@ import com.yahacode.yagami.base.BaseController;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.claim.model.Claim;
 import com.yahacode.yagami.claim.service.ClaimService;
-import com.yahacode.yagami.pd.model.Person;
+import com.yahacode.yagami.core.model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

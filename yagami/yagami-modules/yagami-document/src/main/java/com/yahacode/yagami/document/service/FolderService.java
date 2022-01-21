@@ -5,7 +5,7 @@ import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.BizfwServiceException;
 import com.yahacode.yagami.document.model.Document;
 import com.yahacode.yagami.document.model.Folder;
-import com.yahacode.yagami.pd.model.Person;
+import com.yahacode.yagami.core.model.Person;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

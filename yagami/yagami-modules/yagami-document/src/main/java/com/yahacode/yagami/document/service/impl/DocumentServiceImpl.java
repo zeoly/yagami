@@ -14,7 +14,7 @@ import com.yahacode.yagami.document.repository.DocumentGroupRepository;
 import com.yahacode.yagami.document.repository.DocumentRepository;
 import com.yahacode.yagami.document.service.DocumentService;
 import com.yahacode.yagami.document.utils.FileUtils;
-import com.yahacode.yagami.pd.model.Person;
+import com.yahacode.yagami.core.model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
