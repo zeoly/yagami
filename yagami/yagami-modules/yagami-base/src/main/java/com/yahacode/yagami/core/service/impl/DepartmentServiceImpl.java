@@ -4,13 +4,13 @@ import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.core.model.Department;
 import com.yahacode.yagami.core.model.Person;
-import com.yahacode.yagami.core.repository.DepartmentRelationRepository;
 import com.yahacode.yagami.core.repository.DepartmentRepository;
 import com.yahacode.yagami.core.service.DepartmentService;
 import com.yahacode.yagami.core.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,13 +31,14 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     private static final Logger log = LoggerFactory.getLogger(DepartmentServiceImpl.class);
 
     @Autowired
+    @Lazy
     private PersonService peopleService;
 
     @Autowired
     private DepartmentRepository departmentRepository;
 
-    @Autowired
-    private DepartmentRelationRepository departmentRelationRepository;
+//    @Autowired
+//    private DepartmentRelationRepository departmentRelationRepository;
 
     @Override
     public Department findByCode(String code) {

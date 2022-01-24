@@ -3,6 +3,8 @@ package com.yahacode.yagami.core.repository;
 import com.yahacode.yagami.core.model.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * person repository
  *
@@ -12,4 +14,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PersonRepository extends JpaRepository<Person, String> {
 
     Person findByCode(String code);
+
+    List<Person> findByDepartmentCode(String departmentCode);
+
+    long countByDepartmentCode(String departmentCode);
 }

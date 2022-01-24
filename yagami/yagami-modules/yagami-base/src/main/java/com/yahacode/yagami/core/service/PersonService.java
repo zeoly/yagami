@@ -16,99 +16,76 @@ public interface PersonService extends BaseService<Person> {
     /**
      * add a new people
      *
-     * @param people
-     *         entity
+     * @param people entity
      * @return pk
-     * @throws ServiceException
-     *         if the same name people is exists;
-     *         if the people's department is not exists;
+     * @throws ServiceException if the same name people is exists;
+     *                          if the people's department is not exists;
      */
     String addPeople(Person people) throws ServiceException;
 
     /**
      * modify people's roles
      *
-     * @param people
-     *         entity
-     * @throws ServiceException
-     *         framework exception
+     * @param people entity
+     * @throws ServiceException framework exception
      */
     void modifyPeople(Person people) throws ServiceException;
 
     /**
      * delete people by pk
      *
-     * @param peopleId
-     *         pk
-     * @throws ServiceException
-     *         if the target people is the operator
+     * @param peopleId pk
+     * @throws ServiceException if the target people is the operator
      */
     void deletePeople(String peopleId) throws ServiceException;
 
     /**
-     * get people by code
+     * get person by code
      *
-     * @param code
-     *         people code
-     * @return entity
-     * @throws ServiceException
-     *         framework exception
+     * @param code target person code
+     * @return person entity
      */
-    Person getByCode(String code) throws ServiceException;
+    Person findByCode(String code);
 
     /**
      * count how many people in a department
      *
-     * @param department
-     *         target department
-     * @return the people count
-     * @throws ServiceException
-     *         framework exception
+     * @param departmentCode target department code
+     * @return the person count
      */
-    long countPersonByDepartment(String departmentCode) throws ServiceException;
+    long countPersonByDepartment(String departmentCode);
 
     /**
      * get the people list in a department
      *
-     * @param departmentId
-     *         target department pk
+     * @param departmentCode target department code
      * @return the list of people
-     * @throws ServiceException
-     *         framework exception
      */
-    List<Person> getPeopleListByDepartment(String departmentId) throws ServiceException;
+    List<Person> findByDepartment(String departmentCode);
 
     /**
      * reset target people's password
      *
-     * @param peopleId
-     *         pk
-     * @throws ServiceException
-     *         framework exception
+     * @param peopleId pk
+     * @throws ServiceException framework exception
      */
     void resetPassword(String peopleId) throws ServiceException;
 
     /**
-     * unlock a people's account
+     * unlock a person's account
      *
-     * @param peopleId
-     *         pk
-     * @throws ServiceException
-     *         if the status of people is not locked
+     * @param personCode target person code
+     * @throws ServiceException if the status of person is not locked
      */
-    void unlock(String peopleId) throws ServiceException;
+    void unlock(String personCode) throws ServiceException;
 
     /**
-     * modify people's login password
+     * modify person's login password
      *
-     * @param people
-     *         target people
-     * @param oldPwd
-     *         old password
-     * @param newPwd
-     *         new password
-     * @throws ServiceException
-     *         if the old password is not correct
+     * @param personCode target person code
+     * @param oldPwd     old password
+     * @param newPwd     new password
+     * @throws ServiceException if the old password is not correct
      */
-    void modifyPassword(Person people, String oldPwd, String newPwd) throws ServiceException;
+    void modifyPassword(String personCode, String oldPwd, String newPwd) throws ServiceException;
 }

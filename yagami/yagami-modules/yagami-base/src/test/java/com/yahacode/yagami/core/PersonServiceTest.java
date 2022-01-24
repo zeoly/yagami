@@ -1,29 +1,26 @@
-//package com.yahacode.yagami.pd;
-//
-//import static org.junit.Assert.assertEquals;
-//
-//import java.util.List;
-//
-//import org.junit.Rule;
-//import org.junit.Test;
-//import org.junit.rules.ExpectedException;
-//import org.springframework.beans.factory.annotation.Autowired;
-//
-//import com.yahacode.yagami.BaseTest;
-//import com.yahacode.yagami.base.BizfwServiceException;
-//import com.yahacode.yagami.base.common.StringUtils;
-//import com.yahacode.yagami.base.consts.ErrorCode;
-//import com.yahacode.yagami.pd.model.People;
-//import com.yahacode.yagami.pd.service.PeopleService;
-//
-//public class PeopleServiceTest extends BaseTest {
-//
-//    @Autowired
-//    private PeopleService peopleService;
-//
+package com.yahacode.yagami.core;
+
+import com.yahacode.yagami.BaseTest;
+import com.yahacode.yagami.core.model.Person;
+import com.yahacode.yagami.core.service.PersonService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.Assert;
+
+public class PersonServiceTest extends BaseTest {
+
+    @Autowired
+    private PersonService personService;
+
 //    @Rule
 //    public ExpectedException expectedException = ExpectedException.none();
-//
+
+    @Test
+    public void testFindByCode() {
+        Person person = personService.findByCode("admin");
+        Assert.notNull(person, "");
+    }
+
 //    @Test
 //    public void testAddPeopleExists() throws BizfwServiceException {
 //        expectedException.expect(BizfwServiceException.class);
@@ -131,4 +128,4 @@
 //        People dbPeople = peopleService.getByCode("admin");
 //        assertEquals(md5, dbPeople.getPassword());
 //    }
-//}
+}

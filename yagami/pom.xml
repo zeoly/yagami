@@ -27,7 +27,7 @@
 
   <modules>
     <module>yagami-modules</module>
-<!--    <module>yagami-application</module>-->
+    <module>yagami-application</module>
 <!--    <module>yagami-services</module>-->
   </modules>
 

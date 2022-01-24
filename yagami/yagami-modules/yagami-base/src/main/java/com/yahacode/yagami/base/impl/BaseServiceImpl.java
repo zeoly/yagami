@@ -40,7 +40,7 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
 
     @Override
     public T findById(String id) {
-        return getBaseRepository().getOne(id);
+        return getBaseRepository().findById(id).get();
     }
 
     @Override

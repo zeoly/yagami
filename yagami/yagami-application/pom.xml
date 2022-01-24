@@ -13,7 +13,7 @@
   <artifactId>yagami-application</artifactId>
 
   <modules>
-    <module>yagami-app-facade</module>
+<!--    <module>yagami-app-facade</module>-->
     <module>yagami-app-bootstrap</module>
   </modules>
 

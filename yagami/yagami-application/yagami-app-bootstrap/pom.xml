@@ -14,7 +14,7 @@
   <dependencies>
     <dependency>
       <groupId>com.yahacode.yagami</groupId>
-      <artifactId>yagami-app-facade</artifactId>
+      <artifactId>yagami-base</artifactId>
       <version>${version.yagami}</version>
     </dependency>
 
@@ -24,12 +24,4 @@
     </dependency>
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
 </project>

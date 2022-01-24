@@ -4,14 +4,20 @@ import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.SystemConstants;
+import com.yahacode.yagami.core.util.PersonStatus;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,14 +31,6 @@ import java.util.List;
 public class Person extends BaseModel {
 
     private static final long serialVersionUID = -9173667783512729829L;
-
-    public static final String STATUS_INVALID = "0";
-
-    public static final String STATUS_NORMAL = "1";
-
-    public static final String STATUS_LOCKED = "2";
-
-    public static final String STATUS_UNCHECK = "3";
 
     /**
      * primary key
@@ -57,8 +55,11 @@ public class Person extends BaseModel {
     @Column(name = "department_code")
     private String departmentCode;
 
-    @JoinTable
-    private List<Role> roleList;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = SystemConstants.TABLE_PREFIX + "person_role_rel",
+            joinColumns = @JoinColumn(name = "person_code", referencedColumnName = "code"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private List<Role> roleList = new ArrayList<>();
 
     /**
      * login password, storage in md5
@@ -66,15 +67,19 @@ public class Person extends BaseModel {
     private String password;
 
     /**
-     * person's account status, including STATUS_INVALID, STATUS_NORMAL, STATUS_LOCKED, STATUS_UNCHECK
+     * person's account status
      */
-    private String status;
+    @Enumerated
+    private PersonStatus status;
 
     /**
      * login fail count, may cause account locked
      */
     @Column(name = "error_count")
     private int errorCount;
+
+    public Person() {
+    }
 
     /**
      * construct a new person object
@@ -84,7 +89,7 @@ public class Person extends BaseModel {
     public Person(String code) {
         super(code);
         this.errorCount = 0;
-        this.status = STATUS_NORMAL;
+        this.status = PersonStatus.NORMAL;
         this.password = StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd"));
     }
 
@@ -92,8 +97,13 @@ public class Person extends BaseModel {
     public void init(String personCode) {
         super.init(personCode);
         this.errorCount = 0;
-        this.status = STATUS_NORMAL;
+        this.status = PersonStatus.NORMAL;
         this.password = StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd"));
+    }
+
+    public void unlock() {
+        this.setStatus(PersonStatus.NORMAL);
+        this.setErrorCount(0);
     }
 
     @Override
@@ -133,11 +143,11 @@ public class Person extends BaseModel {
         this.password = password;
     }
 
-    public String getStatus() {
+    public PersonStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PersonStatus status) {
         this.status = status;
     }
 

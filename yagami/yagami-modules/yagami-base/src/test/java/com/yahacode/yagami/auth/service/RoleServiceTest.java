@@ -1,14 +1,8 @@
 package com.yahacode.yagami.auth.service;
 
-import com.yahacode.yagami.core.model.Role;
 import com.yahacode.yagami.BaseTest;
-import com.yahacode.yagami.base.common.ServletContextHolder;
-import com.yahacode.yagami.base.consts.SessionKeyConsts;
-import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class RoleServiceTest extends BaseTest {
 
@@ -23,11 +17,11 @@ public class RoleServiceTest extends BaseTest {
 //        ServletContextHolder.getSession().setAttribute(SessionKeyConsts.LOGIN_PEOPLE, loginPeople);
 //    }
 
-    @Test
-    public void getAllRoleList() throws Exception {
-        List<Role> roles = roleService.getAllRoleList();
-        Assert.assertTrue(roles.size() > 0);
-    }
+//    @Test
+//    public void getAllRoleList() throws Exception {
+//        List<Role> roles = roleService.getAllRoleList();
+//        Assert.assertTrue(roles.size() > 0);
+//    }
 
 //    @Test
 //    public void addRole() throws Exception {

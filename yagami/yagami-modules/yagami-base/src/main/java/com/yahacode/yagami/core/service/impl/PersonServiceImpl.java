@@ -11,9 +11,11 @@ import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.repository.PersonRepository;
 import com.yahacode.yagami.core.service.DepartmentService;
 import com.yahacode.yagami.core.service.PersonService;
+import com.yahacode.yagami.core.util.PersonStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,12 +38,14 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 
     private static final Logger log = LoggerFactory.getLogger(PersonServiceImpl.class);
 
+    @Autowired
+    @Lazy
     private DepartmentService departmentService;
 
     private RoleService roleService;
 
     @Autowired
-    private PersonRepository peopleRepository;
+    private PersonRepository personRepository;
 
     @Autowired
     private PersonRoleRelRepository peopleRoleRelRepository;
@@ -53,7 +57,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public String addPeople(Person person) throws ServiceException {
         Person operator = getLoginPerson();
         log.info("{} add person {} start", operator.getCode(), person.getCode());
-        Person tmpPeople = getByCode(person.getCode());
+        Person tmpPeople = findByCode(person.getCode());
         if (tmpPeople != null) {
             log.warn("add person fail: {} already exists", person.getCode());
             throw new ServiceException(ADD_FAIL_EXISTED, person.getCode());
@@ -64,99 +68,90 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
             throw new ServiceException(ADD_FAIL_WITHOUT_DEPT);
         }
         String id = initAndSave(person);
-        roleService.setRoleOfPeople(people);
+//        roleService.setRoleOfPeople(people);
         return id;
     }
 
     @Transactional
     @Override
-    public void modifyPeople(Person people) throws ServiceException {
-        Person operator = getLoginPeople();
-        LogUtils.info("{}修改人员{}操作开始", operator.getCode(), people.getCode());
-        people.update(operator.getCode());
-        roleService.setRoleOfPeople(people);
-        update(people);
-        LogUtils.info("{}修改人员{}操作完成", operator.getCode(), people.getCode());
+    public void modifyPeople(Person person) throws ServiceException {
+        Person operator = getLoginPerson();
+        log.info("{} modify person {} start", operator.getCode(), person.getCode());
+//        roleService.setRoleOfPeople(people);
+        updateById(person);
+        log.info("{} modify person {} end", operator.getCode(), person.getCode());
     }
 
     @Transactional
     @Override
-    public void deletePeople(String peopleId) throws ServiceException {
-        Person operator = getLoginPeople();
-        Person target = queryById(peopleId);
-        LogUtils.info("{}删除人员{}操作开始", operator.getCode(), target.getCode());
+    public void deletePeople(String personCode) throws ServiceException {
+        Person operator = getLoginPerson();
+        Person target = findByCode(personCode);
+        log.info("{} delete person {} start", operator.getCode(), target.getCode());
         if (target.getCode().equals(operator.getCode())) {
-            LogUtils.error("{}删除自己，失败", operator.getCode());
+            log.warn("{} delete self fail", operator.getCode());
             throw new ServiceException(DEL_FAIL_SELF);
         }
-        delete(peopleId);
-        peopleRoleRelRepository.deleteByPeopleId(peopleId);
-        LogUtils.info("{}删除人员{}操作完成", operator.getCode(), target.getCode());
-    }
-
-    @Transactional
-    @Override
-    public Person getByCode(String code) throws ServiceException {
-        return peopleRepository.findByCode(code);
+        deleteById(target.getId());
+//        peopleRoleRelRepository.deleteByPeopleId(peopleId);
+        log.info("{} delete person {} end", operator.getCode(), target.getCode());
     }
 
     @Override
-    public long getPeopleCountByDepartment(Department department) throws ServiceException {
-        return peopleRepository.countByDepartmentId(department.getIdBfDepartment());
+    public Person findByCode(String code) {
+        return personRepository.findByCode(code);
     }
 
     @Override
-    public List<Person> getPeopleListByDepartment(String departmentId) throws ServiceException {
-        return peopleRepository.findByDepartmentId(departmentId);
+    public long countPersonByDepartment(String departmentCode) {
+        return personRepository.countByDepartmentCode(departmentCode);
     }
 
     @Override
-    public void resetPassword(String peopleId) throws ServiceException {
-        Person people = queryById(peopleId);
-        Person operator = getLoginPeople();
-        LogUtils.info("{}重置密码{}操作开始", operator.getCode(), people.getCode());
-        people.update(operator.getCode());
-        people.setPassword(StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd")));
-        people.setErrorCount(COUNTER_ZERO);
-        update(people);
-        LogUtils.info("{}重置密码{}操作结束", operator.getCode(), people.getCode());
+    public List<Person> findByDepartment(String departmentCode) {
+        return personRepository.findByDepartmentCode(departmentCode);
     }
 
     @Override
-    public void unlock(String peopleId) throws ServiceException {
-        Person people = queryById(peopleId);
-        Person operator = getLoginPeople();
-        LogUtils.info("{}解锁人员{}操作开始", operator.getCode(), people.getCode());
-        if (!Person.STATUS_LOCKED.equals(people.getStatus())) {
-            LogUtils.error("{}解锁人员{}操作失败, 人员状态为{}", operator.getCode(), people.getCode(), people.getStatus());
+    public void resetPassword(String personCode) throws ServiceException {
+        Person person = findByCode(personCode);
+        Person operator = getLoginPerson();
+        log.info("{} reset password {} start", operator.getCode(), person.getCode());
+        person.setPassword(StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd")));
+        person.setErrorCount(COUNTER_ZERO);
+        updateById(person);
+        log.info("{} reset password {} end", operator.getCode(), person.getCode());
+    }
+
+    @Override
+    public void unlock(String personCode) throws ServiceException {
+        Person person = findByCode(personCode);
+        Person operator = getLoginPerson();
+        log.info("{} unlock person {} start", operator.getCode(), person.getCode());
+        if (PersonStatus.LOCKED != person.getStatus()) {
+            log.warn("{} unlock person {} fail, status {}", operator.getCode(), person.getCode(), person.getStatus());
             throw new ServiceException(UNLOCK_FAIL_STATUS_ERR);
         }
-        people.update(operator.getCode());
-        people.setStatus(Person.STATUS_NORMAL);
-        people.setErrorCount(COUNTER_ZERO);
-        update(people);
-        LogUtils.info("{}解锁人员{}操作结束", operator.getCode(), people.getCode());
+        person.unlock();
+        updateById(person);
+        log.info("{} unlock person {} end", operator.getCode(), person.getCode());
     }
 
     @Override
-    public void modifyPassword(Person people, String oldPwd, String newPwd) throws ServiceException {
-        LogUtils.info("{}修改密码操作开始", people.getCode());
-        if (!oldPwd.equals(people.getPassword())) {
+    public void modifyPassword(String personCode, String oldPwd, String newPwd) throws ServiceException {
+        log.info("{} modify password start", personCode);
+        Person person = findByCode(personCode);
+        if (!oldPwd.equals(person.getPassword())) {
             throw new ServiceException(UPDATE_FAIL_PWD_ERR);
         }
-        people.setPassword(StringUtils.encryptMD5(people.getCode() + StringUtils.encryptMD5(newPwd)));
-        update(people);
-        LogUtils.info("{}修改密码操作结束", people.getCode());
+        person.setPassword(StringUtils.encryptMD5(person.getCode() + StringUtils.encryptMD5(newPwd)));
+        updateById(person);
+        log.info("{} modify password end", personCode);
     }
 
     @Override
     public JpaRepository<Person, String> getBaseRepository() {
-        return peopleRepository;
-    }
-
-    @Autowired
-    public void setDepartmentService(DepartmentService departmentService) {
-        this.departmentService = departmentService;
+        return personRepository;
     }
 
     @Autowired
