@@ -24,7 +24,7 @@ import static com.yahacode.yagami.base.consts.ErrorCode.Auth.Role.MOD_FAIL_EXIST
 import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND;
 
 /**
- * role service implementation
+ * RoleService implementation
  *
  * @author zengyongli
  */

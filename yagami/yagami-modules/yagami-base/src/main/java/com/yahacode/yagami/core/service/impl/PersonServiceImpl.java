@@ -1,32 +1,25 @@
 package com.yahacode.yagami.core.service.impl;
 
-import com.yahacode.yagami.core.repository.PersonRoleRelRepository;
-import com.yahacode.yagami.core.service.RoleService;
 import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
-import com.yahacode.yagami.core.model.Department;
 import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.repository.PersonRepository;
-import com.yahacode.yagami.core.service.DepartmentService;
+import com.yahacode.yagami.core.repository.PersonRoleRelRepository;
 import com.yahacode.yagami.core.service.PersonService;
+import com.yahacode.yagami.core.service.RoleService;
 import com.yahacode.yagami.core.util.PersonStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.ADD_FAIL_EXISTED;
-import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.ADD_FAIL_WITHOUT_DEPT;
-import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.DEL_FAIL_SELF;
-import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.UNLOCK_FAIL_STATUS_ERR;
-import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.UPDATE_FAIL_PWD_ERR;
+import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.*;
 
 /**
  * PersonService implementation
@@ -37,10 +30,6 @@ import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.UPDATE
 public class PersonServiceImpl extends BaseServiceImpl<Person> implements PersonService {
 
     private static final Logger log = LoggerFactory.getLogger(PersonServiceImpl.class);
-
-    @Autowired
-    @Lazy
-    private DepartmentService departmentService;
 
     private RoleService roleService;
 
@@ -62,11 +51,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
             log.warn("add person fail: {} already exists", person.getCode());
             throw new ServiceException(ADD_FAIL_EXISTED, person.getCode());
         }
-        Department department = departmentService.findByCode(person.getDepartmentCode());
-        if (department == null) {
-            log.warn("add person fail: department not exists. code {}", person.getDepartmentCode());
-            throw new ServiceException(ADD_FAIL_WITHOUT_DEPT);
-        }
         String id = initAndSave(person);
 //        roleService.setRoleOfPeople(people);
         return id;
@@ -74,7 +58,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 
     @Transactional
     @Override
-    public void modifyPeople(Person person) throws ServiceException {
+    public void modifyPerson(Person person) throws ServiceException {
         Person operator = getLoginPerson();
         log.info("{} modify person {} start", operator.getCode(), person.getCode());
 //        roleService.setRoleOfPeople(people);

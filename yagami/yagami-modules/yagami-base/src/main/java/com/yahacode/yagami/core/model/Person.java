@@ -5,6 +5,7 @@ import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.SystemConstants;
 import com.yahacode.yagami.core.util.PersonStatus;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.List;
  * @author zengyongli
  */
 @Entity
+@DynamicUpdate
 @Table(name = SystemConstants.TABLE_PREFIX + "person")
 @GenericGenerator(name = "my_uuid", strategy = "uuid")
 public class Person extends BaseModel {
@@ -52,8 +55,9 @@ public class Person extends BaseModel {
     /**
      * person’s department
      */
-    @Column(name = "department_code")
-    private String departmentCode;
+    @ManyToOne
+    @JoinColumn(name = "department_code", referencedColumnName = "code")
+    private Department department;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = SystemConstants.TABLE_PREFIX + "person_role_rel",
@@ -127,12 +131,20 @@ public class Person extends BaseModel {
         this.name = name;
     }
 
-    public String getDepartmentCode() {
-        return departmentCode;
+    public Department getDepartment() {
+        return department;
     }
 
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     public String getPassword() {

@@ -3,15 +3,18 @@ package com.yahacode.yagami.base.impl;
 import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.ServiceException;
-import com.yahacode.yagami.base.common.ServletContextHolder;
 import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.ErrorCode;
-import com.yahacode.yagami.base.consts.SessionKeyConsts;
+import com.yahacode.yagami.base.mvc.SessionService;
 import com.yahacode.yagami.core.model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 public abstract class BaseServiceImpl<T extends BaseModel> implements BaseService<T> {
+
+    @Autowired
+    private SessionService sessionService;
 
     @Override
     public List<T> findAll() {
@@ -52,7 +55,7 @@ public abstract class BaseServiceImpl<T extends BaseModel> implements BaseServic
 
     @Override
     public Person getLoginPerson() {
-        return (Person) ServletContextHolder.getSession().getAttribute(SessionKeyConsts.LOGIN_PEOPLE);
+        return sessionService.getLoginPerson();
     }
 
 //	@Override

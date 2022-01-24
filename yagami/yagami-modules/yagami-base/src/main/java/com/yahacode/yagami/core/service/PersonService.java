@@ -26,10 +26,10 @@ public interface PersonService extends BaseService<Person> {
     /**
      * modify people's roles
      *
-     * @param people entity
-     * @throws ServiceException framework exception
+     * @param person target person
+     * @throws if the person is not exists
      */
-    void modifyPeople(Person people) throws ServiceException;
+    void modifyPerson(Person person) throws ServiceException;
 
     /**
      * delete people by pk
