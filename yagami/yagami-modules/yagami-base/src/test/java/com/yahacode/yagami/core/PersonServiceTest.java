@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public class PersonServiceTest extends BaseTest {
 
     @Autowired
@@ -25,6 +27,12 @@ public class PersonServiceTest extends BaseTest {
     public void testFindByCode() {
         Person person = personService.findByCode("admin");
         Assertions.assertNotNull(person);
+    }
+
+    @Test
+    public void testFindByDepartment() {
+        List<Person> list = personService.findByDepartment("root");
+        Assertions.assertTrue(list.size() > 0);
     }
 
     @Test

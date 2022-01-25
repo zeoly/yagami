@@ -98,15 +98,6 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     /**
-     * delete all roles of a person
-     *
-     * @param personCode person code
-     */
-    private void deleteAllRoleByPersonCode(String personCode) {
-        peopleRoleRelRepository.deleteByPersonCode(personCode);
-    }
-
-    /**
      * check if the role can be deleted, will throw an exception if not
      *
      * @param roleId role id

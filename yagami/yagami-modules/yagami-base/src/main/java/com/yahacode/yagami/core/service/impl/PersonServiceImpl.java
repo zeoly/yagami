@@ -8,7 +8,6 @@ import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.repository.PersonRepository;
 import com.yahacode.yagami.core.repository.PersonRoleRelRepository;
 import com.yahacode.yagami.core.service.PersonService;
-import com.yahacode.yagami.core.service.RoleService;
 import com.yahacode.yagami.core.util.PersonStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +30,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 
     private static final Logger log = LoggerFactory.getLogger(PersonServiceImpl.class);
 
-    private RoleService roleService;
-
     @Autowired
     private PersonRepository personRepository;
 
@@ -51,9 +48,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
             log.warn("add person fail: {} already exists", person.getCode());
             throw new ServiceException(ADD_FAIL_EXISTED, person.getCode());
         }
-        String id = initAndSave(person);
-//        roleService.setRoleOfPeople(people);
-        return id;
+        return initAndSave(person);
     }
 
     @Transactional
@@ -61,7 +56,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     public void modifyPerson(Person person) throws ServiceException {
         Person operator = getLoginPerson();
         log.info("{} modify person {} start", operator.getCode(), person.getCode());
-//        roleService.setRoleOfPeople(people);
         updateById(person);
         log.info("{} modify person {} end", operator.getCode(), person.getCode());
     }
@@ -77,13 +71,13 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
             throw new ServiceException(DEL_FAIL_SELF);
         }
         deleteById(target.getId());
-//        peopleRoleRelRepository.deleteByPeopleId(peopleId);
         log.info("{} delete person {} end", operator.getCode(), target.getCode());
     }
 
     @Override
     public Person findByCode(String code) {
-        return personRepository.findByCode(code);
+        Person p = personRepository.findByCode(code);
+        return p;
     }
 
     @Override
@@ -136,11 +130,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     @Override
     public JpaRepository<Person, String> getBaseRepository() {
         return personRepository;
-    }
-
-    @Autowired
-    public void setRoleService(RoleService roleService) {
-        this.roleService = roleService;
     }
 
     @Autowired

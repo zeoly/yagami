@@ -7,7 +7,7 @@ import com.yahacode.yagami.core.model.Person;
 import javax.servlet.http.HttpSession;
 
 /**
- * framework base controller, recommend to extends this class to build your business controller.
+ * framework base controller, recommend extending this class to build your business controller.
  * provide session control functions.
  *
  * @author zengyongli

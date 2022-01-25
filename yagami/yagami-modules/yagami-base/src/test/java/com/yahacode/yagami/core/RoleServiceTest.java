@@ -58,4 +58,15 @@ public class RoleServiceTest extends BaseTest {
         Assertions.assertNull(newRole);
     }
 
+    @Test
+    public void testDeleteRoleFail() {
+        ServiceException e = Assertions.assertThrows(ServiceException.class, () -> {
+            beforeMethod();
+            Role role = roleService.findByName("sdfdsfddf");
+            int a = role.getPersonList().size();
+            roleService.deleteRole(role.getId());
+        });
+        Assertions.assertEquals(e.getErrorCode(), ErrorCode.Auth.Role.DEL_FAIL_WITH_PEOPLE);
+    }
+
 }

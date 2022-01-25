@@ -8,7 +8,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * model of role
@@ -40,6 +43,9 @@ public class Role extends BaseModel {
     @Column(name = "`desc`")
     private String description;
 
+    @ManyToMany(mappedBy = "roleList")
+    private List<Person> personList = new ArrayList<>();
+
     @Override
     public String getId() {
         return id;
@@ -59,5 +65,13 @@ public class Role extends BaseModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Person> getPersonList() {
+        return personList;
+    }
+
+    public void setPersonList(List<Person> personList) {
+        this.personList = personList;
     }
 }

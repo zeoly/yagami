@@ -55,11 +55,11 @@ public class Person extends BaseModel {
     /**
      * person’s department
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_code", referencedColumnName = "code")
     private Department department;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = SystemConstants.TABLE_PREFIX + "person_role_rel",
             joinColumns = @JoinColumn(name = "person_code", referencedColumnName = "code"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
