@@ -1,27 +1,23 @@
 package com.yahacode.yagami.core.service.impl;
 
+import com.yahacode.yagami.base.ServiceException;
+import com.yahacode.yagami.base.impl.BaseServiceImpl;
+import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.model.PersonRoleRelation;
 import com.yahacode.yagami.core.model.Role;
 import com.yahacode.yagami.core.repository.PersonRoleRelRepository;
 import com.yahacode.yagami.core.repository.RoleRepository;
 import com.yahacode.yagami.core.service.RoleService;
-import com.yahacode.yagami.base.ServiceException;
-import com.yahacode.yagami.base.impl.BaseServiceImpl;
-import com.yahacode.yagami.core.model.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.yahacode.yagami.base.consts.ErrorCode.Auth.Role.ADD_FAIL_EXISTED;
-import static com.yahacode.yagami.base.consts.ErrorCode.Auth.Role.DEL_FAIL_WITH_PEOPLE;
-import static com.yahacode.yagami.base.consts.ErrorCode.Auth.Role.MOD_FAIL_EXISTED;
-import static com.yahacode.yagami.base.consts.ErrorCode.PeopleDept.People.SET_ROLE_REL_FAIL_NOT_FOUND;
+import static com.yahacode.yagami.base.consts.ErrorCode.Auth.Role.*;
 
 /**
  * RoleService implementation
@@ -78,21 +74,6 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         checkCanDeleteRole(roleId);
         deleteById(roleId);
         log.info("{} delete role {} end", person.getCode(), role.getName());
-    }
-
-    @Transactional
-    @Override
-    public void saveRoleOfPerson(String personCode, List<String> roleIds) throws ServiceException {
-        Person operator = getLoginPerson();
-        deleteAllRoleByPersonCode(personCode);
-        for (String id : roleIds) {
-            Role role = findById(id);
-            if (role == null) {
-                throw new ServiceException(SET_ROLE_REL_FAIL_NOT_FOUND, id);
-            }
-            PersonRoleRelation peopleRoleRelation = new PersonRoleRelation(operator.getCode(), personCode, id);
-            peopleRoleRelRepository.save(peopleRoleRelation);
-        }
     }
 
     @Override

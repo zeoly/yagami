@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * Base entity model, recommend to extend this to build your own business model
+ * Base entity model, recommend extending this to build your own business model
  *
  * @author zengyongli
  */

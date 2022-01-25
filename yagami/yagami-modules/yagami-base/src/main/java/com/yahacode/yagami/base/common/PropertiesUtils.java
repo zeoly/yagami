@@ -19,9 +19,9 @@ public class PropertiesUtils {
 		}
 	}
 
-	public static String getErrorMsg(String errrorCode) {
+	public static String getErrorMsg(String errorCode) {
 		ResourceBundle rb = ResourceBundle.getBundle("error", Locale.CHINA);
-		String str = rb.getString(errrorCode);
+		String str = rb.getString(errorCode);
 		return str;
 	}
 

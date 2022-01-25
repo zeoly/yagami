@@ -47,15 +47,6 @@ public interface RoleService extends BaseService<Role> {
     List<Role> getRoleListByPeople(String personCode);
 
     /**
-     * set the role list of a person
-     *
-     * @param personCode person role
-     * @param roleIds all role's ids
-     * @exception
-     */
-    void saveRoleOfPerson(String personCode, List<String> roleIds) throws ServiceException;
-
-    /**
      * count how many people have the role
      *
      * @param roleId role primary key

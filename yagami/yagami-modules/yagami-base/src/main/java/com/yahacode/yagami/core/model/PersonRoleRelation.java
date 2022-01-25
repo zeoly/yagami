@@ -41,12 +41,6 @@ public class PersonRoleRelation extends BaseModel {
     @Column(name = "role_id")
     private String roleId;
 
-    public PersonRoleRelation(String operatorCode, String personCode, String roleId) {
-        super(operatorCode);
-        this.personCode = personCode;
-        this.roleId = roleId;
-    }
-
     @Override
     public String getId() {
         return id;

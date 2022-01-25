@@ -37,7 +37,7 @@ public class Role extends BaseModel {
     /**
      * description of role
      */
-    @Column(name = "desc")
+    @Column(name = "`desc`")
     private String description;
 
     @Override

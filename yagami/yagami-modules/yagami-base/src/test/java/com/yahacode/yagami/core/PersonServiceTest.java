@@ -2,16 +2,13 @@ package com.yahacode.yagami.core;
 
 import com.yahacode.yagami.BaseTest;
 import com.yahacode.yagami.base.ServiceException;
-import com.yahacode.yagami.base.mvc.SessionService;
 import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.model.Role;
 import com.yahacode.yagami.core.service.PersonService;
 import com.yahacode.yagami.core.service.RoleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class PersonServiceTest extends BaseTest {
 
@@ -21,17 +18,8 @@ public class PersonServiceTest extends BaseTest {
     @Autowired
     private RoleService roleService;
 
-    @MockBean
-    private SessionService sessionService;
-
 //    @Rule
 //    public ExpectedException expectedException = ExpectedException.none();
-
-    public void beforeMethod(){
-        Person operator = new Person();
-        operator.setCode("test");
-        Mockito.when(sessionService.getLoginPerson()).thenReturn(operator);
-    }
 
     @Test
     public void testFindByCode() {
@@ -43,19 +31,24 @@ public class PersonServiceTest extends BaseTest {
     public void testModifyPersonName() throws ServiceException {
         beforeMethod();
         Person person = personService.findByCode("admin");
+        person.setName("testName");
+        personService.modifyPerson(person);
+
+        Person newPerson = personService.findByCode("admin");
+        Assertions.assertEquals("testName", newPerson.getName());
+    }
+
+    @Test
+    public void testModifyRole() throws ServiceException {
+        beforeMethod();
+        Person person = personService.findByCode("admin");
         Role role = roleService.findByName("333");
+        role.setName("444");
         person.getRoleList().add(role);
         personService.modifyPerson(person);
 
         Person newPerson = personService.findByCode("admin");
         Assertions.assertTrue(newPerson.getRoleList().size() > 2);
-    }
-
-    @Test
-    public void testModifyPersonRole() {
-        Person operator = new Person();
-        operator.setCode("test");
-        Mockito.when(sessionService.getLoginPerson()).thenReturn(operator);
     }
 //    @Test
 //    public void testAddPeopleExists() throws BizfwServiceException {
