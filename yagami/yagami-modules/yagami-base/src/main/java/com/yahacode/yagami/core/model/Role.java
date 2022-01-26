@@ -1,5 +1,6 @@
 package com.yahacode.yagami.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.consts.SystemConstants;
 import org.hibernate.annotations.GenericGenerator;
@@ -43,6 +44,7 @@ public class Role extends BaseModel {
     @Column(name = "`desc`")
     private String description;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roleList")
     private List<Person> personList = new ArrayList<>();
 
