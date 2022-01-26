@@ -8,8 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.util.List;
 
 /**
@@ -36,6 +37,7 @@ public class Department extends BaseModel {
     /**
      * department code
      */
+    @Column(unique = true)
     private String code;
 
     /**
@@ -57,8 +59,12 @@ public class Department extends BaseModel {
     /**
      * list of child department
      */
-    @Transient
+    @OneToMany
+    @JoinColumn(name = "parent_code", referencedColumnName = "code")
     private List<Department> children;
+
+    @OneToMany(mappedBy = "department")
+    private List<Person> personList;
 
     @Override
     public String getId() {
@@ -104,4 +110,5 @@ public class Department extends BaseModel {
     public void setChildren(List<Department> children) {
         this.children = children;
     }
+
 }

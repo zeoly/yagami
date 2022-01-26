@@ -10,7 +10,6 @@ import com.yahacode.yagami.core.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +30,6 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     private static final Logger log = LoggerFactory.getLogger(DepartmentServiceImpl.class);
 
     @Autowired
-    @Lazy
     private PersonService peopleService;
 
     @Autowired

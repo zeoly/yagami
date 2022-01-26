@@ -15,7 +15,7 @@ public interface PersonRepository extends JpaRepository<Person, String> {
 
     Person findByCode(String code);
 
-    List<Person> findByDepartmentCode(String departmentCode);
+    List<Person> findByDepartment_Code(String departmentCode);
 
     long countByDepartmentCode(String departmentCode);
 }

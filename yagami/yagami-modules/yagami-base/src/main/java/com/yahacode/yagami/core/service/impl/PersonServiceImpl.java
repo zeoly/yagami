@@ -74,9 +74,12 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
         log.info("{} delete person {} end", operator.getCode(), target.getCode());
     }
 
+    @Transactional
     @Override
     public Person findByCode(String code) {
         Person p = personRepository.findByCode(code);
+        log.info("111");
+        log.info(p.getPassword());
         return p;
     }
 
@@ -87,7 +90,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 
     @Override
     public List<Person> findByDepartment(String departmentCode) {
-        return personRepository.findByDepartmentCode(departmentCode);
+        return personRepository.findByDepartment_Code(departmentCode);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.yahacode.yagami.core.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.common.PropertiesUtils;
 import com.yahacode.yagami.base.common.StringUtils;
@@ -8,6 +9,7 @@ import com.yahacode.yagami.core.util.PersonStatus;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
@@ -55,10 +57,12 @@ public class Person extends BaseModel {
     /**
      * person’s department
      */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_code", referencedColumnName = "code")
+    @JoinColumn(name = "department_code", referencedColumnName = "code", unique = true, insertable = false, updatable = false, nullable = false)
     private Department department;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = SystemConstants.TABLE_PREFIX + "person_role_rel",
             joinColumns = @JoinColumn(name = "person_code", referencedColumnName = "code"),
@@ -68,6 +72,7 @@ public class Person extends BaseModel {
     /**
      * login password, storage in md5
      */
+    @Basic(fetch = FetchType.LAZY)
     private String password;
 
     /**
