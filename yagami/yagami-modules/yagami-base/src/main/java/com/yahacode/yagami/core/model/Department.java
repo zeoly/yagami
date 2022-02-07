@@ -8,10 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
 
 /**
  * model of a department or a division
@@ -56,16 +53,6 @@ public class Department extends BaseModel {
     @Column(name = "parent_code")
     private String parentCode;
 
-    /**
-     * list of child department
-     */
-    @OneToMany
-    @JoinColumn(name = "parent_code", referencedColumnName = "code")
-    private List<Department> children;
-
-    @OneToMany(mappedBy = "department")
-    private List<Person> personList;
-
     @Override
     public String getId() {
         return id;
@@ -101,14 +88,6 @@ public class Department extends BaseModel {
 
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
-    }
-
-    public List<Department> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Department> children) {
-        this.children = children;
     }
 
 }

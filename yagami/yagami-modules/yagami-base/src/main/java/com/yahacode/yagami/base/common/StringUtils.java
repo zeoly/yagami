@@ -1,16 +1,16 @@
 package com.yahacode.yagami.base.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * @author zengyongli
  */
-public class StringUtils {
+public class StringUtils extends org.springframework.util.StringUtils {
 
     private static Logger logger = LoggerFactory.getLogger(StringUtils.class);
 

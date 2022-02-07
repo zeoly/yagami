@@ -6,7 +6,6 @@ import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.impl.BaseServiceImpl;
 import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.repository.PersonRepository;
-import com.yahacode.yagami.core.repository.PersonRoleRelRepository;
 import com.yahacode.yagami.core.service.PersonService;
 import com.yahacode.yagami.core.util.PersonStatus;
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,12 +31,8 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     @Autowired
     private PersonRepository personRepository;
 
-    @Autowired
-    private PersonRoleRelRepository peopleRoleRelRepository;
-
     private static final int COUNTER_ZERO = 0;
 
-    @Transactional
     @Override
     public String addPeople(Person person) throws ServiceException {
         Person operator = getLoginPerson();
@@ -51,7 +45,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
         return initAndSave(person);
     }
 
-    @Transactional
     @Override
     public void modifyPerson(Person person) throws ServiceException {
         Person operator = getLoginPerson();
@@ -60,7 +53,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
         log.info("{} modify person {} end", operator.getCode(), person.getCode());
     }
 
-    @Transactional
     @Override
     public void deletePeople(String personCode) throws ServiceException {
         Person operator = getLoginPerson();
@@ -74,7 +66,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
         log.info("{} delete person {} end", operator.getCode(), target.getCode());
     }
 
-    @Transactional
     @Override
     public Person findByCode(String code) {
         Person p = personRepository.findByCode(code);
@@ -133,11 +124,6 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     @Override
     public JpaRepository<Person, String> getBaseRepository() {
         return personRepository;
-    }
-
-    @Autowired
-    public void setPeopleRoleRelRepository(PersonRoleRelRepository peopleRoleRelRepository) {
-        this.peopleRoleRelRepository = peopleRoleRelRepository;
     }
 
 }

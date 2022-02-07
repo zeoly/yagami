@@ -19,7 +19,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +54,10 @@ public class Person extends BaseModel {
     private String name;
 
     /**
-     * person’s department
+     * person’s department code
      */
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_code", referencedColumnName = "code", unique = true, insertable = false, updatable = false, nullable = false)
-    private Department department;
+    @Column(name = "department_code")
+    private String departmentCode;
 
     @JsonIgnore
     @ManyToMany
@@ -136,12 +133,12 @@ public class Person extends BaseModel {
         this.name = name;
     }
 
-    public Department getDepartment() {
-        return department;
+    public String getDepartmentCode() {
+        return departmentCode;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
     public List<Role> getRoleList() {

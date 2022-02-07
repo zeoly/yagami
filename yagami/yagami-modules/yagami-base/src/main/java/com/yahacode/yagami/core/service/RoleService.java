@@ -1,10 +1,8 @@
 package com.yahacode.yagami.core.service;
 
-import com.yahacode.yagami.core.model.Role;
 import com.yahacode.yagami.base.BaseService;
 import com.yahacode.yagami.base.ServiceException;
-
-import java.util.List;
+import com.yahacode.yagami.core.model.Role;
 
 /**
  * Role service
@@ -17,7 +15,7 @@ public interface RoleService extends BaseService<Role> {
      * add a role
      *
      * @param role entity
-     * @throws ServiceException framework exception
+     * @throws ServiceException if the same role name is exists
      */
     String addRole(Role role) throws ServiceException;
 
@@ -37,22 +35,6 @@ public interface RoleService extends BaseService<Role> {
      *                          if the role has relation with any people;
      */
     void deleteRole(String roleId) throws ServiceException;
-
-    /**
-     * get the roles of a person
-     *
-     * @param personCode people code
-     * @return role list
-     */
-    List<Role> getRoleListByPeople(String personCode);
-
-    /**
-     * count how many people have the role
-     *
-     * @param roleId role primary key
-     * @return the people count
-     */
-    long countPersonByRoleId(String roleId);
 
     /**
      * get the role by name.
