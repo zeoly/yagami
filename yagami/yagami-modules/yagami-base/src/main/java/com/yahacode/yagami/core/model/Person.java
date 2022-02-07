@@ -3,11 +3,11 @@ package com.yahacode.yagami.core.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yahacode.yagami.base.BaseModel;
 import com.yahacode.yagami.base.common.PropertiesUtils;
-import com.yahacode.yagami.base.common.StringUtils;
 import com.yahacode.yagami.base.consts.SystemConstants;
 import com.yahacode.yagami.core.util.PersonStatus;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.util.DigestUtils;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -99,7 +99,7 @@ public class Person extends BaseModel {
         super(code);
         this.errorCount = 0;
         this.status = PersonStatus.NORMAL;
-        this.password = StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd"));
+        this.password = DigestUtils.md5DigestAsHex(PropertiesUtils.getSysConfig("default.pwd").getBytes());
     }
 
     @Override
@@ -107,7 +107,7 @@ public class Person extends BaseModel {
         super.init(personCode);
         this.errorCount = 0;
         this.status = PersonStatus.NORMAL;
-        this.password = StringUtils.encryptMD5(PropertiesUtils.getSysConfig("default.pwd"));
+        this.password = DigestUtils.md5DigestAsHex(PropertiesUtils.getSysConfig("default.pwd").getBytes());
     }
 
     public void unlock() {
