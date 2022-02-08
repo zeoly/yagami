@@ -2,6 +2,7 @@ package com.yahacode.yagami.core;
 
 import com.yahacode.yagami.BaseTest;
 import com.yahacode.yagami.base.ServiceException;
+import com.yahacode.yagami.base.consts.ErrorCode;
 import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.model.Role;
 import com.yahacode.yagami.core.service.PersonService;
@@ -20,9 +21,6 @@ public class PersonServiceTest extends BaseTest {
     @Autowired
     private RoleService roleService;
 
-//    @Rule
-//    public ExpectedException expectedException = ExpectedException.none();
-
     @Test
     public void testFindByCode() {
         Person person = personService.findByCode("admin");
@@ -31,8 +29,8 @@ public class PersonServiceTest extends BaseTest {
 
     @Test
     public void testFindByDepartment() {
-        List<Person> list = personService.findByDepartment("root");
-        Assertions.assertTrue(list.size() > 0);
+        List<Person> list = personService.findByDepartment("121");
+        Assertions.assertEquals(list.size(), 1);
     }
 
     @Test
@@ -58,67 +56,46 @@ public class PersonServiceTest extends BaseTest {
         Person newPerson = personService.findByCode("admin");
         Assertions.assertTrue(newPerson.getRoleList().size() > 2);
     }
-//    @Test
-//    public void testAddPeopleExists() throws BizfwServiceException {
-//        expectedException.expect(BizfwServiceException.class);
-//        expectedException.expectMessage(ErrorCode.PeopleDept.People.ADD_FAIL_EXISTED);
-//
-//        People people = new People("test");
-//        people.setCode("zengyongli");
-//        people.setName("曾永理");
-//        people.setDepartmentId("0");
-//        peopleService.addPeople(people);
-//    }
-//
-//    @Test
-//    public void testAddPeopleDeptErr() throws BizfwServiceException {
-//        expectedException.expect(BizfwServiceException.class);
-//        expectedException.expectMessage(ErrorCode.PeopleDept.People.ADD_FAIL_WITHOUT_DEPT);
-//
-//        People people = new People("test");
-//        people.setCode("testadd");
-//        people.setName("testadd");
-//        people.setDepartmentId("0");
-//        peopleService.addPeople(people);
-//    }
-//
-//    @Test
-//    public void testAddPeople() throws BizfwServiceException {
-//        People people = new People("test");
-//        people.setCode("testadd");
-//        people.setName("testadd");
-//        people.setDepartmentId("8a808087583fa7b701583faadf300000");
-//        String id = peopleService.addPeople(people);
-//
-//        People dbPeople = peopleService.queryById(id);
-//        assertEquals(dbPeople.getCode(), "testadd");
-//    }
 
-//    @Test
-//    public void testDeletePeopleDelSelf() throws BizfwServiceException {
-//        expectedException.expect(BizfwServiceException.class);
-//        expectedException.expectMessage(ErrorCode.PeopleDept.People.DEL_FAIL_SELF);
-//
-//        People people = peopleService.getByCode("zengyongli");
-//        people.setUpdateBy("zengyongli");
-//        peopleService.deletePeople(people.getIdBfPeople());
-//    }
-//
-//    @Test
-//    public void testDeletePeople() throws BizfwServiceException {
-//        People people = peopleService.getByCode("zengyongli");
-//        people.setUpdateBy("testdelete");
-//        peopleService.deletePeople(people.getIdBfPeople());
-//
-//        People dbPeople = peopleService.getByCode("zengyongli");
-//        assertEquals(dbPeople, null);
-//    }
-//
-//    @Test
-//    public void testGetPeopleListByDepartment() throws BizfwServiceException {
-//        List<People> list = peopleService.getPeopleListByDepartment("8a808087583fa7b701583faadf300000");
-//        assertEquals(list.size(), 3);
-//    }
+    @Test
+    public void testAddPerson() throws ServiceException {
+        beforeMethod();
+        Person person = new Person();
+        person.init("unit-test");
+        person.setCode("unit-test");
+        person.setName("unit-test");
+        person.setDepartmentCode("root");
+
+        personService.addPerson(person);
+        Person db = personService.findByCode("unit-test");
+        Assertions.assertNotNull(db);
+    }
+
+    @Test
+    public void testAddPersonExists() {
+        beforeMethod();
+        Person person = new Person();
+        person.setCode("unit-test");
+
+        ServiceException exception = Assertions.assertThrows(ServiceException.class, () -> personService.addPerson(person));
+        Assertions.assertEquals(exception.getErrorCode(), ErrorCode.PeopleDept.People.ADD_FAIL_EXISTED);
+    }
+
+    @Test
+    public void testDeletePersonBySelf() {
+        beforeMethod();
+        ServiceException exception = Assertions.assertThrows(ServiceException.class, () -> personService.deletePerson("UNITTEST"));
+        Assertions.assertEquals(exception.getErrorCode(), ErrorCode.PeopleDept.People.DEL_FAIL_SELF);
+    }
+
+    @Test
+    public void testDeletePerson() throws ServiceException {
+        beforeMethod();
+        personService.deletePerson("UNIT-TEST");
+
+        Person db = personService.findByCode("UNIT-TEST");
+        Assertions.assertNull(db);
+    }
 //
 //    @Test
 //    public void testUnlockFail() throws BizfwServiceException {

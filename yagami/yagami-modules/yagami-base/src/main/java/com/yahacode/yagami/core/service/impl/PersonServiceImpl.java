@@ -34,12 +34,13 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     private static final int COUNTER_ZERO = 0;
 
     @Override
-    public String addPeople(Person person) throws ServiceException {
+    public String addPerson(Person person) throws ServiceException {
         Person operator = getLoginPerson();
-        log.info("{} add person {} start", operator.getCode(), person.getCode());
+        person.setCode(person.getCode().toUpperCase());
+        log.info("{} add person [{}] start", operator.getCode(), person.getCode());
         Person tmpPeople = findByCode(person.getCode());
         if (tmpPeople != null) {
-            log.warn("add person fail: {} already exists", person.getCode());
+            log.warn("add person fail: [{}] already exists", person.getCode());
             throw new ServiceException(ADD_FAIL_EXISTED, person.getCode());
         }
         return initAndSave(person);
@@ -54,24 +55,21 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     }
 
     @Override
-    public void deletePeople(String personCode) throws ServiceException {
+    public void deletePerson(String code) throws ServiceException {
         Person operator = getLoginPerson();
-        Person target = findByCode(personCode);
-        log.info("{} delete person {} start", operator.getCode(), target.getCode());
+        Person target = findByCode(code);
+        log.info("{} delete person [{}] start", operator.getCode(), target.getCode());
         if (target.getCode().equals(operator.getCode())) {
             log.warn("{} delete self fail", operator.getCode());
             throw new ServiceException(DEL_FAIL_SELF);
         }
         deleteById(target.getId());
-        log.info("{} delete person {} end", operator.getCode(), target.getCode());
+        log.info("{} delete person [{}] end", operator.getCode(), target.getCode());
     }
 
     @Override
     public Person findByCode(String code) {
-        Person p = personRepository.findByCode(code);
-        log.info("111");
-        log.info(p.getPassword());
-        return p;
+        return personRepository.findByCode(code);
     }
 
     @Override

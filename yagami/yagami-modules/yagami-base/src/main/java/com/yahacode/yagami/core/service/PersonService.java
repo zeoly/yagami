@@ -14,30 +14,30 @@ import java.util.List;
 public interface PersonService extends BaseService<Person> {
 
     /**
-     * add a new people
+     * add a new person
      *
      * @param people entity
-     * @return pk
+     * @return primary key
      * @throws ServiceException if the same name people is exists;
      *                          if the people's department is not exists;
      */
-    String addPeople(Person people) throws ServiceException;
+    String addPerson(Person people) throws ServiceException;
 
     /**
      * modify people's roles
      *
      * @param person target person
-     * @throws if the person is not exists
+     * @throws ServiceException if the person is not exists
      */
     void modifyPerson(Person person) throws ServiceException;
 
     /**
-     * delete people by pk
+     * delete person by code
      *
-     * @param peopleId pk
+     * @param code person code
      * @throws ServiceException if the target people is the operator
      */
-    void deletePeople(String peopleId) throws ServiceException;
+    void deletePerson(String code) throws ServiceException;
 
     /**
      * get person by code
