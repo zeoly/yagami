@@ -43,8 +43,8 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     public void addDepartment(Department department) throws ServiceException {
         Person person = getLoginPerson();
         log.info("{} add department [{}] start", person.getCode(), department.getCode());
-        checkDepartmentCode(department.getCode());
-        checkDepartmentCode(department.getParentCode());
+        checkDepartmentCodeExists(department.getCode());
+        checkDepartmentCodeNotExists(department.getParentCode());
         Department parentDept = findByCode(department.getParentCode());
         department.setLevel(parentDept.getLevel() + 1);
         initAndSave(department);
@@ -94,10 +94,24 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
      * @param code department code
      * @throws ServiceException if the code exists
      */
-    private void checkDepartmentCode(String code) throws ServiceException {
+    private void checkDepartmentCodeExists(String code) throws ServiceException {
         Department department = findByCode(code);
         if (department != null) {
             log.warn("department code [{}] duplicated", code);
+            throw new ServiceException("");
+        }
+    }
+
+    /**
+     * check whether the code not exists
+     *
+     * @param code department code
+     * @throws ServiceException if the code not exists
+     */
+    private void checkDepartmentCodeNotExists(String code) throws ServiceException {
+        Department department = findByCode(code);
+        if (department == null) {
+            log.warn("department code [{}] not exists", code);
             throw new ServiceException("");
         }
     }

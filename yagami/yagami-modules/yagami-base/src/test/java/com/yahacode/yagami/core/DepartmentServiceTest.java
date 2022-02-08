@@ -1,109 +1,82 @@
-//package com.yahacode.yagami.pd;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNull;
-//import static org.junit.Assert.assertTrue;
-//
-//import java.util.List;
-//
-//import org.junit.Before;
-//import org.junit.Rule;
-//import org.junit.Test;
-//import org.junit.rules.ExpectedException;
-//import org.springframework.beans.factory.annotation.Autowired;
-//
-//import com.yahacode.yagami.BaseTest;
-//import com.yahacode.yagami.base.BizfwServiceException;
-//import com.yahacode.yagami.base.consts.ErrorCode;
-//import com.yahacode.yagami.pd.model.Department;
-//import com.yahacode.yagami.pd.service.DepartmentService;
-//
-//public class DepartmentServiceTest extends BaseTest {
-//
-//    @Autowired
-//    private DepartmentService departmentService;
-//
-//    @Rule
-//    public ExpectedException expectedException = ExpectedException.none();
-//
-//    @Before
-//    public void beforeTest() throws BizfwServiceException {
-//        Department parentDepartment = departmentService.queryByCode("root");
-//        Department department = new Department("test");
-//        department.setCode("testForDel");
-//        department.setName("测试删除机构");
-//        department.setParentDepartmentId(parentDepartment.getIdBfDepartment());
-//        departmentService.addDepartment(department);
-//    }
-//
-//    @Test
-//    public void testAddDepartment() throws BizfwServiceException {
-//        Department department = new Department("test");
-//        department.setCode("test");
-//        department.setName("测试");
-//        Department parentDepartment = departmentService.queryByCode("root");
-//        department.setParentDepartmentId(parentDepartment.getIdBfDepartment());
-//        departmentService.addDepartment(department);
-//
-//        Department dbDepartment = departmentService.queryByCode("test");
-//        assertEquals("测试", dbDepartment.getName());
-//    }
-//
-//    @Test
-//    public void testModifyDepartment() throws BizfwServiceException {
-//        Department department = departmentService.queryByCode("root");
-//        department.setName("测试修改");
-//        departmentService.modifyDepartment(department);
-//
-//        Department dbDepartment = departmentService.queryByCode("root");
-//        assertEquals("测试修改", dbDepartment.getName());
-//    }
-//
-//    @Test
-//    public void testDeleteDepartmentHasChild() throws BizfwServiceException {
-//        expectedException.expect(BizfwServiceException.class);
-//        expectedException.expectMessage(ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_CHILD);
-//
-//        Department department = departmentService.queryByCode("root");
-//        departmentService.deleteDepartment(department);
-//    }
-//
-//    @Test
-//    public void testDeleteDepartmentHasPeople() throws BizfwServiceException {
-//        expectedException.expect(BizfwServiceException.class);
-//        expectedException.expectMessage(ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_PEOPLE);
-//
-//        Department department = departmentService.queryByCode("11");
-//        departmentService.deleteDepartment(department);
-//    }
-//
-//    @Test
-//    public void testDeleteDepartment() throws BizfwServiceException {
-//        Department department = departmentService.queryByCode("testForDel");
-//        departmentService.deleteDepartment(department);
-//
-//        Department dbDepartment = departmentService.queryByCode("testForDel");
-//        assertNull(dbDepartment);
-//    }
-//
-//    @Test
-//    public void testGetParentDepartment() throws BizfwServiceException {
-//        Department department = departmentService.queryByCode("1");
-//        Department parentDepartment = departmentService.getParentDepartment(department);
-//        assertEquals("root", parentDepartment.getName());
-//    }
-//
-//    @Test
-//    public void testGetChildDepartmentList() throws BizfwServiceException {
-//        Department department = departmentService.queryByCode("root");
-//        List<Department> list = departmentService.getChildDepartmentList(department.getIdBfDepartment());
-//        assertTrue(list.size() >= 1);
-//    }
-//
-//    @Test
-//    public void testGetDepartmentTreeByDepartmentId() throws BizfwServiceException {
-//        Department department = departmentService.queryByCode("1");
-//        Department node = departmentService.getDepartmentTreeByDepartmentId(department.getIdBfDepartment());
-//        assertEquals(node.getChildDepartmentList().size(), 2);
-//    }
-//}
+package com.yahacode.yagami.core;
+
+import com.yahacode.yagami.BaseTest;
+import com.yahacode.yagami.base.ServiceException;
+import com.yahacode.yagami.base.consts.ErrorCode;
+import com.yahacode.yagami.core.model.Department;
+import com.yahacode.yagami.core.service.DepartmentService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+public class DepartmentServiceTest extends BaseTest {
+
+    @Autowired
+    private DepartmentService departmentService;
+
+    @Test
+    public void testFindByCode() {
+        Department department = departmentService.findByCode("root");
+        Assertions.assertEquals(department.getName(), "root");
+    }
+
+    @Test
+    public void testFindByParentCode() {
+        List<Department> children = departmentService.findByParentCode("root");
+        Assertions.assertEquals(children.size(), 3);
+    }
+
+    @Test
+    public void testAdd() throws ServiceException {
+        beforeMethod();
+        Department department = new Department();
+        department.setCode("unit-test-dept");
+        department.setName("unit-test-dept");
+        department.setParentCode("root");
+        departmentService.addDepartment(department);
+
+        Department dbDepartment = departmentService.findByCode("unit-test-dept");
+        Assertions.assertNotNull(dbDepartment);
+    }
+
+    @Test
+    public void testModifyDepartment() throws ServiceException {
+        beforeMethod();
+        Department department = departmentService.findByCode("unit-test-dept");
+        department.setName("unit-test-dept-2");
+        departmentService.modifyDepartment(department);
+
+        Department dbDepartment = departmentService.findByCode("unit-test-dept");
+        Assertions.assertEquals(dbDepartment.getName(), "unit-test-dept-2");
+    }
+
+    @Test
+    public void testDeleteDepartmentHasChild() {
+        beforeMethod();
+        ServiceException exception = Assertions.assertThrows(ServiceException.class, () -> {
+            departmentService.deleteDepartment("root");
+        });
+        Assertions.assertEquals(exception.getErrorCode(), ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_CHILD);
+    }
+
+    @Test
+    public void testDeleteDepartmentHasPeople() {
+        beforeMethod();
+        ServiceException exception = Assertions.assertThrows(ServiceException.class, () -> {
+            departmentService.deleteDepartment("121");
+        });
+        Assertions.assertEquals(exception.getErrorCode(), ErrorCode.PeopleDept.Dept.DEL_FAIL_WITH_PEOPLE);
+    }
+
+    @Test
+    public void testDeleteDepartment() throws ServiceException {
+        beforeMethod();
+        departmentService.deleteDepartment("unit-test-dept");
+
+        Department db = departmentService.findByCode("unit-test-dept");
+        Assertions.assertNull(db);
+    }
+
+}
