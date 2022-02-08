@@ -81,7 +81,7 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
 
     @Override
     public List<Person> findByDepartment(String departmentCode) {
-        return personRepository.findByDepartment_Code(departmentCode);
+        return personRepository.findByDepartmentCode(departmentCode);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.yahacode.yagami.core.service.RoleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,8 +16,6 @@ public class RoleServiceTest extends BaseTest {
 
     @Autowired
     private RoleService roleService;
-
-//    private PersonService peopleService;
 
     @Test
     public void testFindAll() {
@@ -37,7 +36,7 @@ public class RoleServiceTest extends BaseTest {
     }
 
     @Test
-    public void testAddRepeatRole() {
+    public void testAddDuplicatedRole() {
         ServiceException e = Assertions.assertThrows(ServiceException.class, () -> {
             beforeMethod();
             Role role = new Role();
@@ -59,11 +58,13 @@ public class RoleServiceTest extends BaseTest {
     }
 
     @Test
+    @Transactional
     public void testDeleteRoleFail() {
         ServiceException e = Assertions.assertThrows(ServiceException.class, () -> {
             beforeMethod();
             Role role = roleService.findByName("sdfdsfddf");
-            int a = role.getPersonList().size();
+            int personCount = role.getPersonList().size();
+            Assertions.assertTrue(personCount > 0);
             roleService.deleteRole(role.getId());
         });
         Assertions.assertEquals(e.getErrorCode(), ErrorCode.Auth.Role.DEL_FAIL_WITH_PEOPLE);

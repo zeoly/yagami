@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,23 +34,21 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     @Autowired
     private DepartmentRepository departmentRepository;
 
-//    @Autowired
-//    private DepartmentRelationRepository departmentRelationRepository;
-
     @Override
     public Department findByCode(String code) {
         return departmentRepository.findByCode(code);
     }
 
-    @Transactional
     @Override
     public void addDepartment(Department department) throws ServiceException {
         Person person = getLoginPerson();
-        log.info("{} add department {} start", person.getCode(), department.getCode());
+        log.info("{} add department [{}] start", person.getCode(), department.getCode());
+        checkDepartmentCode(department.getCode());
+        checkDepartmentCode(department.getParentCode());
         Department parentDept = findByCode(department.getParentCode());
         department.setLevel(parentDept.getLevel() + 1);
         initAndSave(department);
-        log.info("{} add department {} end", person.getCode(), department.getCode());
+        log.info("{} add department [{}] end", person.getCode(), department.getCode());
     }
 
     @Override
@@ -75,7 +72,7 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     }
 
     @Override
-    public List<Department> findChildren(String code) {
+    public List<Department> findByParentCode(String code) {
         return departmentRepository.findByParentCode(code);
     }
 
@@ -86,9 +83,23 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department> implement
     }
 
     @Override
-    public boolean hasPerson(String code) throws ServiceException {
+    public boolean hasPerson(String code) {
         long count = peopleService.countPersonByDepartment(code);
         return count > 0;
+    }
+
+    /**
+     * check whether the code exists
+     *
+     * @param code department code
+     * @throws ServiceException if the code exists
+     */
+    private void checkDepartmentCode(String code) throws ServiceException {
+        Department department = findByCode(code);
+        if (department != null) {
+            log.warn("department code [{}] duplicated", code);
+            throw new ServiceException("");
+        }
     }
 
     /**

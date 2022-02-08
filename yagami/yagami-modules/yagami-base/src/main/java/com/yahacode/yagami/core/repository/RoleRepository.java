@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface RoleRepository extends JpaRepository<Role, String> {
 
-    List<Role> findAllOrderByName();
+    List<Role> findAllByOrderByName();
 
     Role findByName(String name);
 

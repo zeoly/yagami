@@ -24,8 +24,9 @@ public interface DepartmentService extends BaseService<Department> {
     /**
      * add a new department
      *
-     * @param department entity
-     * @throws ServiceException framework exception
+     * @param department target entity
+     * @throws ServiceException if department code exists;
+     *                          if the parent department code exists;
      */
     void addDepartment(Department department) throws ServiceException;
 
@@ -69,8 +70,7 @@ public interface DepartmentService extends BaseService<Department> {
      *
      * @param code department code
      * @return list of child departments
-     * @throws ServiceException framework exception
      */
-    List<Department> findChildren(String code) throws ServiceException;
+    List<Department> findByParentCode(String code);
 
 }

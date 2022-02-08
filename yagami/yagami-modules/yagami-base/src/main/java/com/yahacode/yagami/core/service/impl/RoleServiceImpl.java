@@ -32,7 +32,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Override
     public List<Role> findAll() {
-        return roleRepository.findAllOrderByName();
+        return roleRepository.findAllByOrderByName();
     }
 
     @Override
