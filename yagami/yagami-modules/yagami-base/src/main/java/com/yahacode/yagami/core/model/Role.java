@@ -9,6 +9,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -48,12 +50,17 @@ public class Role extends BaseModel {
     @ManyToMany(mappedBy = "roleList")
     private List<Person> personList = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(name = SystemConstants.TABLE_PREFIX + "role_menu_rel",
+            joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    private List<Menu> menuList;
+
     @Override
     public String getId() {
         return id;
     }
 
-    public void setId(String id){
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -79,5 +86,13 @@ public class Role extends BaseModel {
 
     public void setPersonList(List<Person> personList) {
         this.personList = personList;
+    }
+
+    public List<Menu> getMenuList() {
+        return menuList;
+    }
+
+    public void setMenuList(List<Menu> menuList) {
+        this.menuList = menuList;
     }
 }

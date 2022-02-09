@@ -1,84 +1,62 @@
 package com.yahacode.yagami.core.model;
 
-import java.util.List;
+import com.yahacode.yagami.base.BaseModel;
+import com.yahacode.yagami.base.consts.SystemConstants;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import com.yahacode.yagami.base.BaseModel;
 
 /**
- * 菜单模型
+ * model of system menu, relation to roles
  *
  * @author zengyongli
- * @copyright THINKEQUIP
- * @date 2017年3月19日
+ * @since 2017/03/19
  */
 @Entity
-@Table(name = "bf_menu")
+@Table(name = SystemConstants.TABLE_PREFIX + "menu")
+@GenericGenerator(name = "my_uuid", strategy = "uuid")
 public class Menu extends BaseModel {
 
     private static final long serialVersionUID = 8163772024398615538L;
 
-    public static final String ROOT_NAME = "root";
-
-    public static final String COLUMN_NAME = "name";
-
-    public static final String COLUMN_PARENT_MENU_ID = "parentMenuId";
-
-    public static final String COLUMN_ORDERS = "orders";
-
     /**
-     * 主键
+     * primary key
      */
     @Id
-    @Column(name = "id_bf_menu")
-    @GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator")
     @GeneratedValue(generator = "uuid")
-    private String idBfMenu;
+    private String id;
 
     /**
-     * 菜单名称
+     * menu name
      */
-    @Column(name = "name")
     private String name;
 
     /**
-     * 菜单跳转url
+     * corresponding url
      */
-    @Column(name = "url")
     private String url;
 
     /**
-     * 菜单顺序
+     * menu sort order, starting from 1, the invisible root menu is 0
      */
-    @Column(name = "orders")
-    private String orders;
+    private Integer orders;
 
     /**
-     * 父菜单id
+     * parent menu id, the level 1 menu's parent id is null;
      */
-    @Column(name = "parent_menu_id")
-    private String parentMenuId;
+    @Column(name = "parent_id")
+    private String parentId;
 
-    /**
-     * 子菜单列表
-     */
-    @Transient
-    private List<Menu> childList;
-
-    public Menu(String peopleCode, String name, String url, String orders, String parentMenuId) {
+    public Menu(String peopleCode, String name, String url, Integer orders, String parentId) {
         super(peopleCode);
         this.name = name;
         this.url = url;
         this.orders = orders;
-        this.parentMenuId = parentMenuId;
+        this.parentId = parentId;
     }
 
     public Menu() {
@@ -87,15 +65,7 @@ public class Menu extends BaseModel {
 
     @Override
     public String getId() {
-        return idBfMenu;
-    }
-
-    public String getIdBfMenu() {
-        return idBfMenu;
-    }
-
-    public void setIdBfMenu(String idBfMenu) {
-        this.idBfMenu = idBfMenu;
+        return id;
     }
 
     public String getName() {
@@ -114,28 +84,20 @@ public class Menu extends BaseModel {
         this.url = url;
     }
 
-    public String getOrders() {
+    public Integer getOrders() {
         return orders;
     }
 
-    public void setOrders(String orders) {
+    public void setOrders(Integer orders) {
         this.orders = orders;
     }
 
-    public String getParentMenuId() {
-        return parentMenuId;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setParentMenuId(String parentMenuId) {
-        this.parentMenuId = parentMenuId;
-    }
-
-    public List<Menu> getChildList() {
-        return childList;
-    }
-
-    public void setChildList(List<Menu> childList) {
-        this.childList = childList;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
 }

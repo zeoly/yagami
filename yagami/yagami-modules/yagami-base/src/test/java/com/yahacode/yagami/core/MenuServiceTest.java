@@ -1,32 +1,24 @@
-//package com.yahacode.yagami.auth;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//import org.junit.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.test.annotation.Rollback;
-//
-//import com.yahacode.yagami.core.model.Menu;
-//import com.yahacode.yagami.core.model.Role;
-//import com.yahacode.yagami.core.service.MenuService;
-//import com.yahacode.yagami.core.service.RoleService;
-//import com.yahacode.yagami.BaseTest;
-//import com.yahacode.yagami.base.BizfwServiceException;
-//import com.yahacode.yagami.base.common.ListUtils;
-//import com.yahacode.yagami.pd.model.People;
-//import com.yahacode.yagami.pd.service.PeopleService;
-//
-//public class MenuServiceTest extends BaseTest {
-//
-//	@Autowired
-//	private MenuService menuService;
-//
-//	@Autowired
-//	private RoleService roleService;
-//
-//	@Autowired
-//	private PeopleService peopleService;
+package com.yahacode.yagami.core;
+
+import com.yahacode.yagami.BaseTest;
+import com.yahacode.yagami.core.model.Menu;
+import com.yahacode.yagami.core.service.MenuService;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+public class MenuServiceTest extends BaseTest {
+
+    @Autowired
+    private MenuService menuService;
+
+    @Test
+    public void testFindByParentId() {
+        List<Menu> topMenus = menuService.findByParentId(null);
+        Assertions.assertEquals(topMenus.size(), 2);
+    }
 //
 //	// @Test
 //	@Rollback(false)
@@ -128,4 +120,4 @@
 //			}
 //		}
 //	}
-//}
+}

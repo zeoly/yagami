@@ -1,7 +1,7 @@
 package com.yahacode.yagami.core.util;
 
 /**
- * person entity status, include descriptions in Chinese
+ * person entity status
  *
  * @author zengyongli
  * @since 2022-01-24

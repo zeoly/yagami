@@ -6,13 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * @author zengyongli 2018-03-29
+ * menu repository
+ *
+ * @author zengyongli
+ * @since 2018-03-29
  */
 public interface MenuRepository extends JpaRepository<Menu, String> {
 
-    List<Menu> findByParentMenuId(String id);
+    List<Menu> findByParentIdOrderByOrders(String id);
 
-    Menu findByName(String menuName);
+    Menu findByName(String name);
 
-    long countByParentMenuId(String parentMenuId);
+    long countByParentId(String parentId);
 }
