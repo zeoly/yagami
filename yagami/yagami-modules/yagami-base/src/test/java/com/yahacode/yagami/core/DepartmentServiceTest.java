@@ -30,7 +30,6 @@ public class DepartmentServiceTest extends BaseTest {
 
     @Test
     public void testAdd() throws ServiceException {
-        beforeMethod();
         Department department = new Department();
         department.setCode("unit-test-dept");
         department.setName("unit-test-dept");
@@ -43,7 +42,6 @@ public class DepartmentServiceTest extends BaseTest {
 
     @Test
     public void testModifyDepartment() throws ServiceException {
-        beforeMethod();
         Department department = departmentService.findByCode("unit-test-dept");
         department.setName("unit-test-dept-2");
         departmentService.modifyDepartment(department);
@@ -54,7 +52,6 @@ public class DepartmentServiceTest extends BaseTest {
 
     @Test
     public void testDeleteDepartmentHasChild() {
-        beforeMethod();
         ServiceException exception = Assertions.assertThrows(ServiceException.class, () -> {
             departmentService.deleteDepartment("root");
         });
@@ -63,7 +60,6 @@ public class DepartmentServiceTest extends BaseTest {
 
     @Test
     public void testDeleteDepartmentHasPeople() {
-        beforeMethod();
         ServiceException exception = Assertions.assertThrows(ServiceException.class, () -> {
             departmentService.deleteDepartment("121");
         });
@@ -72,7 +68,6 @@ public class DepartmentServiceTest extends BaseTest {
 
     @Test
     public void testDeleteDepartment() throws ServiceException {
-        beforeMethod();
         departmentService.deleteDepartment("unit-test-dept");
 
         Department db = departmentService.findByCode("unit-test-dept");

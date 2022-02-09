@@ -25,7 +25,6 @@ public class RoleServiceTest extends BaseTest {
 
     @Test
     public void testAddRole() throws ServiceException {
-        beforeMethod();
         Role role = new Role();
         role.setName("unitTest");
         role.setDescription("unit test");
@@ -38,7 +37,6 @@ public class RoleServiceTest extends BaseTest {
     @Test
     public void testAddDuplicatedRole() {
         ServiceException e = Assertions.assertThrows(ServiceException.class, () -> {
-            beforeMethod();
             Role role = new Role();
             role.setName("unitTest");
             role.setDescription("unit test");
@@ -49,7 +47,6 @@ public class RoleServiceTest extends BaseTest {
 
     @Test
     public void testDeleteRole() throws ServiceException {
-        beforeMethod();
         Role role = roleService.findByName("unitTest");
         roleService.deleteRole(role.getId());
 
@@ -61,7 +58,6 @@ public class RoleServiceTest extends BaseTest {
     @Transactional
     public void testDeleteRoleFail() {
         ServiceException e = Assertions.assertThrows(ServiceException.class, () -> {
-            beforeMethod();
             Role role = roleService.findByName("sdfdsfddf");
             int personCount = role.getPersonList().size();
             Assertions.assertTrue(personCount > 0);

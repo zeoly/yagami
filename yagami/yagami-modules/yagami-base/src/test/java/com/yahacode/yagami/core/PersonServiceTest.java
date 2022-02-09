@@ -35,7 +35,6 @@ public class PersonServiceTest extends BaseTest {
 
     @Test
     public void testModifyPersonName() throws ServiceException {
-        beforeMethod();
         Person person = personService.findByCode("admin");
         person.setName("testName");
         personService.modifyPerson(person);
@@ -46,7 +45,6 @@ public class PersonServiceTest extends BaseTest {
 
     @Test
     public void testModifyRole() throws ServiceException {
-        beforeMethod();
         Person person = personService.findByCode("admin");
         Role role = roleService.findByName("333");
         role.setName("444");
@@ -59,7 +57,6 @@ public class PersonServiceTest extends BaseTest {
 
     @Test
     public void testAddPerson() throws ServiceException {
-        beforeMethod();
         Person person = new Person();
         person.init("unit-test");
         person.setCode("unit-test");
@@ -73,7 +70,6 @@ public class PersonServiceTest extends BaseTest {
 
     @Test
     public void testAddPersonExists() {
-        beforeMethod();
         Person person = new Person();
         person.setCode("unit-test");
 
@@ -83,14 +79,12 @@ public class PersonServiceTest extends BaseTest {
 
     @Test
     public void testDeletePersonBySelf() {
-        beforeMethod();
         ServiceException exception = Assertions.assertThrows(ServiceException.class, () -> personService.deletePerson("UNITTEST"));
         Assertions.assertEquals(exception.getErrorCode(), ErrorCode.PeopleDept.People.DEL_FAIL_SELF);
     }
 
     @Test
     public void testDeletePerson() throws ServiceException {
-        beforeMethod();
         personService.deletePerson("UNIT-TEST");
 
         Person db = personService.findByCode("UNIT-TEST");
