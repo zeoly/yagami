@@ -18,6 +18,12 @@ public class RoleServiceTest extends BaseTest {
     private RoleService roleService;
 
     @Test
+    public void testFindById() {
+        Role role = roleService.findById("8a808086595935fc01595969f40e0006");
+        Assertions.assertEquals(8, role.getMenuList().size());
+    }
+
+    @Test
     public void testFindAll() {
         List<Role> list = roleService.findAll();
         Assertions.assertTrue(list.size() > 0);

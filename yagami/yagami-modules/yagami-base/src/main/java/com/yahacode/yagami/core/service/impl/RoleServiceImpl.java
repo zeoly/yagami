@@ -81,6 +81,14 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         return roleRepository.findByName(name);
     }
 
+    @Transactional
+    @Override
+    public Role findById(String id) {
+        Role role = super.findById(id);
+        log.info("role [{}] has {} menus", id, role.getMenuList().size());
+        return role;
+    }
+
     /**
      * check if the role can be deleted, will throw an exception if not
      *
