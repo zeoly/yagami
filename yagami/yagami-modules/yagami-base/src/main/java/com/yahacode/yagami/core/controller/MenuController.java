@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,15 +38,15 @@ public class MenuController extends BaseController {
     @GetMapping
     public List<MenuTree> getAuthorizedMenu() {
         Person operator = personService.findByCode("admin");
-        List<Menu> menuList = new LinkedList<>();
+        Set<Menu> menuSet = new HashSet<>();
         List<Role> roleList = operator.getRoleList();
         for (Role role : roleList) {
-            menuList.addAll(role.getMenuList());
+            menuSet.addAll(role.getMenuList());
         }
-        return constructTree("root", menuList);
+        return constructTree("root", menuSet);
     }
 
-    private List<MenuTree> constructTree(String parentId, List<Menu> list) {
+    private List<MenuTree> constructTree(String parentId, Set<Menu> list) {
         List<MenuTree> tops = new LinkedList<>();
         for (Menu menu : list) {
             if (parentId.equals(menu.getParentId())) {

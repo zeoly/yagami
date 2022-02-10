@@ -55,7 +55,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         Role oldRole = findById(role.getId());
         log.info("{} modify role [{}] to [{}] start", person.getCode(), oldRole.getName(), role.getName());
         Role tmpRole = findByName(role.getName());
-        if (null != tmpRole) {
+        if (null != tmpRole && !oldRole.getId().equals(tmpRole.getId())) {
             log.warn("{} modify role fail: name [{}] already exists", person.getCode(), role.getName());
             throw new ServiceException(MOD_FAIL_EXISTED);
         }

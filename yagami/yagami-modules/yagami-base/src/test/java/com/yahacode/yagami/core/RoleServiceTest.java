@@ -3,11 +3,14 @@ package com.yahacode.yagami.core;
 import com.yahacode.yagami.BaseTest;
 import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.base.consts.ErrorCode;
+import com.yahacode.yagami.core.model.Menu;
 import com.yahacode.yagami.core.model.Role;
+import com.yahacode.yagami.core.service.MenuService;
 import com.yahacode.yagami.core.service.RoleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -16,6 +19,9 @@ public class RoleServiceTest extends BaseTest {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    private MenuService menuService;
 
     @Test
     public void testFindById() {
@@ -38,6 +44,20 @@ public class RoleServiceTest extends BaseTest {
 
         Role newRole = roleService.findByName("unitTest");
         Assertions.assertNotNull(newRole);
+    }
+
+    @Transactional
+    @Rollback(false)
+    @Test
+    public void testModifyRole() throws ServiceException {
+        Role role = roleService.findByName("文档管理员");
+        List<Menu> menus = menuService.findByParentId("8a80808658baf3430158baf347c60000");
+        role.getMenuList().addAll(menus);
+
+        roleService.modify(role);
+
+        Role db = roleService.findByName("文档管理员");
+        Assertions.assertEquals(2, db.getMenuList().size());
     }
 
     @Test
