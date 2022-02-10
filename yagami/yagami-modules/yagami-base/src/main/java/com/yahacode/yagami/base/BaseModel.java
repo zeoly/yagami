@@ -1,7 +1,6 @@
 package com.yahacode.yagami.base;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -21,28 +20,28 @@ public abstract class BaseModel implements Serializable {
     /**
      * create date
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonIgnore
     @Column(name = "create_date")
     private LocalDateTime createDate;
 
     /**
      * create person code
      */
+    @JsonIgnore
     @Column(name = "create_by")
     private String createBy;
 
     /**
      * update date
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonIgnore
     @Column(name = "update_date")
     private LocalDateTime updateDate;
 
     /**
      * update person code
      */
+    @JsonIgnore
     @Column(name = "update_by")
     private String updateBy;
 

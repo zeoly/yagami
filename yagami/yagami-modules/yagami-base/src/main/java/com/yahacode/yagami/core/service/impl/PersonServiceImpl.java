@@ -49,9 +49,9 @@ public class PersonServiceImpl extends BaseServiceImpl<Person> implements Person
     @Override
     public void modifyPerson(Person person) throws ServiceException {
         Person operator = getLoginPerson();
-        log.info("{} modify person {} start", operator.getCode(), person.getCode());
+        log.info("{} modify person [{}] start", operator.getCode(), person.getCode());
         updateById(person);
-        log.info("{} modify person {} end", operator.getCode(), person.getCode());
+        log.info("{} modify person [{}] end", operator.getCode(), person.getCode());
     }
 
     @Override

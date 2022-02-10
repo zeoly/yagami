@@ -2,7 +2,9 @@ package com.yahacode.yagami.base;
 
 import com.yahacode.yagami.base.common.ServletContextHolder;
 import com.yahacode.yagami.base.consts.SessionKeyConsts;
+import com.yahacode.yagami.base.mvc.SessionService;
 import com.yahacode.yagami.core.model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,8 +16,11 @@ import javax.servlet.http.HttpSession;
  */
 public class BaseController {
 
-    protected Person getLoginPeople() {
-        return (Person) getSession().getAttribute(SessionKeyConsts.LOGIN_PEOPLE);
+    @Autowired
+    private SessionService sessionService;
+
+    protected Person getLoginPerson() {
+        return sessionService.getLoginPerson();
     }
 
     public void setLoginPeople(Person peopleInfo) {

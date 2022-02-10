@@ -41,7 +41,7 @@ public class Menu extends BaseModel {
     private String url;
 
     /**
-     * menu sort order, starting from 1, the invisible root menu is 0
+     * menu customized sort order
      */
     private Integer orders;
 
@@ -66,6 +66,10 @@ public class Menu extends BaseModel {
     @Override
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {

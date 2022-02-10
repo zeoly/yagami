@@ -10,6 +10,8 @@ import com.yahacode.yagami.core.service.RoleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,16 +45,18 @@ public class PersonServiceTest extends BaseTest {
         Assertions.assertEquals("testName", newPerson.getName());
     }
 
+    @Transactional
+    @Rollback(false)
     @Test
     public void testModifyRole() throws ServiceException {
         Person person = personService.findByCode("admin");
-        Role role = roleService.findByName("333");
-        role.setName("444");
+        Role role = roleService.findByName("超级管理员");
+        int roleCount = person.getRoleList().size();
         person.getRoleList().add(role);
         personService.modifyPerson(person);
 
         Person newPerson = personService.findByCode("admin");
-        Assertions.assertTrue(newPerson.getRoleList().size() > 2);
+        Assertions.assertEquals(roleCount + 1, newPerson.getRoleList().size());
     }
 
     @Test
