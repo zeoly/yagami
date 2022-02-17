@@ -19,19 +19,19 @@ public interface MenuService extends BaseService<Menu> {
     /**
      * add menu
      *
-     * @param menu 菜单
-     * @throws ServiceException
+     * @param menu entity
+     * @throws ServiceException if parent menu not exists
      */
     void addMenu(Menu menu) throws ServiceException;
-//
-//    /**
-//     * 修改菜单
-//     *
-//     * @param menu 菜单
-//     * @throws ServiceException
-//     */
-//    public void modifyMenu(Menu menu) throws ServiceException;
-//
+
+    /**
+     * modify a menu
+     *
+     * @param menu entity
+     * @throws ServiceException
+     */
+    void modifyMenu(Menu menu) throws ServiceException;
+
 //    /**
 //     * 根据id删除菜单
 //     *

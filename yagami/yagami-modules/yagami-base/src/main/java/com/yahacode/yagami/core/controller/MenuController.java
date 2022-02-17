@@ -1,6 +1,7 @@
 package com.yahacode.yagami.core.controller;
 
 import com.yahacode.yagami.base.BaseController;
+import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.core.model.Menu;
 import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.model.Role;
@@ -11,6 +12,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -64,22 +69,17 @@ public class MenuController extends BaseController {
         return tree;
     }
 
-//    @ResponseBody
-//    @RequestMapping("/addMenu.do")
-//    public void addMenu(Menu menu) throws ServiceException {
-//        Person people = getLoginPeople();
-//        menu.init(people.getCode());
-//        menuService.addMenu(menu);
-//    }
-//
-//    @ResponseBody
-//    @RequestMapping("/modifyMenu.do")
-//    public void modifyMenu(Menu menu) throws ServiceException {
-//        Person people = getLoginPeople();
-//        menu.update(people.getCode());
-//        menuService.modifyMenu(menu);
-//    }
-//
+    @PostMapping
+    public void addMenu(@RequestBody Menu menu) throws ServiceException {
+        menuService.addMenu(menu);
+    }
+
+    @PatchMapping("/{id}")
+    public void modifyMenu(@PathVariable String id, @RequestBody Menu menu) throws ServiceException {
+        menu.setId(id);
+        menuService.modifyMenu(menu);
+    }
+
 //    @ResponseBody
 //    @RequestMapping("/deleteMenu.do")
 //    public void deleteMenu(String menuId) throws ServiceException {

@@ -51,17 +51,16 @@ public class MenuServiceImpl extends BaseServiceImpl<Menu> implements MenuServic
             throw new ServiceException("");
         }
     }
-//
-//    @Override
-//    public void modifyMenu(Menu menu) throws ServiceException {
-//        Menu dbMenu = queryById(menu.getIdBfMenu());
-//        dbMenu.setName(menu.getName());
-//        dbMenu.setUrl(menu.getUrl());
-//        dbMenu.setOrders(menu.getOrders());
-//        dbMenu.update(menu.getUpdateBy());
-//        update(dbMenu);
-//    }
-//
+
+    @Override
+    public void modifyMenu(Menu menu) throws ServiceException {
+        Menu dbMenu = findById(menu.getId());
+        dbMenu.setName(menu.getName());
+        dbMenu.setUrl(menu.getUrl());
+        dbMenu.setOrders(menu.getOrders());
+        updateById(dbMenu);
+    }
+
 //    @Override
 //    public void deleteMenu(String menuId) throws ServiceException {
 //        Menu menu = queryById(menuId);
