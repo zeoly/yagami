@@ -3,6 +3,7 @@ package com.yahacode.yagami.core.controller;
 import com.yahacode.yagami.base.BaseController;
 import com.yahacode.yagami.base.ServiceException;
 import com.yahacode.yagami.core.model.Department;
+import com.yahacode.yagami.core.model.Person;
 import com.yahacode.yagami.core.service.DepartmentService;
 import com.yahacode.yagami.core.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +59,8 @@ public class DepartmentController extends BaseController {
         departmentService.deleteDepartment(code);
     }
 
+    @GetMapping("/{code}/person")
+    public List<Person> getPersonsOfDepartment(@PathVariable String code) {
+        return personService.findByDepartment(code);
+    }
 }
